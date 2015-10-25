@@ -1,0 +1,143 @@
+<textarea type=text/ts cols=128 rows=8>#*# TuxedoScript 6.7.7
+  @aut: Ephellon Dantzler
+  @dat: Tue Sept 8, 2015
+  @tie: 23:51 CST -06:00
+  @lie: "Free for use, as long as my name, CoffeeScript, and ECMA are mentioned"
+##
+  ##!, strict mode required for advanced features
+  ## Coffee Script-Like Examples, see coffeescript.org
+
+  ## Extendable features
+  ## +advance
+  ## +eval
+  ## +js-editor
+  ## +legacy
+  ## +math
+  ## +wordy
+  ## -hide
+  ## -html-editor
+  ## -ugly
+
+  ## Assignment
+  #number = 42.
+  #opposite = true.
+  3.14 => PI.
+
+  ## Conditions
+  number = -42 if opposite.
+  #* OR you can use *#
+  number = -42 if opposite is true.
+  number = -42 unless opposite is false.
+  ##
+
+  ## Functions
+  $square x {
+  <- x^2.
+     }
+     $eat f {
+     $doc.writeln("I ate the ${f}<br>").
+     }
+     $discuss f {
+     #s = "s" if f#00 != 's'
+     else s = "";
+     $doc.writeln("The ${f} look${s} good<br>").
+     }
+     $doc.writeln = $x {
+     $doc.body.$html += "${x}<br>".
+     }
+
+     ## Arrays
+     #list = [1, 2, 3, 4, 5].
+
+     ## Objects
+     #math = {
+     root: %sqrt,
+     square: square,
+     cube: $ x {
+     <- x^3.
+  }
+  }
+
+  ## Splats + Interpolation
+  $race winner, runners... {
+  $doc.writeln("${winner}, ${runners}").
+  }
+
+  ## Existence
+  alert("I knew it") if Elvis exists.
+
+  ## Array comprehension
+  #menu = ['tacos', 'burritos', 'sushi', 'spaghetti'].
+
+  discuss(food) from menu
+  if menu exists.
+
+  eat(food) from menu while food isnt "sushi".
+
+  ## Simple English
+  #sushi = "sushi" from menu.
+  #third = 3 in menu.
+
+  ## Reserved words
+  #off = off.
+  \off = off OR NOT on.
+</textarea><br><br>
+<span>
+  <b>
+    See above in <a href="javascript:window.open('http://s.codepen.io/Ephellon/debug/NGbmKJ?coffee')">Tux Editor</a>
+  </b><br><br>
+  <b>
+    See "Lines" in <a href="javascript:window.open('http://s.codepen.io/Ephellon/debug/NGbmKJ?zvRPWv#html+css')">Tux Editor</a>
+  </b><br><br>
+  <b>
+    See "Organ Systems [Class]" in <a href="javascript:window.open('http://s.codepen.io/Ephellon/debug/NGbmKJ?wKpxKX#css')">Tux Editor</a>
+  </b><br><br>
+  <b>
+    See "Piggy Bank [Class]" in <a href="javascript:window.open('http://s.codepen.io/Ephellon/debug/NGbmKJ?EVwgdJ#css')">Tux Editor</a>
+  </b><br><br>
+  <b>
+    See "Zoo [Class]" in <a href="javascript:window.open('http://s.codepen.io/Ephellon/debug/NGbmKJ?zvdqpK#css')">Tux Editor</a>
+  </b><br><br>
+  <b>
+    See "Racers [Splats]" in <a href="javascript:window.open('http://s.codepen.io/Ephellon/debug/NGbmKJ?NGvdqW#css')">Tux Editor</a>
+  </b><br><br>
+  <b>
+    See "Ultimate Loader [Math] by Rauri" in <a href="javascript:window.open('http://s.codepen.io/Ephellon/debug/NGbmKJ?LpOXLj#html+css')">Tux Editor</a>
+  </b><br><br>
+  <b>
+    See "Biology Example [Class]" in <a href="javascript:window.open('http://s.codepen.io/Ephellon/debug/NGbmKJ?xwLEzx#css')">Tux Editor</a>
+  </b><br><br>
+  <b>
+    See "Secco by Tiffany Rayside" in <a href="javascript:window.open('http://s.codepen.io/Ephellon/debug/NGbmKJ?rOJExb#html+css')">Tux Editor</a>
+  </b>
+</span>
+<hr>
+<style>
+  body, body>* {
+    background: #1d1f20;
+    color: #efc371;
+    font-family: arial, monospace;
+    font-size: 16px;
+    overflow: hidden;
+  }
+  textarea {
+    background: #000;
+    border: 1px solid #fff;
+    max-width: 100vw;
+    overflow: auto;
+    width: 99vw;
+  }
+  b {
+    border-bottom: 3px solid #888;
+    cursor: pointer;
+  }
+  b:hover {
+    background: rgba(128, 128, 128, 0.5);
+  }
+  a {
+    border-bottom: 3px solid #00aced;
+    color: #00aced;
+    cursor: help;
+    text-decoration: none;
+  }
+</style>
