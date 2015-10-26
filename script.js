@@ -524,6 +524,14 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/while\((.+)\)/g, "for(;$1;)")
       .replace(/Number\(/g, "(+")
       .replace(/\.toString\(\)/g, "+\"\"");
+    var zero = 1;
+    for(;__.match(/00+/);) { // remove so.t.ch
+      __.replace(/00+/, '$1');
+      k = RegExp.$1;
+      __ = __.replace(/00+/g, "/e/");
+      zero++;
+    }
+      __ = __.replace(/\/e\//, 'e' + zero);
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // rebuild;
