@@ -68,13 +68,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __.replace(__sch__, '_sch[' + S + ']sch_');
     S++;
   } __sch__ = /(_sch\[[\d]+\]sch_)/;
-
-  __ = __
-    .replace(/~/g, '-tilde-')
-    .replace(/\$([1-9])/g, "~$1") // $1 fix
-    .replace(/\\\//g, "\\\\\/")
-    .replace(/\\([\/\\\&\?\:;\.@#%\$])/g, '~$1~');
-  //.replace(/undefined/g, "~~u"); // undefined fix
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   for(;__.match(__rx__);) { // remove regular expressions
@@ -115,6 +108,13 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __.replace(__ga__, '_ga[' + z + ']ga_');
     z++;
   } __ga__ = /(_ga\[[\d]+\]ga_)/;
+
+  __ = __
+    .replace(/~/g, '-tilde-')
+    .replace(/\$([1-9])/g, "~$1") // $1 fix
+    .replace(/\\\//g, "\\\\\/")
+    .replace(/\\([\/\\\&\?\:;\.@#%\$])/g, '~$1~');
+  //.replace(/undefined/g, "~~u"); // undefined fix
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   __ = __ // tuxedo-script
   // [a-z\$_][\w\d\$_]* = proper JS variables
@@ -256,18 +256,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/([a-z\$_][\w\d\.\$_]*)\s*\-\=/g, "$1 = $1-") // -=
       .replace(/([a-z\$_][\w\d\.\$_]*)\s*\%\=/g, "$1 = $1%") // %=
     */
-  }
-
-  if ("!" === _ugly) {
-    __ = __ // ugly
-      .replace(/\/\/(?:\*\/)*(.+)/g, "/*$2*/")
-    //.replace(/\s+/g, " ")
-      .replace(/undefined/g, "void 0")
-      .replace(/(true|\!false|\!\!true)/g, "!0")
-      .replace(/(false|\!true|\!\!false)/g, "!1")
-      .replace(/while\((.+)\)/g, "for(;$1;)")
-      .replace(/Number\(/g, "(+")
-      .replace(/\.toString\(\)/g, "+\"\"");
   }
 
   if ("!" === _advance) {
@@ -522,6 +510,18 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/,,/g, ";")
       .replace(/#00/g, "")
       .replace(/#0/g, "var ");
+  }
+
+  if ("!" === _ugly) {
+    __ = __ // ugly
+      .replace(/\/\/(?:\*\/)*(.+)/g, "/*$1*/")
+    //.replace(/\s+/g, " ")
+      .replace(/undefined/g, "void 0")
+      .replace(/(true|\!false|\!\!true)/g, "!0")
+      .replace(/(false|\!true|\!\!false)/g, "!1")
+      .replace(/while\((.+)\)/g, "for(;$1;)")
+      .replace(/Number\(/g, "(+")
+      .replace(/\.toString\(\)/g, "+\"\"");
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // rebuild;
