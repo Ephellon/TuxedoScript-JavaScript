@@ -124,7 +124,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/&lt;/g, "<")
     .replace(/&amp;/g, "&") // in this order to prevent &amp;gt; from becoming > and &amp;lt; < 
     .replace(/<(\w+.+)>/g, "&lt;$1&gt;") // replace HTML
-    .replace(/([a-z\$_][\w\d\$_]*)(?:[\.\-]{2})([a-z\$_][\w\d\$_]*)/gi, "$1_$2") // automatic _
+    .replace(/([a-z\$_][\w\d\$_]*)(?:[\-]{2})([a-z\$_][\w\d\$_]*)/gi, "$1_$2") // automatic _
   // loops and statements
     .replace(/\((.+)\)\?(.+)\:/g, '($1),,,$2,,,,') // terenary operator
     .replace(/(\:|\})\?(.+)([\:\{])/g, "}else if ($2){")

@@ -42,9 +42,9 @@ Symbols: symbol - meaning/equivalent
     ## **x: y - declare a short hand var, but parse it before returning the value [Lazarus comments]
     #x - var x
     x#i - x[i]
-    x..y = - x_y // automatic underscores
+    x..y = - x_y // automatic underscores !/deprecated/
     x--y - x_y // automatic underscores
-    x.y..z - x.y_z // automatic underscores
+    x.y..z - x.y_z // automatic underscores !/deprecated/
     ?x: - if(x)
       ?x{ - if(x)
     :: - else
