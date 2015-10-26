@@ -413,12 +413,12 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/([\w\d\$_]+)\(([^\n]+)\)\s\=([\s\w\d\$_\*\/\+\-%\^\\\|\.\(\)\[\];]+)\n/g, "function $1($2){\nreturn $3\n}\n")
       .replace(/([^\a-z+][\d]+)([a-z\$_]+)/gi, "$1 * $2")
       .replace(/([\w\d\$_-]+)\s*-tilde-\s*([\w\d\$_-]+)/g, "(($1 % $2 + $2) % $2)")
-      .replace(/\|([^"'`;]+)\|/g, "%abs($1)")
-      .replace(/([\w\d\$_]+)\\([^\n"'`~\!@#,\:;]+)\\/g, "%pow($2, 1/$1)") // x\y\
-      .replace(/\\([^\n"'`~\!@#,\:;]+)\\/g, "%sqrt($1)") // \x\
-      .replace(/([\w\d\.\$_-]+)\s*(?:\^|\*\*)\s*([\w\d\.\$_-]+)/g, "%pow($1, $2)") // $1 ** $2 may not be supported
-      .replace(/([\w\d\$\_]+)\s+_\s+([\w\d\$_]+)/g, "%floor($1 / $2)")
-      .replace(/(\W)%([a-z\$_]+)/gi, "$1Math.$2")
+      .replace(/\|([^"'`;]+)\|/g, " %abs($1)")
+      .replace(/([^\\][\w\d\$_]+)\\([^\n"'`~\!@#,\:;\\]+)?\\/g, " %pow($2, 1/$1)") // x\y\
+      .replace(/\\([^\n"'`~\!@#,\:;\\]+)?\\/g, " %sqrt($1)") // \x\
+      .replace(/([\w\d\.\$_-]+)\s*(?:\^|\*\*)\s*([\w\d\.\$_-]+)/g, " %pow($1, $2)") // $1 ** $2 may not be supported
+      .replace(/([\w\d\$\_]+)\s+_\s+([\w\d\$_]+)/g, " %floor($1 / $2)")
+      .replace(/(\W)%([a-z\$_][\w\d\$_]+)/gi, "$1Math.$2") // strictly calls for at least at least 2 valid characters
       .replace(/\/or\//g, "||")
       .replace(/\/or\-equ\//g, "|=");
     Math.modulo = function(a, b) {

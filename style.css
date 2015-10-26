@@ -90,6 +90,7 @@ Symbols: symbol - meaning/equivalent
     x^y - Math.pow(x, y)
       x**y - Math.pow(x, y)
     \x\ - Math.sqrt(x)
+    x\y\ - Math.x-root(y) /y^(1/x)
     |x| - Math.abs(x)
     x~y - (([x % y] + y) % y)
     x _ y - Math.floor( x / y) /notice the spaces/
