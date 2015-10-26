@@ -1,0 +1,265 @@
+/********
+  Tuxedo Script Help:
+    * general rules/notes: the Tuxedo escape characters aren't needed in them, i.e. \#
+    - all loops/function need a matching semi-colon
+    - place comments on the NEXT line, or the code may become useless
+    - when changing a loop with eval enabled, delete the entire loop first, put an error before hand
+    - place dot assignments on a newline, i.e.:
+    $doc.$id(id).$html = 'foo-bar'.
+    #e = "hi".
+      // ugly code
+      // instead, use:
+    $doc.$id(id).$html
+      = 'foo-bar'.
+    #e = "hi".
+
+--------
+HTML attributes: attribute - meaning
+    type - [input] required, can be any of the following [ts, tux, tuxedo, tuxedoscript, tuxedo-script, tscript, t-script]
+    type - [output] optional, can be one of the following [tso, tuxo, tuxedoo, tuxedoscriptout, tuxedo-script-out, tscriptout, t-script-out]
+    eval=! - execute the code
+    editor=! - try to style the code for easier reading
+    clean=! - remove the header and footer of the code
+    math=! - enable shorthand math, i.e. 2^5 = Math.pow(2, 5)
+    advance=! - enable advanced features
+    ugly=! - shorten code
+    hide=! - hide this element
+    legacy=! - switch newer features to old versions
+    wordy=! - allow use of "normal" English words
+
+--------
+Symbols: symbol - meaning/equivalent
+\n: enter
+
+    ##! - use strict mode
+    \character - escape character, i.e. "\#x" will make "#x", not "var x" /not needed too often, but just in case/
+    ## - comment/multi-line comment ender
+    #* - multiline comment starter
+    #*# - author comment (multi-line)
+    ## +feature - enable a feature without the use of the html attribute [Lazarus comments]
+    ## -feature - disable a feature without the use of the html attribute [Lazarus comments]
+    ## *x: y - declare a short hand var, such as $win, $doc, etc. [Lazarus comments]
+    ## **x: y - declare a short hand var, but parse it before returning the value [Lazarus comments]
+    #x - var x
+    x#i - x[i]
+    x..y = - x_y // automatic underscores
+    x--y - x_y // automatic underscores
+    x.y..z - x.y_z // automatic underscores
+    ?x: - if(x)
+      ?x{ - if(x)
+    :: - else
+      }{ - else
+    :?x: - else if(x)
+      }?x{ - else if(x)
+/ count up, or to number /
+    ?#x,start,stop,increment: - for(var x = start, stop, increment)
+      ?#x,start,stop,increment { - for(var x = start, stop, increment)
+    ?#x,stop,increment: - for(var x = 0, stop, increment)
+      ?#x,stop,increment { - for(var x = 0, stop, increment)
+    ?#x,stop: - for(var x = 0, stop, auto increment to 0)
+      ?#x,stop { - for(var x = 0, stop, auto increment to 0)
+/ count down, or to number /
+    -?#x,start,stop,increment: - for(var x = start, stop, increment)
+      -?#x,start,stop,increment { - for(var x = start, stop, increment)
+    -?#x,stop,increment: - for(var x = 0, stop, increment)
+      -?#x,stop,increment { - for(var x = 0, stop, increment)
+    -?#x,stop: - for(var x = 0, stop, auto increment to 0)
+      -?#x,stop { - for(var x = 0, stop, auto increment to 0)
+    ?(x) - switch
+    @x: - case x
+    ?: - do
+    ?x; - while x
+    $x: - function x
+      $x { - function x
+    try: - try
+    catch: - catch
+    finally: - finally
+    $x a,b,c,...: - function x (a,b,c,...)
+      $x a,b,c,... { - function x (a,b,c,...)
+    :$x,...: - :function(x,...) /use in an array/
+      :$x,... { - :function(x,...) /use in an array/
+    #$a,b,c,...: - (function(a,b,c,...)
+      #$a,b,c,... { - (function(a,b,c,...)
+    ; - used to end a loop/function, "}"
+    ` - embeded \' if within quotes, else `
+    <- x - return x
+
+** with math enabled **
+    %method - Math.method /notice there isn't a space/
+    xy - if x is a digit, then it changes to x * y
+    x^y - Math.pow(x, y)
+      x**y - Math.pow(x, y)
+    \x\ - Math.sqrt(x)
+    |x| - Math.abs(x)
+    x~y - (([x % y] + y) % y)
+    x _ y - Math.floor( x / y) /notice the spaces/
+    +/-{x} - {equ: x, pos: x, neg: -x} !/proposal/
+      +/-{x}  - should return an object that gives back the positive and negative versions of x
+
+** with advanced enabled [ECMAS 6] **
+    .x - class x
+    .x y - class x extends y
+    @(...) - constructor(...)
+    *.x - super.x
+    x => y - const y = x
+    x --> y - x = () => y
+    x -> y - x => y
+    $* - void function
+    array#x - if x is a digit, then array[x]
+    array#00 - array[array.length-1]
+    array += n in object while ... - for(n in object) { array.push(object[n]) }
+      array = n in object while n in object - for(n in object) { array.push(object[n]) }
+      array += n in object - for(n in object) { array.push(object[n]) }
+
+++ advance and legacy enabled ++
+    $f a, ..., c - only args[0] and args[last] are used
+    $f a..., c - a = args[last-1] and c = args[last]
+    $f ..., c - only c is used
+    $f a, c... - a = args[0], and c = args[0 -- last]
+    $f a, ... - same as $f a
+
+** with legacy enabled **
+    x |= y - x = x || y
+    x &= y - x = x && y
+    x ?= y - if(x == null) x = y
+    x ^= y - if(x != null) x = y
+    "${x}" - " + x + " /interpolation/
+    '${x}' - ' + x + ' /interpolation/
+    `${x}` - ' + x + ' /interpolation/
+    [x..y] - if x and y are digits, then .slice(x,y)
+    [..y] - if y is a digit, then .slice(0, y)
+    [x..] - if x is a digit, then .slice(y)
+    [.] - .slice(0)
+    [*] - .split("")
+    r - reserved words are quoted where needed
+
+** with wordy enabled **
+    on - true
+      yes - true
+      good - true
+    off - false
+      no - false
+      bad - false
+    x = y if boolean - if(boolean) x = y
+    x = y unless boolean - if(!boolean) x = y
+    if boolean then x else y - (boolean)?x:y
+    if boolean - if(boolean)
+    else - } else {
+    else-if boolean - } else if(boolean) {
+/ count up, or to number /
+    for x,start,stop,increment: - for(var x = start, stop, increment)
+      for x,start,stop,increment{ - for(var x = start, stop, increment)
+    for x,stop,increment: - for(var x = 0, stop, increment)
+      for x,stop,increment{ - for(var x = 0, stop, increment)
+    for x,stop: - for(var x = 0, stop, auto increment to 0)
+      for x,stop{ - for(var x = 0, stop, auto increment to 0)
+/ count down, or to number /
+    -for x,start,stop,increment: - for(var x = start, stop, increment)
+      -for x,start,stop,increment{ - for(var x = start, stop, increment)
+    -for x,stop,increment: - for(var x = 0, stop, increment)
+      -for x,stop,increment{ - for(var x = 0, stop, increment)
+    -for x,stop: - for(var x = 0, stop, auto increment to 0)
+      -for x,stop{ - for(var x = 0, stop, auto increment to 0)
+    while boolean; - while(boolean)
+    until boolean; - while(!boolean)
+    switch x - switch(x)
+    AND - &&
+    OR - ||
+    x XOR y - (x || y) && !x
+    NOT - !
+    isnt - !
+    isn't - !
+    does - !!
+    does NOT - !
+    doesn't - !
+    is - ===
+    equals - ===
+    x exists - typeof x !== undefined && x !== null
+    x(y) if b - if(b) x(y)
+    x from a - a.indexOf(x)
+    x in a - a[x]
+    x(y) from a - for(i = 0 ... a.length) x(y)
+    x(y) from a if b - for(i = 0 ... a.length) if(b) x(y)
+
+--------
+Variables: var - meaning/equivalent
+
+    $# - Object
+    @ - this
+    @x - this.x
+    x@y - x(y) !/deprecated/
+    $doc - document
+    $win - window
+    $con - console
+    $args - arguments
+      ... - arguments !/deprecated/ see "Advance: Splats"
+    $of - typeof
+    $nav - navigator
+    $loc - location
+    $del - delete
+    $cont - continue
+    .$id - getElementById
+    .$class - getElementsByClassName
+    .$tag - getElementsByTagName
+    .$html - innerHTML
+    .$text - innerText
+    .$val - value
+    .$qy - querySelector
+    .$Qy - querySelectorAll
+
+--------
+Author Comments: tag - meaning
+
+    @aut - author
+    @dat - date
+    @lie - license
+    @tie - time
+    @url - any url you want
+    @ver - version
+
+--------
+Experimental Features: experiment - meaning
+
+    notch - the no.t.ch (No Tuxedo Channel)
+      disable ALL Tuxedo execution within ##/ ... /##
+    sotch - the so.t.ch (Some Tuxedo Channel, or Shortcut Table Channel)
+      disable some Tuxedo execution within ##- ... -## [go straight to shortcuts]
+    totch - the to.t.ch (Total Tuxedo Channel)
+      enable all Tuxedo execution within ##\ ... \## [or simply disable notch and sotch]
+
+    prom tux - make a "leased" Tuxedo element
+    #t = prom tux.
+    // produces:
+var t = Object._tuxedo_ = function(p, s, l) {
+  "use strict";
+  var _name = "t"; // provided by Tuxedo()
+  if(!p || !s || !l) {
+    Object._tuxedo_ = null;
+    console.log("TxSc - Improperly leased variable: " + _name);
+    return null;
+  }
+  if(typeof p !== typeof Tuxedo) {
+    console.log("TxSc - Improper promise");
+    return null;
+  }
+  if(typeof s !== typeof "") {
+    console.log("TxSc - Improper signature");
+    return null;
+  }
+  if(typeof l !== typeof -1) {
+    console.log("TxSc - Improper lifetime");
+    return null;
+  }
+  setTimeout(function(){
+    Object._tuxedo_ = null;
+    console.log("TxSc - Lease ended: " + _name);
+    return null;
+  }, l);
+  return {
+    signature: s,
+    promise: p.toString(),
+    contract: p,
+    lifetime: l
+  };
+};
+********/
