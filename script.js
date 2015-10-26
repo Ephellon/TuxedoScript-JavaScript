@@ -1,4 +1,4 @@
-// TuxedoScript 7.5.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 7.5.3 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -352,6 +352,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       }
 
       __ = __
+        .replace(/([a-z\$_][\w\d\$_]*)\s*\(\s*([a-z\$_][\w\d\$_]*)\.\.\.\s*\)/gi, "$1.apply(null, $2)")
         .replace(/([a-z\$_][\w\d\$_]*)\s*\((.+),\s*([a-z\$_][\w\d\$_]*)\.\.\.\s*\)/gi, "$1.apply(null, [$2].concat([].slice.call($3)))")
         .replace(/([a-z\$_][\w\d\$_]*)\s*\(([a-z\$_][\w\d\$_]*)\.\.\.,\s*(.+)\s*\)/gi, "$1.apply(null, [].slice.call($3).concat([$2]))");
     }
