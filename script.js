@@ -1,4 +1,4 @@
-// TuxedoScript 7.5.3 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 7.5.4 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -414,8 +414,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/([^\a-z+][\d]+)([a-z\$_]+)/gi, "$1 * $2")
       .replace(/([\w\d\$_-]+)\s*-tilde-\s*([\w\d\$_-]+)/g, "(($1 % $2 + $2) % $2)")
       .replace(/\|([^"'`;]+)\|/g, "%abs($1)")
+      .replace(/([\w\d\$_]+)\\([^\n"'`~\!@#,\:;]+)\\/g, "%pow($2, 1/$1)") // x\y\
       .replace(/\\([^\n"'`~\!@#,\:;]+)\\/g, "%sqrt($1)") // \x\
-      .replace(/([\w\d\.\$_-]+)\s*(\^|\*\*)\s*([\w\d\.\$_-]+)/g, "%pow($1, $3)") // $1 ** $3 may not be supported
+      .replace(/([\w\d\.\$_-]+)\s*(?:\^|\*\*)\s*([\w\d\.\$_-]+)/g, "%pow($1, $2)") // $1 ** $2 may not be supported
       .replace(/([\w\d\$\_]+)\s+_\s+([\w\d\$_]+)/g, "%floor($1 / $2)")
       .replace(/(\W)%([a-z\$_]+)/gi, "$1Math.$2")
       .replace(/\/or\//g, "||")
