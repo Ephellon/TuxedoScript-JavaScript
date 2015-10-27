@@ -53,7 +53,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __os__ = __os__ || document.querySelector('[type="text/' + _o[k] + '"]'); // finds only the first one
   }
   __os__ = __os__ || __ts__; // copy, or hold the input-element
-  __ = ((__ts__.value || __ts__.innerHTML) + ""); // get the text of the element
+  __ = ((__ts__.value || __ts__.innerHTML) + "\n"); // get the text of the element
 
   // channels
   for(;__.match(__nch__);) { // remove no.t.ch
@@ -601,7 +601,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/([;\}])\n(if|for|switch|function|Object)/g, "$1\n\n$2") // var, const, etc. fix
       .replace(/([\(\[\{])\s+\//g, "$1\n\/") // comments
       .replace(/\{\s*\}/g, "{}") // fix {}
-      //.replace(/\.\s*([^\w\d\$_]+)/g, "$1") // fix .
+    //.replace(/\.\s*([^\w\d\$_]+)/g, "$1") // fix .
       .replace(/\!\s*([^\=a-z\$_\("'`])/gi, "!== $1"); // fix wordy
     //.replace(/([\S])(\{|\(|\[)(\s+)/g, "$1 $2\n$3")
     //.replace(/\s\s(\})(\w+)/g, "$1\n$2");
