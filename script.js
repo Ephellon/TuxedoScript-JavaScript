@@ -578,7 +578,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/@([\w\$_]+)/g, "@.$1")
     .replace(/([^~])@/g, "$1this")
     .replace(/case\s([\w\d\$_]+)\s*\=\s?/g, "this.$1 = ")
-    .replace(/([^\\\.])\.([\s\n;\}]+)/g, "$1;$2") // ;
+    .replace(/([^\\])\.([\s\n;\}]+)/g, "$1;$2") // ;
     .replace(/~([1-9])/g, "/dol/$1") // $1 fix
     .replace(/\/dol\//g, "$")
     .replace(/~/g, '') // remove ~, fix \char
@@ -601,7 +601,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/([;\}])\n(if|for|switch|function|Object)/g, "$1\n\n$2") // var, const, etc. fix
       .replace(/([\(\[\{])\s+\//g, "$1\n\/") // comments
       .replace(/\{\s*\}/g, "{}") // fix {}
-      .replace(/\.\s*([^\w\d\$_]+)/g, "$1") // fix .
+      //.replace(/\.\s*([^\w\d\$_]+)/g, "$1") // fix .
       .replace(/\!\s*([^\=a-z\$_\("'`])/gi, "!== $1"); // fix wordy
     //.replace(/([\S])(\{|\(|\[)(\s+)/g, "$1 $2\n$3")
     //.replace(/\s\s(\})(\w+)/g, "$1\n$2");
