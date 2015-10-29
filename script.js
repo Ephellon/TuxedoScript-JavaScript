@@ -1,4 +1,4 @@
-// TuxedoScript 7.6.5 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 7.7.0 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -451,15 +451,14 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __
       .replace(/var\s(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until)/g, "#0$1")
       .replace(/\\(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until)/g, "#00$1")
-      .replace(/\sdoesn't\s/g, " ! ")
-      .replace(/\sdoes\s/g, " !! ")
+      .replace(/\s(doesn't|doesnt|NOT)\s/g, "!")
+      .replace(/\s?(does|do)\s?\!\s/g, "!")
+      .replace(/\sdoes\s/g, "!!")
       .replace(/([^\w\d\$_])(on|yes|good)([^\w\d\$_])/g, "$1true$3")
       .replace(/([^\w\d\$_])(off|no|bad)([^\w\d\$_])/g, "$1false$3")
-      .replace(/\s(isnt|isn't)\s/g, " !== ")
-      .replace(/\!\s?(equals|equal|is)\s/g, " !== ")
-      .replace(/\s(equals|equal|is)\s/g, " === ")
-      .replace(/\s?(does|do)\sNOT\s/g, " ! ")
-      .replace(/(\W)NOT(\W)/g, "$1 ! $2")
+      .replace(/\s(isnt|isn't)\s/g, "!==")
+      .replace(/\!\s?(equals|equal|is)\s/g, "!==")
+      .replace(/\s(equals|equal|is)\s/g, "===")
       .replace(/(\W)AND(\W)/g, "$1 && $2")
       .replace(/(\!?)\sAND([\s\!])/g, "&& $2$1")
       .replace(/([\w\d\$_]+)\s+XOR\s+([\w\d\$_]+)/gi, "$1,,,,,$2")
