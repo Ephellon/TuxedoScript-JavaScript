@@ -157,8 +157,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/case\sver\:/g, "Version:")
   // JS and shorthands
   //.replace(/([\d\w\$_]+)#/g, "let $1") // !/deprecated/-JS
-    .replace(/([a-z\$_][\w\d\$_]*)#([a-z\$_][\w\d\$_]*)/g, "$1[$2]")
-    .replace(/([a-z\$_][\w\d\$_]*)#00/gi, "$1[$1.length-1]")
+    .replace(/([a-z\$_][\w\d\$_\.]*)#([a-z\$_][\w\d\$_]*)/g, "$1[$2]")
+    .replace(/([a-z\$_][\w\d\$_\.]*)#00/gi, "$1[$1.length-1]")
     .replace(/#([0-9]+)/g, "[$1]")
     .replace(/#([a-z\$_][\w\d\$_]*)/gi, "var $1") // #([a-z\$_][\w\d\$_]*)
     .replace(/\$of/g, 'typeof')
@@ -451,26 +451,27 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __
       .replace(/var\s(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until)/g, "#0$1")
       .replace(/\\(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until)/g, "#00$1")
-      .replace(/\sdoesn't\s/g, "!")
-      .replace(/\sdoes\s/g, "!!")
+      .replace(/\sdoesn't\s/g, " ! ")
+      .replace(/\sdoes\s/g, " !! ")
       .replace(/([^\w\d\$_])(on|yes|good)([^\w\d\$_])/g, "$1true$3")
       .replace(/([^\w\d\$_])(off|no|bad)([^\w\d\$_])/g, "$1false$3")
-      .replace(/\!\s?(equals|equal|is)\s/g, "!==")
-      .replace(/\s(equals|equal|is)\s/g, "===")
-      .replace(/\s?(does|do)\sNOT\s/g, "!")
-      .replace(/\s(NOT|isnt|isn't)\s/g, "!")
+      .replace(/\s(isnt|isn't)\s/g, " !== ")
+      .replace(/\!\s?(equals|equal|is)\s/g, " !== ")
+      .replace(/\s(equals|equal|is)\s/g, " === ")
+      .replace(/\s?(does|do)\sNOT\s/g, " ! ")
+      .replace(/(\W)NOT(\W)/g, "$1 ! $2")
       .replace(/(\W)AND(\W)/g, "$1 && $2")
       .replace(/(\!?)\sAND([\s\!])/g, "&& $2$1")
       .replace(/([\w\d\$_]+)\s+XOR\s+([\w\d\$_]+)/gi, "$1,,,,,$2")
       .replace(/(\W)OR(\W)/g, "$1 || $2")
-      .replace(/(\!?)\sOR([\s\!])/g, "|| $2$1")
-      .replace(/(var|const)\s([@%\w\d\$_\.]+)\s*([\*\/\+\-\%\&\|]?)\=\s*(.+)\s(if|when|where)\s([^;\n]+)([\.,;\n]\s)/g, "$1 $2;\nif($6){\n$2 $3= $4$7\n}")
-      .replace(/([@%\w\d\$_\.]+)\s*([\*\/\+\-\%\&\|]?)\=\s*(.+)\s(if|when|where)\s([^;\n]+)([\.,;\n]\s)/g, "if($5){\n$1 $2= $3$6\n}")
+      .replace(/(\!?)\sOR([\s\!]?)/g, " || $2$1")
+      .replace(/(var|const)\s([@%\w\d\$_\.]+)\s*([\*\/\+\-\%\&\|]?)\=\s*(.+)\s(if|when|where)\s([^;\n]+)([\.,;]\n)/g, "$1 $2;\nif($6){\n$2 $3= $4$7\n}")
+      .replace(/([@%\w\d\$_\.]+)\s*([\*\/\+\-\%\&\|]?)\=\s*(.+)\s(if|when|where)\s([^;\n]+)([\.,;]\n)/g, "if($5){\n$1 $2= $3$6\n}")
       .replace(/(.+)\s+(if|when|where)\s([^;\n]+)([\.,]\n)/g, "if($3){\n$1$4\n}")
-      .replace(/(var|const)\s([@%\w\d\$_\.]+)\s*([\*\/\+\-\%\&\|]?)\=\s*(.+)\s(unless)\s([^;\n]+)([\.,;\n]\s)/g, "$1 $2;\nif(!$6){\n$2 $3= $4$7\n}")
-      .replace(/([@%\w\d\$_\.]+)\s*([\*\/\+\-\%\&\|]?)\=\s*(.+)\s(unless)\s([^;\n]+)([\.,;\n]\s)/g, "if(!$5){\n$1 $2= $3$6\n}")
+      .replace(/(var|const)\s([@%\w\d\$_\.]+)\s*([\*\/\+\-\%\&\|]?)\=\s*(.+)\s(unless)\s([^;\n]+)([\.,;]\n)/g, "$1 $2;\nif(!$6){\n$2 $3= $4$7\n}")
+      .replace(/([@%\w\d\$_\.]+)\s*([\*\/\+\-\%\&\|]?)\=\s*(.+)\s(unless)\s([^;\n]+)([\.,;]\n)/g, "if(!$5){\n$1 $2= $3$6\n}")
       .replace(/(.+)\s+(unless)\s([^;\n]+)([\.,]\n)/g, "if(!$3){\n$1$4\n}")
-      .replace(/([\w\d\$_]+)\s*\:\s*(.+)\sif\s(.+),/g, "$1,,,, ($3),,,$2,,,,null,")
+      .replace(/([\w\d\$_]+)\s*\:\s*(.+)\sif\s(.+)(,?)/g, "$1,,,, ($3),,,$2,,,,null$4")
       .replace(/if\s([^\n]+)\sthen\s([^\n]+)\selse\s([^\n]+)/g, '($1),,,$2,,,,$3') // terenary operator
       .replace(/(:|\})else\s?(if|when|where)(.+)([\:\{])/g, "}else if ($3){")
       .replace(/if\s(.+)([\:\{])(\s+)/g, "if($1){$3")
@@ -478,16 +479,16 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\s?else\s/g, "}else{")
 
     // from-while, and from loops and logics
-      .replace(/([a-z\$_][\w\d\$_\.]*)\s*\=\s*(.+)\sin\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "$1 = $3[$2]$4")
-      .replace(/([a-z\$_][\w\d\$_\.]*)\s*\=\s*(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "$1 = $3.indexOf($2)$4")
-      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "for(var $2_index_counter = 0; $2_index_counter < $2.length; $2_index_counter++){\n  var $3 = $2[$2_index_counter],,\n  if($3){\n    $1$4\n  }\n}\n")
-      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([^;\n]+)([\.;\n]\s?)/g, "for(var $2_index_counter = 0; $2_index_counter < $2.length; $2_index_counter++){\n  var $3 = $2[$2_index_counter],,\n  if($3$4){\n    $1$5\n  }\n}\n")
-      .replace(/([a-z\$_][\w\d\$_\.]*)\(([a-z\$_][\w\d\$_\.]*)([^\)]*)\)\sfrom\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "for(var $4_index_counter = 0; $4_index_counter < $4.length; $4_index_counter++){\n  var $2 = $4[$4_index_counter],,\n  $1($2)$5\n}\n")
-      .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)\swhile\s(in|\.\.\.?)([\.;\n]\s?)/g, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2])$5\n}\n")
-      .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)\swhile\s\2\sin\s\3([\.;\n]\s?)/g, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2])$4\n}\n")
-      .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2])$4\n}\n")
-      .replace(/([a-z\$_].+)\swhile\s([^;\n]+)([\.;\n]\s?)/gi, "while($2){\n  $1$3\n}\n")
-      .replace(/([a-z\$_].+)\suntil\s([^;\n]+)([\.;\n]\s?)/gi, "while(!$2){\n  $1$3\n}\n")
+      .replace(/([a-z\$_][\w\d\$_\.]*)\s*\=\s*(.+)\sin\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "$1 = $3[$2].\n")
+      .replace(/([a-z\$_][\w\d\$_\.]*)\s*\=\s*(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "$1 = $3.indexOf($2).\n")
+      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "for(var $2_index_counter = 0; $2_index_counter < $2.length; $2_index_counter++){\n  var $3 = $2[$2_index_counter],,\n  if($3){\n    $1.\n  }\n}\n")
+      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([^;\n]+)([\.;\n]\s?)/g, "for(var $2_index_counter = 0; $2_index_counter < $2.length; $2_index_counter++){\n  var $3 = $2[$2_index_counter],,\n  if($3$4){\n    $1.\n  }\n}\n")
+      .replace(/([a-z\$_][\w\d\$_\.]*)\(([a-z\$_][\w\d\$_\.]*)([^\)]*)\)\sfrom\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "for(var $4_index_counter = 0; $4_index_counter < $4.length; $4_index_counter++){\n  var $2 = $4[$4_index_counter],,\n  $1($2).\n}\n")
+      .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)\swhile\s(in|\.\.\.?)([\.;\n]\s?)/g, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2]).\n}\n")
+      .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)\swhile\s\2\sin\s\3([\.;\n]\s?)/g, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2]).\n}\n")
+      .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2]).\n}\n")
+      .replace(/([a-z\$_].+)\swhile\s([^;\n]+)([\.;\n]\s?)/gi, "while($2){\n  $1.\n}\n")
+      .replace(/([a-z\$_].+)\suntil\s([^;\n]+)([\.;\n]\s?)/gi, "while(!$2){\n  $1.\n}\n")
 
       .replace(/\-for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=$3,,$1>$4,,$1-=$5){$7")
       .replace(/\-for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1>$3,,$1-=$4){$6")
@@ -535,6 +536,10 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     }
     __ = __.replace(/\/e\//, 'e' + zero);
   }
+
+  __ = __
+    .replace(/\.(\s*)([\)\]\}])/g, "$2.$1")
+    .replace(/\}\./g, ".\n}");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // rebuild;
 
@@ -543,7 +548,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __.replace(__sq__, sq_[y]);
     if("!" === _legacy) { // TS related, and interpolation
       __ = __
-        .replace(/\$\{([^'\}]+)\}/g, "' + ( $1 ) + '") // interpolation "${}"
+        .replace(/\$\{([^'\}]+)\}/g, "' + ( $1 ) +\n'") // interpolation "${}"
         .replace(/''\s\+\s|\s\+\s''/g, "");
     }
     y++;
@@ -552,7 +557,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __.replace(__dq__, dq_[x]);
     if("!" === _legacy) { // TS related, and interpolation
       __ = __
-        .replace(/\$\{([^"\}]+)\}/g, "\" + ( $1 ) + \"") // interpolation "${}"
+        .replace(/\$\{([^"\}]+)\}/g, "\" + ( $1 ) +\n\"") // interpolation "${}"
         .replace(/""\s\+\s|\s\+\s""/g, "");
     }
     x++;
@@ -565,7 +570,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     if("!" === _legacy) { // TS related, and interpolation
       __ = __
         .replace(/`/g, "'")
-        .replace(/\$\{([^'\}]+)\}/g, "' + ( $1 ) + '") // interpolation `${}`
+        .replace(/\$\{([^'\}]+)\}/g, "' + ( $1 ) +\n'") // interpolation `${}`
         .replace(/''\s\+\s|\s\+\s''/g, "");
     }
     z++;
@@ -593,7 +598,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __
       .replace(/\n{2,}/gm, "\n") // multiple \n
       .replace(/\n(a-z)/gi, "\n\n$1") // outside words, like function, if, etc.
-      .replace(/\s*\+\s*(["'`])/g, "\n+$1") // + "'`
+    //.replace(/\s*\+\s*(["'`])/g, "\n+$1") // + "'`
     //.replace(/(.+),\s*(.+)/g, "$1, $2") // commas
       .replace(/\}\s+(.+);/g, "}\n\n$1;") // anything following a }
       .replace(/([\)\]\};\+\-])\}/g, "$1\n}") // anything before a }
