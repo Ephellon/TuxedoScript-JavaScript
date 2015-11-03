@@ -1,4 +1,4 @@
-// TuxedoScript 7.8.5 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 7.8.8 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -416,6 +416,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
           return (Tuxedo.toString).toString().replace(/toString/g, (n || "?"));
         }
       };
+    };
+    PROMISSORYTUXEDO.toString = function() {
+      return (Tuxedo.toString).toString().replace(/toString/g, "#");
     };
     window.PROMISSORYTUXEDO = PROMISSORYTUXEDO;
   }
