@@ -33,6 +33,7 @@ Symbols: symbol - meaning/equivalent
 
     ##! - use strict mode
     \character - escape character, i.e. "\#x" will make "#x", not "var x" /not needed too often, but just in case/
+      $  - $ /notice the space, for use in string, e.g. "$ ${dollarAmount}" === "$" + dollarAmount/
     ## - comment/multi-line comment ender
     #* - multiline comment starter
     #*# - author comment (multi-line)
