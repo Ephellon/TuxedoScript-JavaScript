@@ -540,6 +540,27 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   __ = __
     .replace(/\.(\s*)([\)\]\}])/g, "$2.$1")
     .replace(/\}\./g, ".\n}");
+
+  if("!" === _htmleditor || _jseditor) {
+    __ = __
+      .replace(/\n{2,}/gm, "\n") // multiple \n
+      .replace(/\n(a-z)/gi, "\n\n$1") // outside words, like function, if, etc.
+    //.replace(/\s*\+\s*(["'`])/g, "\n+$1") // + "'`
+    //.replace(/(.+),\s*(.+)/g, "$1, $2") // commas
+      .replace(/\}\s+(.+);/g, "}\n\n$1;") // anything following a }
+      .replace(/([\)\]\};\+\-])\}/g, "$1\n}") // anything before a }
+      .replace(/([\w\)\]\}]+)\s*(\{)([^\n]+)/gi, "$1 $2\n$3") // before {
+      .replace(/(\})\s*([\w\(\[\{]+)/gi, "$1\n$2") // after }
+      .replace(/\}\nelse/g, "} else")
+      .replace(/([;\}])(\s|\n+)(var|const|console|if|for|switch|function|Object)/g, "$1\n$3") // var, const, etc.
+      .replace(/([;\}])\n(if|for|switch|function|Object)/g, "$1\n\n$2") // var, const, etc. fix
+      .replace(/([\(\[\{])\s+\//g, "$1\n\/") // comments
+      .replace(/\{\s*\}/g, "{}") // fix {}
+    //.replace(/\.\s*([^\w\d\$_]+)/gi, "$1") // fix .
+      .replace(/\!\s*([^\=a-z\$_\("'`])/gi, "!== $1"); // fix wordy
+    //.replace(/([\S])(\{|\(|\[)(\s+)/g, "$1 $2\n$3")
+    //.replace(/\s\s(\})(\w+)/gi, "$1\n$2");
+  }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // rebuild;
 
@@ -593,27 +614,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/\-tilde\-/g, '~'); // make ~
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // handle other features
-
-  if("!" === _htmleditor || _jseditor) {
-    __ = __
-      .replace(/\n{2,}/gm, "\n") // multiple \n
-      .replace(/\n(a-z)/gi, "\n\n$1") // outside words, like function, if, etc.
-    //.replace(/\s*\+\s*(["'`])/g, "\n+$1") // + "'`
-    //.replace(/(.+),\s*(.+)/g, "$1, $2") // commas
-      .replace(/\}\s+(.+);/g, "}\n\n$1;") // anything following a }
-      .replace(/([\)\]\};\+\-])\}/g, "$1\n}") // anything before a }
-      .replace(/([\w\)\]\}]+)\s*(\{)([^\n]+)/gi, "$1 $2\n$3") // before {
-      .replace(/(\})\s*([\w\(\[\{]+)/gi, "$1\n$2") // after }
-      .replace(/\}\nelse/g, "} else")
-      .replace(/([;\}])(\s|\n+)(var|const|console|if|for|switch|function|Object)/g, "$1\n$3") // var, const, etc.
-      .replace(/([;\}])\n(if|for|switch|function|Object)/g, "$1\n\n$2") // var, const, etc. fix
-      .replace(/([\(\[\{])\s+\//g, "$1\n\/") // comments
-      .replace(/\{\s*\}/g, "{}") // fix {}
-    //.replace(/\.\s*([^\w\d\$_]+)/gi, "$1") // fix .
-      .replace(/\!\s*([^\=a-z\$_\("'`])/gi, "!== $1"); // fix wordy
-    //.replace(/([\S])(\{|\(|\[)(\s+)/g, "$1 $2\n$3")
-    //.replace(/\s\s(\})(\w+)/gi, "$1\n$2");
-  }
 
   N = 0;
   for(;__.match(__nch__);) { // put no.t.ch back
