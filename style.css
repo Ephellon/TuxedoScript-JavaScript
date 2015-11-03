@@ -129,7 +129,7 @@ Symbols: symbol - meaning/equivalent
     `${x}` - ' + x + ' /interpolation/
     [x..y] - if x and y are digits, then .slice(x,y)
     [..y] - if y is a digit, then .slice(0, y)
-    [x..] - if x is a digit, then .slice(y)
+    [x..] - if x is a digit, then .slice(x)
     [.] - .slice(0)
     [*] - .split("")
     r - reserved words are quoted where needed
@@ -166,7 +166,7 @@ Symbols: symbol - meaning/equivalent
     switch x - switch(x)
     AND - &&
     OR - ||
-    x XOR y - (x || y) && !x
+    x XOR y - x ^ y
     NOT - !
     isnt - !
     isn't - !

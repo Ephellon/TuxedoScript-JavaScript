@@ -419,6 +419,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\\([^\n"'`~\!@#,\:;\\]+)?\\/g, " %sqrt($1)") // \x\
       .replace(/([\w\d\.\$_-]+)\s*(?:\^|\*\*)\s*([\w\d\.\$_-]+)/g, " %pow($1, $2)") // $1 ** $2 may not be supported
       .replace(/([\w\d\$\_]+)\s+_\s+([\w\d\$_]+)/g, " %floor($1 / $2)")
+      .replace(/(?:\W%?)log\s(.+)\s\((.+)\)/g, "%log($2) / %log($1)")
       .replace(/(\W)%([a-z\$_][\w\d\$_]+)/gi, "$1Math.$2") // strictly calls for at least at least 2 valid characters
       .replace(/\/or\//g, "||")
       .replace(/\/or\-equ\//g, "|=");
@@ -481,8 +482,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/([a-z\$_][\w\d\$_\.]*)\s*\=\s*(.+)\sin\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "$1 = $3[$2].\n")
       .replace(/([a-z\$_][\w\d\$_\.]*)\s*\=\s*(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "$1 = $3.indexOf($2).\n")
       .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "for(var $2_index_counter = 0; $2_index_counter < $2.length; $2_index_counter++){\n  var $3 = $2[$2_index_counter],,\n  if($3){\n    $1.\n  }\n}\n")
-      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([^;\n]+)([\.;\n]\s?)/g, "for(var $2_index_counter = 0; $2_index_counter < $2.length; $2_index_counter++){\n  var $3 = $2[$2_index_counter],,\n  if($3$4){\n    $1.\n  }\n}\n")
       .replace(/([a-z\$_][\w\d\$_\.]*)\(([a-z\$_][\w\d\$_\.]*)([^\)]*)\)\sfrom\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "for(var $4_index_counter = 0; $4_index_counter < $4.length; $4_index_counter++){\n  var $2 = $4[$4_index_counter],,\n  $1($2).\n}\n")
+      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([^;\n]+)([\.;\n]\s?)/g, "for(var $2_index_counter = 0; $2_index_counter < $2.length; $2_index_counter++){\n  var $3 = $2[$2_index_counter],,\n  if($3$4){\n    $1.\n  }\n}\n")
       .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)\swhile\s(in|\.\.\.?)([\.;\n]\s?)/g, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2]).\n}\n")
       .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)\swhile\s\2\sin\s\3([\.;\n]\s?)/g, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2]).\n}\n")
       .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/g, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2]).\n}\n")
