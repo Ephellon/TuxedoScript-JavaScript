@@ -1,4 +1,4 @@
-// TuxedoScript 7.7.9 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 7.8.5 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -143,7 +143,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/\?#([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1+=$4){$6")
     .replace(/\?#([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1++){$5")
     .replace(/\?#([a-z\$_][\w\d\$_]*)\s*\:\s*([a-z\$_][\w\d\$_]*)([\:\{])(\s+)/gi, "for($1 in $2){$4")
-    .replace(/\?#([a-z\$_][\w\d\$_]*)\s*\:\s*([a-z\$_][\w\d\$_]*)\s*\?\s*(.+)(\s*)/gi, "for(var $1=0,,$1<$2.length,,$1++){$4$3$4}")
+    .replace(/\?#([a-z\$_][\w\d\$_]*)\s*\:\s*([a-z\$_][\w\d\$_]*)\s*\?\s*(.+)(\s*)/gi, "for(var $1=0,,$1<$2.length,,$1++){$4  $3$4}")
     .replace(/\?\:/g, "do{")
     .replace(/\?(.+);/g, "while($1),,")
     .replace(/\?\((.+)\)/g, "switch($1){")
@@ -366,50 +366,56 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     }
 
     // Prom
-    function PROMISSORYTUXEDO() {
-      function PROMISSORYTUXEDO(n, p, s, l) {
-        this.advance = _advance === "!";
-        this.clean = _clean === "!";
-        this.eval = _eval === "!";
-        this.hide = _hide === "!";
-        this.html_editor = _htmleditor === "!";
-        this.js_editor = _jseditor === "!";
-        this.legacy = _legacy === "!";
-        this.math = _math === "!";
-        this.ugly = _ugly === "!";
-        this.wordy = _wordy === "!";
-
-        this.name = n;
-        // "strict" below
-        if(!p || !s || !l) {
-          return console.error("O_O bad lease for " + n + ", missing some arguments");
-        }
-        if(typeof p !== typeof Tuxedo) {
-          return console.error("O_O bad promise, it should be a function");
-        }
-        if(typeof s !== typeof "") {
-          return console.error("O_O bad signature, did you mean " + ("" + s));
-        }
-        if(typeof l !== typeof -1) {
-          return console.error("O_O bad lifetime, did you mean " + (+l));
-        }
-        this.signature = s;
-        this.promise = p.toString();
-        this.contract = p;
-        this.lifetime = l;
-        setTimeout(function(){
-          console.warn("O_O the lease for " + n + " is at its half-life");
-        }, l/2);
-        setTimeout(function(){
-          window[n] = null;
-          console.error("O_O the lease ended for " + n);
-        }, l);
-        console.log("O_O the lease for " + n + " is active");
+    function PROMISSORYTUXEDO(n, p, s, l) {
+      window._TUXEDO_ = [n, p, s, l];
+      if(typeof p === "undefined" || typeof p === null || typeof s === "undefined" || typeof s === null || typeof l === "undefined" || typeof l === null) {
+        return console.error("O_O bad lease for " + n + ", missing some arguments");
       }
-
-      PROMISSORYTUXEDO.prototype.toString = function() {
-        return (Tuxedo.toString).toString().replace(/toString/g, (this.name || "PROMISSORYTUXEDO"));
+      if(typeof p !== typeof window.toString) {
+        return console.error("O_O bad promise, it should be a function");
       }
+      if(typeof s !== typeof "") {
+        return console.error("O_O bad signature, did you mean " + ("" + s));
+      }
+      if(typeof l !== typeof -1) {
+        return console.error("O_O bad lifetime, did you mean " + (+l));
+      }
+      return {
+        advance: _advance === "!",
+        clean: _clean === "!",
+        eval: _eval === "!",
+        hide: _hide === "!",
+        html_editor: _htmleditor === "!",
+        js_editor: _jseditor === "!",
+        legacy: _legacy === "!",
+        math: _math === "!",
+        ugly: _ugly === "!",
+        wordy: _wordy === "!",
+        execution: function() {          
+          n = window._TUXEDO_[0];
+          p = window._TUXEDO_[1];
+          s = window._TUXEDO_[2];
+          l = window._TUXEDO_[3];
+
+          this.name = n;
+          // "strict" below
+          this.signature = s;
+          this.promise = p.toString();
+          this.contract = p;
+          this.lifetime = l;
+          setTimeout(function(){
+            console.warn("O_O the lease for " + n + " is at its half-life");
+          }, l/2);
+          setTimeout(function(){
+            window[n] = null;
+            console.error("O_O the lease ended for " + n);
+          }, l);
+          console.log("O_O the lease for " + n + " is active");
+        },
+        toString:function() {
+          return (Tuxedo.toString).toString().replace(/toString/g, (this.name || ""));
+        }
+      };
     };
     window.PROMISSORYTUXEDO = PROMISSORYTUXEDO;
   }
@@ -504,7 +510,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1+=$4){$6")
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1++){$5")
       .replace(/for\s+([a-z\$_][\w\d\$_]*)\sin\s([a-z\$_][\w\d\$_]*)([\:\{])(\s+)/gi, "for($1 in $2){$4")
-      .replace(/for\s+([a-z\$_][\w\d\$_]*)\sin\s([a-z\$_][\w\d\$_]*)\sdo\s(.+)(\s*)/gi, "for(var $1=0,,$1<$2.length,,$1++){$4$3$4}")
+      .replace(/for\s+([a-z\$_][\w\d\$_]*)\sin\s([a-z\$_][\w\d\$_]*)\sdo\s(.+)(\s*)/gi, "for(var $1=0,,$1<$2.length,,$1++){$4  $3$4}")
       .replace(/\sdo\s*\n/g, "do{")
     //.replace(/while\s*(?=[^\(])(.+)([\)]$)/g, "while($1),,")
     //.replace(/until\s*(?=[^\(])(.+)([\)]$)/g, "while(!$1),,")
@@ -772,7 +778,7 @@ tux = tuxedo = nm || { // nm
   }
 };
 
-document.onreadystatechange = function(){ // Tuxedo() when the page is ready
+document.onreadystatechange = function() { // Tuxedo() when the page is ready
   if(document.readyState === "complete") {
     TUX = Tuxedo();
   }
