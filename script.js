@@ -391,7 +391,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
         math: _math === "!",
         ugly: _ugly === "!",
         wordy: _wordy === "!",
-        execution: function() {          
+        execution: function() {        
           n = window._TUXEDO_[0];
           p = window._TUXEDO_[1];
           s = window._TUXEDO_[2];
@@ -412,8 +412,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
           }, l);
           console.log("O_O the lease for " + n + " is active");
         },
-        toString:function() {
-          return (Tuxedo.toString).toString().replace(/toString/g, (this.name || ""));
+        toString: function() {
+          return (Tuxedo.toString).toString().replace(/toString/g, (n || "?"));
         }
       };
     };
