@@ -473,10 +473,10 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/(.+)\s+(unless)\s([^;\n]+)([\.,]\n)/g, "if(!$3){\n$1$4\n}")
       .replace(/([\w\d\$_]+)\s*\:\s*(.+)\sif\s(.+)(,?)/gi, "$1,,,, ($3),,,$2,,,,null$4")
       .replace(/if\s([^\n]+)\sthen\s([^\n]+)\selse\s([^\n]+)/g, '($1),,,$2,,,,$3') // terenary operator
-      .replace(/(:|\})else\s?(if|when|where)(.+)([\:\{])/g, "}else if ($3){")
+      .replace(/(:|\})\s*else\s*(if|when|where)(.+)([\:\{])/g, "}else if ($3){")
       .replace(/if\s(.+)([\:\{])(\s+)/g, "if($1){$3")
-      .replace(/[\.;\}]\s+else\s/g, "}else{")
-      .replace(/\s?else\s/g, "}else{")
+      .replace(/([\.;\}]\s+)else(\s+[^\{])/g, "}else{")
+      .replace(/([^\}]\s+)else(\s+[^\{])/g, "}else{")
 
     // from-while, and from loops and logics
       .replace(/([a-z\$_][\w\d\$_\.]*)\s*\=\s*(.+)\sin\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/gi, "$1 = $3[$2].\n")
