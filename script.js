@@ -1,4 +1,4 @@
-// TuxedoScript 7.7.7 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 7.7.9 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -128,10 +128,10 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/([a-z\$_][\w\d\$_]*)(?:[\-]{2})([a-z\$_][\w\d\$_]*)/gi, "$1_$2") // automatic _
   // loops and statements
     .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\!\s?(\?\?)/gi, "($of ($1 $2 $3) !== 'undefined' && ($1 $2 $3) !== null)")
-    .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\s?(\?\?)/gi, "($of ($1 $2 $3) === 'undefined' && ($1 $2 $3) !== null)")
-    .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s(\?\?)/gi, "($of ($1 $2 $3) !== 'undefined' && ($1 $2 $3) !== null)")
-    .replace(/([\w\d\$_\.]+)\s\!\s?(\?\?)/gi, "(typeof $1 === 'undefined' && $1 !== null)")
-    .replace(/([\w\d\$_\.]+)\s(\?\?)/gi, "(typeof $1 !== 'undefined' && $1 !== null)")
+    .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s*\!\s*(\?\?)/gi, "($of ($1 $2 $3) === 'undefined' && ($1 $2 $3) !== null)")
+    .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s*(\?\?)/gi, "($of ($1 $2 $3) !== 'undefined' && ($1 $2 $3) !== null)")
+    .replace(/([\w\d\$_\.]+)\s*\!\s*(\?\?)/gi, "(typeof $1 === 'undefined' && $1 !== null)")
+    .replace(/([\w\d\$_\.]+)\s*(\?\?)/gi, "(typeof $1 !== 'undefined' && $1 !== null)")
     .replace(/\((.+)\)\?(.+)\:/g, '($1),,,$2,,,,') // terenary operator
     .replace(/(\:|\})\?(.+)([\:\{])/g, "}else if ($2){")
     .replace(/\?([^#])(.+)([\:\{])(\s+)/g, "if($1$2){$4")
@@ -142,7 +142,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/\?#([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=$3,,$1<$4,,$1+=$5){$7")
     .replace(/\?#([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1+=$4){$6")
     .replace(/\?#([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1++){$5")
-    .replace(/\?#\s*([a-z\$_][\w\d\$_]*)\sin\s([a-z\$_][\w\d\$_]*)([\:\{])(\s+)/gi, "for($1 in $2){$4")
+    .replace(/\?#([a-z\$_][\w\d\$_]*)\s*\:\s*([a-z\$_][\w\d\$_]*)([\:\{])(\s+)/gi, "for($1 in $2){$4")
+    .replace(/\?#([a-z\$_][\w\d\$_]*)\s*\:\s*([a-z\$_][\w\d\$_]*)\s*\?\s*(.+)(\s*)/gi, "for(var $1=0,,$1<$2.length,,$1++){$4$3$4}")
     .replace(/\?\:/g, "do{")
     .replace(/\?(.+);/g, "while($1),,")
     .replace(/\?\((.+)\)/g, "switch($1){")
@@ -503,6 +504,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1+=$4){$6")
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1++){$5")
       .replace(/for\s+([a-z\$_][\w\d\$_]*)\sin\s([a-z\$_][\w\d\$_]*)([\:\{])(\s+)/gi, "for($1 in $2){$4")
+      .replace(/for\s+([a-z\$_][\w\d\$_]*)\sin\s([a-z\$_][\w\d\$_]*)\sdo\s(.+)(\s*)/gi, "for(var $1=0,,$1<$2.length,,$1++){$4$3$4}")
       .replace(/\sdo\s*\n/g, "do{")
     //.replace(/while\s*(?=[^\(])(.+)([\)]$)/g, "while($1),,")
     //.replace(/until\s*(?=[^\(])(.+)([\)]$)/g, "while(!$1),,")

@@ -46,6 +46,7 @@ Symbols: symbol - meaning/equivalent
     x..y = - x_y // automatic underscores !/deprecated/
     x--y - x_y // automatic underscores
     x.y..z - x.y_z // automatic underscores !/deprecated/
+    x?? - typeof x !== undefined && x !== null
     ?x: - if(x)
       ?x{ - if(x)
     :: - else
@@ -66,6 +67,8 @@ Symbols: symbol - meaning/equivalent
       -?#x,stop,increment { - for(var x = 0, stop, increment)
     -?#x,stop: - for(var x = 0, stop, auto increment to 0)
       -?#x,stop { - for(var x = 0, stop, auto increment to 0)
+    ?#x:y - for(x in y)
+    ?#x:y?z(m[x]) - for(x = 0 ... y.length) z(m[x])
     ?(x) - switch
     @x: - case x
     ?: - do
@@ -133,7 +136,7 @@ Symbols: symbol - meaning/equivalent
     [x..] - if x is a digit, then .slice(x)
     [.] - .slice(0)
     [*] - .split("")
-    r - reserved words are quoted where needed
+    resv - reserved words are quoted where needed
 
 ** with wordy enabled **
     on - true
@@ -162,6 +165,7 @@ Symbols: symbol - meaning/equivalent
       -for x,stop,increment{ - for(var x = 0, stop, increment)
     -for x,stop: - for(var x = 0, stop, auto increment to 0)
       -for x,stop{ - for(var x = 0, stop, auto increment to 0)
+    for x in y - for(x in y)
     while boolean; - while(boolean)
     until boolean; - while(!boolean)
     switch x - switch(x)
@@ -182,6 +186,7 @@ Symbols: symbol - meaning/equivalent
     x in a - a[x]
     x(y) from a - for(i = 0 ... a.length) x(y)
     x(y) from a if b - for(i = 0 ... a.length) if(b) x(y)
+    for x in y do z(m[x]) - for(x = 0 ... y.length) z(m[x])
 
 --------
 Variables: var - meaning/equivalent
