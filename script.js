@@ -583,6 +583,17 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   // rebuild;
 
   x = y = z = a = 0;
+  for(;__.match(__ga__);) { // put grave accents back
+    __ = __.replace(__ga__, ga_[z]);
+    if("!" === _legacy) { // TS related, and interpolation
+      __ = __
+        .replace(/'/g, "\\'")
+        .replace(/`/g, "'")
+        .replace(/\$\{([^'\}]+)\}/g, "' + ( $1 ) +\n'") // interpolation `${}`
+        .replace(/''\s\+\s|\s\+\s''/g, "");
+    }
+    z++;
+  }
   for(;__.match(__sq__);) { // put single quotes back
     __ = __.replace(__sq__, sq_[y]);
     if("!" === _legacy) { // TS related, and interpolation
@@ -603,17 +614,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   }
 
   __ = __.replace(/`/g, "\\'"); // replace embeded graves
-
-  for(;__.match(__ga__);) { // put grave accents back
-    __ = __.replace(__ga__, ga_[z]);
-    if("!" === _legacy) { // TS related, and interpolation
-      __ = __
-        .replace(/`/g, "'")
-        .replace(/\$\{([^'\}]+)\}/g, "' + ( $1 ) +\n'") // interpolation `${}`
-        .replace(/''\s\+\s|\s\+\s''/g, "");
-    }
-    z++;
-  }
   for(;__.match(__rx__);) { // put regular expressions back
     __ = __.replace(__rx__, rx_[a]);
     a++;
