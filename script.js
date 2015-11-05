@@ -525,7 +525,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=$3,,$1<$4,,$1+=$5){$7")
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1+=$4){$6")
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1++){$5")
-      .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+in\s+([a-z\$_][\w\d\$_]*)([\:\{])(\s+)/gi, "for($1 in $2){$4")
+      .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+in\s+([a-z\$_][\w\d\$_]*)\s*([\:\{])(\s+)/gi, "for($1 in $2){$4")
       .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+in\s+([a-z\$_][\w\d\$_]*)\s+do\s+(.+)(\s*)/gi, "for(var $1=0,,$1<$2.length,,$1++){$4  $3$4}")
       .replace(/\sdo\s*\n/g, "do{")
     //.replace(/while\s*(?=[^\(])(.+)([\)]$)/g, "while($1),,")
