@@ -10,9 +10,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   __sq__ = /('[^\n]+')/; // single quotes
   __ga__ = /(`[^\n]+`)/; // grave accents
   __rx__ = /(\/[^\n]+\/[gmi,\.;\n])/; // regular expressions ** problem when using quotes and $1 within them **
-  __nch__ = /<\$n>\/([\w\W]+)<\/\$n>/; // no.t.ch
-  __sch__ = /<\$s>\-([\w\W]+)<\/\$s>/; // so.t.ch
-  __tch__ = /<\$t>\\([\w\W]+)<\/\$t>/; // to.t.ch [no reason so far, proposed]
+  __nch__ = /<\$n>([\w\W]+)<\/\$n>/; // no.t.ch
+  __sch__ = /<\$s>([\w\W]+)<\/\$s>/; // so.t.ch
+  __tch__ = /<\$t>([\w\W]+)<\/\$t>/; // to.t.ch [no reason so far, proposed]
   // __cms__ = /(\/\/.+\n)|(##.+\n)/; // single-line comments, only replace them so parsing wont generate errors
   // __cmm__ = /(\/\*[\w\W]+\*\/)|(#\*[\w\W]+\##)/; // multi-line comments
 
