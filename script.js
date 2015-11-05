@@ -1,4 +1,4 @@
-// TuxedoScript 7.9.5 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 8.0.1 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -507,6 +507,11 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/gi, "for(var $2_index_counter = 0; $2_index_counter < $2.length; $2_index_counter++){\n  var $3 = $2[$2_index_counter],,\n  if($3){\n    $1.\n  }\n}\n")
       .replace(/([a-z\$_][\w\d\$_\.]*)\(([a-z\$_][\w\d\$_\.]*)([^\)]*)\s?\)\sfrom\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/gi, "for(var $4_index_counter = 0; $4_index_counter < $4.length; $4_index_counter++){\n  var $2 = $4[$4_index_counter],,\n  $1($2).\n}\n")
       .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([^;\n]+)([\.;\n]\s?)/gi, "for(var $2_index_counter = 0; $2_index_counter < $2.length; $2_index_counter++){\n  var $3 = $2[$2_index_counter],,\n  if($3$4){\n    $1.\n  }\n}\n")
+
+      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s\[(.+)\]([\.;\n]\s?)/gi, "var <?> = [$2];\nfor(var <?>_index_counter = 0; <?>_index_counter < <?>.length; <?>_index_counter++){\n  var $3 = <?>[<?>_index_counter],,\n  if($3){\n    $1.\n  }\n}\n")
+      .replace(/([a-z\$_][\w\d\$_\.]*)\(([a-z\$_][\w\d\$_\.]*)([^\)]*)\s?\)\sfrom\s\[(.+)\]([\.;\n]\s?)/gi, "var <?> = [$4];\nfor(var <?>_index_counter = 0; <?>_index_counter < <?>.length; <?>_index_counter++){\n  var $2 = <?>[<?>_index_counter],,\n  $1($2).\n}\n")
+      .replace(/(.+)\sfrom\s\[(.+)\]\swhile\s([a-z\$_][\w\d\$_\.]*)([^;\n]+)([\.;\n]\s?)/gi, "var <?> = [$2];\nfor(var <?>_index_counter = 0; <?>_index_counter < <?>.length; <?>_index_counter++){\n  var $3 = <?>[<?>_index_counter],,\n  if($3$4){\n    $1.\n  }\n}\n")
+
       .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)\swhile\s(in|\.\.\.?)([\.;\n]\s?)/gi, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2]).\n}\n")
       .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)\swhile\s\2\sin\s\3([\.;\n]\s?)/gi, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2]).\n}\n")
       .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/gi, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2]).\n}\n")
@@ -539,7 +544,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/,,,/g, "?")
       .replace(/,,/g, ";")
       .replace(/#00/g, "")
-      .replace(/#0/g, "var ");
+      .replace(/#0/g, "var ")
+      .replace(/<\?>/g, "ANON");
   }
 
   if ("!" === _ugly) {
