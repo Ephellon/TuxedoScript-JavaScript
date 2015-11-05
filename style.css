@@ -238,41 +238,8 @@ Experimental Features: experiment - meaning
     sotch - the so.t.ch (Some Tuxedo Channel, or Shortcut Table Channel)
       disable some Tuxedo execution within <$s> ... </$s> [go straight to shortcuts]
     totch - the to.t.ch (Total Tuxedo Channel)
-      enable all Tuxedo execution within <$t>... </$t> [or simply disable notch and sotch]
+      enable all Tuxedo execution within <$t> ... </$t> [or simply disable notch and sotch]
 
-    prom tux - make a "leased" Tuxedo element
-    #t = prom tux.
-    // produces:
-var t = Object._tuxedo_ = function(p, s, l) {
-  "use strict";
-  var _name = "t"; // provided by Tuxedo()
-  if(!p || !s || !l) {
-    Object._tuxedo_ = null;
-    console.log("TxSc - Improperly leased variable: " + _name);
-    return null;
-  }
-  if(typeof p !== typeof Tuxedo) {
-    console.log("TxSc - Improper promise");
-    return null;
-  }
-  if(typeof s !== typeof "") {
-    console.log("TxSc - Improper signature");
-    return null;
-  }
-  if(typeof l !== typeof -1) {
-    console.log("TxSc - Improper lifetime");
-    return null;
-  }
-  setTimeout(function(){
-    Object._tuxedo_ = null;
-    console.log("TxSc - Lease ended: " + _name);
-    return null;
-  }, l);
-  return {
-    signature: s,
-    promise: p.toString(),
-    contract: p,
-    lifetime: l
-  };
-};
+    prom - make a "leased" Tuxedo element
+    #prom tux = (alert, "Tuxedo", 5000).
 ********/
