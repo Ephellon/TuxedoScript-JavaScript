@@ -1,6 +1,6 @@
 /********
   Tuxedo Script Help:
-    * general rules/notes: the Tuxedo escape characters aren't needed in them, i.e. \#
+    * general rules/notes: the Tuxedo escape characters are not needed in them, i.e. \#
     - all loops/function need a matching semi-colon
     - place comments on the NEXT line, or the code may become useless
     - when changing a loop with eval enabled, delete the entire loop first, put an error before hand
@@ -89,7 +89,7 @@ Symbols: symbol - meaning/equivalent
     <- x - return x
 
 ** with math enabled **
-    %method - Math.method /notice there isn't a space/
+    %method - Math.method /notice there is not a space/
     xy - if x is a digit, then it changes to x * y
     x^y - Math.pow(x, y)
       x**y - Math.pow(x, y)
@@ -174,10 +174,10 @@ Symbols: symbol - meaning/equivalent
     x XOR y - x ^ y
     NOT - !
     isnt - !
-    isn't - !
+    is not - !
     does - !!
     does NOT - !
-    doesn't - !
+    does not - !
     is - ===
     equals - ===
     x exists - typeof x !== undefined && x !== null

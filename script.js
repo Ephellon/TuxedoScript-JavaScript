@@ -1,4 +1,4 @@
-// TuxedoScript 7.8.8 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 7.9.5 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -291,6 +291,12 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
         __ = __.replace(/\/splat\//g, "");
       }
 
+      var rq = /\(\s*([a-z\$_][\w\d\$_]*)\.\.\.\s*\)\s*\{/i; // only splats
+      __.replace(rq, "$1");
+      __ = __
+        .replace(rq, "( ){\n/splat/")
+        .replace(/\/splat\//, "var " + RegExp.$1 + " = arguments;");
+
       var rq = /\(\s*([a-z\$_][\w\d\$_]*)\.\.\.,\s*([a-z\$_][\w\d\$_,\s]*)\s?\)\s*\{/i; // beginning splats
       for(;rq.test(__);) { // splats
         __.replace(rq, '$1,$2');
@@ -360,9 +366,10 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       }
 
       __ = __
-        .replace(/([a-z\$_][\w\d\$_]*)\s*\(\s*([a-z\$_][\w\d\$_]*)\.\.\.\s*\)/gi, "$1.apply(null, $2)")
-        .replace(/([a-z\$_][\w\d\$_]*)\s*\((.+),\s*([a-z\$_][\w\d\$_]*)\.\.\.\s*\)/gi, "$1.apply(null, [$2].concat([].slice.call($3)))")
-        .replace(/([a-z\$_][\w\d\$_]*)\s*\(([a-z\$_][\w\d\$_]*)\.\.\.,\s*(.+)\s*\)/gi, "$1.apply(null, [].slice.call($3).concat([$2]))");
+        .replace(/([a-z\$_][\w\d\$_]*)\s*\(\s*([a-z\$_][\w\d\$_]*)\.\.\.\s*\)/gi, "$1.apply($2)")
+        .replace(/([a-z\$_][\w\d\$_]*)\s*\((.+),\s*([a-z\$_][\w\d\$_]*)\.\.\.\s*\)/gi, "$1.apply([$2].concat([].slice.call($3)))")
+        .replace(/([a-z\$_][\w\d\$_]*)\s*\(([a-z\$_][\w\d\$_]*)\.\.\.,\s*(.+)\s*\)/gi, "$1.apply([].slice.call($3).concat([$2]))")
+        .replace(/([a-z\$_][\w\d\$_]*)\s*\(\s*(.+),\s*([a-z\$_][\w\d\$_,\s]*)\.\.\.,\s*(.+)\s*\)/gi, "$1.apply([$2].concat([].slice.call($3)), [$4])");
     }
 
     // Prom
@@ -468,12 +475,12 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __
       .replace(/var\s(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until)/g, "#0$1")
       .replace(/\\(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until)/g, "#00$1")
-      .replace(/\s(doesn't|doesnt|NOT)\s/g, "!")
+      .replace(/\s(does\snot|doesnt|NOT)\s/g, "!")
       .replace(/\s?(does|do)\s?\!\s/g, "!")
       .replace(/\sdoes\s/g, "!!")
       .replace(/([^\w\d\$_])(on|yes|good)([^\w\d\$_])/gi, "$1true$3")
       .replace(/([^\w\d\$_])(off|no|bad)([^\w\d\$_])/gi, "$1false$3")
-      .replace(/\s(isnt|isn't)\s/g, "!==")
+      .replace(/\s(isnt|is\snot)\s/g, "!==")
       .replace(/\!\s?(equals|equal|is)\s/g, "!==")
       .replace(/\s(equals|equal|is)\s/g, "===")
       .replace(/(\W)AND(\W)/g, "$1 && $2")
