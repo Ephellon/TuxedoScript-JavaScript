@@ -88,6 +88,12 @@ Symbols: symbol - meaning/equivalent
     ` - embeded \' if within quotes, else `
     <- x - return x
 
+** Hangars (shortcuts to Tuxedo code) **
+    <!> - index_counter
+    <@> - arguments
+    <#> - undefined
+    <?> - ANON
+
 ** with math enabled **
     %method - Math.method /notice there is not a space/
     xy - if x is a digit, then it changes to x * y
@@ -228,11 +234,11 @@ Author Comments: tag - meaning
 Experimental Features: experiment - meaning
 
     notch - the no.t.ch (No Tuxedo Channel)
-      disable ALL Tuxedo execution within ##/ ... /##
+      disable ALL Tuxedo execution within <$n> ... </$n>
     sotch - the so.t.ch (Some Tuxedo Channel, or Shortcut Table Channel)
-      disable some Tuxedo execution within ##- ... -## [go straight to shortcuts]
+      disable some Tuxedo execution within <$s> ... </$s> [go straight to shortcuts]
     totch - the to.t.ch (Total Tuxedo Channel)
-      enable all Tuxedo execution within ##\ ... \## [or simply disable notch and sotch]
+      enable all Tuxedo execution within <$t>... </$t> [or simply disable notch and sotch]
 
     prom tux - make a "leased" Tuxedo element
     #t = prom tux.

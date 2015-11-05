@@ -1,4 +1,4 @@
-// TuxedoScript 8.0.1 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 8.0.4 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -10,9 +10,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   __sq__ = /('[^\n]+')/; // single quotes
   __ga__ = /(`[^\n]+`)/; // grave accents
   __rx__ = /(\/[^\n]+\/[gmi,\.;\n])/; // regular expressions ** problem when using quotes and $1 within them **
-  __nch__ = /##\/([\w\W]+)\/##/; // no.t.ch
-  __sch__ = /##\-([\w\W]+)\-##/; // so.t.ch
-  __tch__ = /##\\([\w\W]+)\\##/; // to.t.ch [no reason so far, proposed]
+  __nch__ = /<\$n>\/([\w\W]+)<\/\$n>/; // no.t.ch
+  __sch__ = /<\$s>\-([\w\W]+)<\/\$s>/; // so.t.ch
+  __tch__ = /<\$t>\\([\w\W]+)<\/\$t>/; // to.t.ch [no reason so far, proposed]
   // __cms__ = /(\/\/.+\n)|(##.+\n)/; // single-line comments, only replace them so parsing wont generate errors
   // __cmm__ = /(\/\*[\w\W]+\*\/)|(#\*[\w\W]+\##)/; // multi-line comments
 
@@ -286,7 +286,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
         var k = RegExp.$1.split(',');
         __ = __.replace(rq, "( ){\n/splat/");
         for(var e = 0; e < k.length; e++) {
-          __ = __.replace(/\/splat\//, "var " + k[e] + " = arguments[arguments.length-" + (e+1) + "];\n/splat/");
+          __ = __.replace(/\/splat\//, "var " + k[e] + " = <@>[<@>.length-" + (e+1) + "];\n/splat/");
         }
         __ = __.replace(/\/splat\//g, "");
       }
@@ -295,7 +295,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       __.replace(rq, "$1");
       __ = __
         .replace(rq, "( ){\n/splat/")
-        .replace(/\/splat\//, "var " + RegExp.$1 + " = arguments;");
+        .replace(/\/splat\//, "var " + RegExp.$1 + " = <@>;");
 
       var rq = /\(\s*([a-z\$_][\w\d\$_]*)\.\.\.,\s*([a-z\$_][\w\d\$_,\s]*)\s?\)\s*\{/i; // beginning splats
       for(;rq.test(__);) { // splats
@@ -303,9 +303,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
         var k = RegExp.$1;
         var K = RegExp.$2.split(',');
         __ = __.replace(rq, "( ){\n/splat/");
-        __ = __.replace(/\/splat\//, "var " + k + " = (" + (K.length) + " <= arguments.length)?[].slice.call(arguments, 0, arguments.length-" + (K.length) + "):[];\n/splat/");
+        __ = __.replace(/\/splat\//, "var " + k + " = (" + (K.length) + " <= <@>.length)?[].slice.call(<@>, 0, <@>.length-" + (K.length) + "):[];\n/splat/");
         for(var e = K.length; e > 0; e--) {
-          __ = __.replace(/\/splat\//, "var " + K[e-1] + " = arguments[arguments.length-" + ((K.length-e)+1) + "];\n/splat/");
+          __ = __.replace(/\/splat\//, "var " + K[e-1] + " = <@>[<@>.length-" + ((K.length-e)+1) + "];\n/splat/");
         }
         __ = __.replace(/\/splat\//g, "");
       }
@@ -316,7 +316,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
         var k = RegExp.$1.split(',');
         __ = __.replace(rq, "( ){\n/splat/");
         for(var e = 0; e < k.length; e++) {
-          __ = __.replace(/\/splat\//, "var " + k[e] + " = arguments[" + e + "];\n/splat/");
+          __ = __.replace(/\/splat\//, "var " + k[e] + " = <@>[" + e + "];\n/splat/");
         }
         __ = __.replace(/\/splat\//g, "");
       }
@@ -328,9 +328,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
         var K = RegExp.$2;
         __ = __.replace(rq, "( ){\n/splat/");
         for(var e = 0; e < k.length; e++) {
-          __ = __.replace(/\/splat\//, "var " + k[e] + " = arguments[" + e + "];\n/splat/");
+          __ = __.replace(/\/splat\//, "var " + k[e] + " = <@>[" + e + "];\n/splat/");
         }
-        __ = __.replace(/\/splat\//, "var " + K + " = (" + (k.length+1) + " <= arguments.length)?[].slice.call(arguments, " + (k.length) + "):[];");
+        __ = __.replace(/\/splat\//, "var " + K + " = (" + (k.length+1) + " <= <@>.length)?[].slice.call(<@>, " + (k.length) + "):[];");
       }
 
       var rq = /\(\s*(.+),\s*\.\.\.,\s*(.+)\s*\)\s*\{/i; // empty middle splats
@@ -340,10 +340,10 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
         var k = RegExp.$2.split(',');
         __ = __.replace(rq, "( ){\n/splat/");
         for(var e = 0; e < K.length; e++) {
-          __ = __.replace(/\/splat\//, "var " + K[e] + " = arguments[" + e + "];\n/splat/");
+          __ = __.replace(/\/splat\//, "var " + K[e] + " = <@>[" + e + "];\n/splat/");
         }
         for(var e = k.length; e > 0; e--) {
-          __ = __.replace(/\/splat\//, "var " + k[e-1] + " = arguments[arguments.length-" + e + "];\n/splat/");
+          __ = __.replace(/\/splat\//, "var " + k[e-1] + " = <@>[<@>.length-" + e + "];\n/splat/");
         }
         __ = __.replace(/\/splat\//g, "");
       }
@@ -356,11 +356,11 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
         var k = RegExp.$3.split(',');
         __ = __.replace(rq, "( ){\n/splat/");
         for(var e = 0; e < K.length; e++) {
-          __ = __.replace(/\/splat\//, "var " + K[e] + " = arguments[" + e + "];\n/splat/");
+          __ = __.replace(/\/splat\//, "var " + K[e] + " = <@>[" + e + "];\n/splat/");
         }
-        __ = __.replace(/\/splat\//, "var " + j + " = (" + (K.length+k.length+1) + " <= arguments.length)?[].slice.call(arguments, " + (K.length) + ", arguments.length-" + (k.length) + "):[];\n/splat/");
+        __ = __.replace(/\/splat\//, "var " + j + " = (" + (K.length+k.length+1) + " <= <@>.length)?[].slice.call(arguments, " + (K.length) + ", <@>.length-" + (k.length) + "):[];\n/splat/");
         for(var e = K.length-1; e < K.length + k.length-1; e++) {
-          __ = __.replace(/\/splat\//, "var " + k[e] + " = arguments[arguments.length-" + (k.length-e) + "];\n/splat/");
+          __ = __.replace(/\/splat\//, "var " + k[e] + " = <@>[<@>.length-" + (k.length-e) + "];\n/splat/");
         }
         __ = __.replace(/\/splat\//g, "");
       }
@@ -369,7 +369,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
         .replace(/([a-z\$_][\w\d\$_]*)\s*\(\s*([a-z\$_][\w\d\$_]*)\.\.\.\s*\)/gi, "$1.apply($2)")
         .replace(/([a-z\$_][\w\d\$_]*)\s*\((.+),\s*([a-z\$_][\w\d\$_]*)\.\.\.\s*\)/gi, "$1.apply([$2].concat([].slice.call($3)))")
         .replace(/([a-z\$_][\w\d\$_]*)\s*\(([a-z\$_][\w\d\$_]*)\.\.\.,\s*(.+)\s*\)/gi, "$1.apply([].slice.call($3).concat([$2]))")
-        .replace(/([a-z\$_][\w\d\$_]*)\s*\(\s*(.+),\s*([a-z\$_][\w\d\$_,\s]*)\.\.\.,\s*(.+)\s*\)/gi, "$1.apply([$2].concat([].slice.call($3)), [$4])");
+        .replace(/([a-z\$_][\w\d\$_]*)\s*\(\s*(.+),\s*([a-z\$_][\w\d\$_,\s]*)\.\.\.,\s*(.+)\s*\)/gi, "$1.apply([$2].concat([].slice.call($3)), [$4])")
+        .replace(/<@>/g, "arguments");
     }
 
     // Prom
@@ -504,13 +505,13 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     // from-while, and from loops and logics
       .replace(/([a-z\$_][\w\d\$_\.]*)\s*\=\s*(.+)\sin\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/gi, "$1 = $3[$2].\n")
       .replace(/([a-z\$_][\w\d\$_\.]*)\s*\=\s*(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/gi, "$1 = $3.indexOf($2).\n")
-      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/gi, "for(var $2_index_counter = 0; $2_index_counter < $2.length; $2_index_counter++){\n  var $3 = $2[$2_index_counter],,\n  if($3){\n    $1.\n  }\n}\n")
-      .replace(/([a-z\$_][\w\d\$_\.]*)\(([a-z\$_][\w\d\$_\.]*)([^\)]*)\s?\)\sfrom\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/gi, "for(var $4_index_counter = 0; $4_index_counter < $4.length; $4_index_counter++){\n  var $2 = $4[$4_index_counter],,\n  $1($2).\n}\n")
-      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([^;\n]+)([\.;\n]\s?)/gi, "for(var $2_index_counter = 0; $2_index_counter < $2.length; $2_index_counter++){\n  var $3 = $2[$2_index_counter],,\n  if($3$4){\n    $1.\n  }\n}\n")
+      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/gi, "for(var $2_<!> = 0; $2_<!> < $2.length; $2_<!>++){\n  var $3 = $2[$2_<!>],,\n  if($3){\n    $1.\n  }\n}\n")
+      .replace(/([a-z\$_][\w\d\$_\.]*)\(([a-z\$_][\w\d\$_\.]*)([^\)]*)\s?\)\sfrom\s([a-z\$_][\w\d\$_\.]*)([\.;\n]\s?)/gi, "for(var $4_<!> = 0; $4_<!> < $4.length; $4_<!>++){\n  var $2 = $4[$4_<!>],,\n  $1($2).\n}\n")
+      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s([a-z\$_][\w\d\$_\.]*)([^;\n]+)([\.;\n]\s?)/gi, "for(var $2_<!> = 0; $2_<!> < $2.length; $2_<!>++){\n  var $3 = $2[$2_<!>],,\n  if($3$4){\n    $1.\n  }\n}\n")
 
-      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s\[(.+)\]([\.;\n]\s?)/gi, "var <?> = [$2];\nfor(var <?>_index_counter = 0; <?>_index_counter < <?>.length; <?>_index_counter++){\n  var $3 = <?>[<?>_index_counter],,\n  if($3){\n    $1.\n  }\n}\n")
-      .replace(/([a-z\$_][\w\d\$_\.]*)\(([a-z\$_][\w\d\$_\.]*)([^\)]*)\s?\)\sfrom\s\[(.+)\]([\.;\n]\s?)/gi, "var <?> = [$4];\nfor(var <?>_index_counter = 0; <?>_index_counter < <?>.length; <?>_index_counter++){\n  var $2 = <?>[<?>_index_counter],,\n  $1($2).\n}\n")
-      .replace(/(.+)\sfrom\s\[(.+)\]\swhile\s([a-z\$_][\w\d\$_\.]*)([^;\n]+)([\.;\n]\s?)/gi, "var <?> = [$2];\nfor(var <?>_index_counter = 0; <?>_index_counter < <?>.length; <?>_index_counter++){\n  var $3 = <?>[<?>_index_counter],,\n  if($3$4){\n    $1.\n  }\n}\n")
+      .replace(/(.+)\sfrom\s([a-z\$_][\w\d\$_\.]*)\swhile\s\[(.+)\]([\.;\n]\s?)/gi, "var <?> = [$2];\nfor(var <?>_<!> = 0; <?>_<!> < <?>.length; <?>_<!>++){\n  var $3 = <?>[<?>_<!>],,\n  if($3){\n    $1.\n  }\n}\n")
+      .replace(/([a-z\$_][\w\d\$_\.]*)\(([a-z\$_][\w\d\$_\.]*)([^\)]*)\s?\)\sfrom\s\[(.+)\]([\.;\n]\s?)/gi, "var <?> = [$4];\nfor(var <?>_<!> = 0; <?>_<!> < <?>.length; <?>_<!>++){\n  var $2 = <?>[<?>_<!>],,\n  $1($2).\n}\n")
+      .replace(/(.+)\sfrom\s\[(.+)\]\swhile\s([a-z\$_][\w\d\$_\.]*)([^;\n]+)([\.;\n]\s?)/gi, "var <?> = [$2];\nfor(var <?>_<!> = 0; <?>_<!> < <?>.length; <?>_<!>++){\n  var $3 = <?>[<?>_<!>],,\n  if($3$4){\n    $1.\n  }\n}\n")
 
       .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)\swhile\s(in|\.\.\.?)([\.;\n]\s?)/gi, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2]).\n}\n")
       .replace(/(?:var\s)?([a-z\$_][\w\d\$_\.]*)\s*\+?\=\s*(?!var\s?)([a-z\$_][\w\d\$_\.]*)\sin\s([a-z\$_][\w\d\$_\.]*)\swhile\s\2\sin\s\3([\.;\n]\s?)/gi, "var $1 = [],,\nfor(var $2 in $3){\n  $1.push($3[$2]).\n}\n")
@@ -532,11 +533,11 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/switch\s+([^\n]+)([\{\:])/g, "switch($1){")
       .replace(/switch\s+([^\n]+)/g, "switch($1){")
       .replace(/\(([\w\d\$_\.])\s*(\&\&|\|\|)\s*([\w\d\$_\.])\s*([\=\!]\=+)\s*([^\)]+)\s?\)/gi, "($1 $4 $5 $2 $3 $4 $5)")
-      .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\!\s?(exists|exist)/gi, "(typeof ($1 $2 $3) !== 'undefined' && ($1 $2 $3) !== null)")
-      .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\s?(exists|exist)/gi, "(typeof ($1 $2 $3) === 'undefined' && ($1 $2 $3) !== null)")
-      .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s(exists|exist)/gi, "(typeof ($1 $2 $3) !== 'undefined' && ($1 $2 $3) !== null)")
-      .replace(/([\w\d\$_\.]+)\s\!\s?(exists|exist)/gi, "(typeof $1 === 'undefined' && $1 !== null)")
-      .replace(/([\w\d\$_\.]+)\s(exists|exist)/gi, "(typeof $1 !== 'undefined' && $1 !== null)")
+      .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\!\s?(exists|exist)/gi, "(typeof ($1 $2 $3) !== '<#>' && ($1 $2 $3) !== null)")
+      .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\s?(exists|exist)/gi, "(typeof ($1 $2 $3) === '<#>' && ($1 $2 $3) !== null)")
+      .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s(exists|exist)/gi, "(typeof ($1 $2 $3) !== '<#>' && ($1 $2 $3) !== null)")
+      .replace(/([\w\d\$_\.]+)\s\!\s?(exists|exist)/gi, "(typeof $1 === '<#>' && $1 !== null)")
+      .replace(/([\w\d\$_\.]+)\s(exists|exist)/gi, "(typeof $1 !== '<#>' && $1 !== null)")
       .replace(/else-(if|when|where)/g, "else if")
     //.replace(/([a-z\$_][\w\d\$_]*)\s*([\=\!]\=+)\s*([^\|\&]+)(\&\&|\|\|)([^\)\n])/gi, "$1$2$3 $4 $1$2$5")
       .replace(/,,,,,/g, "^")
@@ -545,7 +546,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/,,/g, ";")
       .replace(/#00/g, "")
       .replace(/#0/g, "var ")
-      .replace(/<\?>/g, "ANON");
+      .replace(/<\?>/g, "ANON")
+      .replace(/<\!>/g, "index_counter")
+      .replace(/<#>/g, "undefined");
   }
 
   if ("!" === _ugly) {
