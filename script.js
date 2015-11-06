@@ -1,4 +1,4 @@
-// TuxedoScript 8.1.6 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 8.2.6 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -257,7 +257,16 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\[\.\]/g, ".slice(0)")
       .replace(/\[\*\]/g, ".split(\"\")")
       .replace(/(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)\s?\:(.+)(,?)/g, '"$1": $2$3')
-      .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$_]+)/gi, "[\"$1\"]$2")
+      .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$_]+)/gi, "[\"$1\"]$2");
+    for(;__.match(/([1-9][\d]*)\[\]/);) {
+      __.replace(/([1-9][\d]*)\[\]/, '$1');
+      k = Number(RegExp.$1)-1;
+      __ = __.replace(/([0-9][\d]*)\[\]/, "[/dimension/]");
+      for(var x = 0; x < k-1; x++) {
+        __ = __.replace(/\/dimension\//, "[/dimension/]");
+      }
+      __ = __.replace(/\/dimension\//, "[]");
+    }
     /* // very old tech, NA
       .replace(/([a-z\$_][\w\d\.\$_]*)\s*\*\=/g, "$1 = $1*") // *=
       .replace(/([a-z\$_][\w\d\.\$_]*)\s*\/\=/g, "$1 = $1/") // /=
@@ -562,7 +571,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/Number\(/g, "(+")
       .replace(/\.toString\(\s?\)/g, "+\"\"");
     var zero = 1;
-    for(;__.match(/00+/);) { // remove so.t.ch
+    for(;__.match(/00+/);) {
       __.replace(/00+/, '$1');
       k = RegExp.$1;
       __ = __.replace(/00+/g, "/e/");
@@ -607,7 +616,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/(\s+);(\s+)/g, "$1$2")
     .replace(/\/\/(.+);\n/g, "//$1\n")
     .replace(/(["'])use\sstrict\1/g, "$1use strict$1;")
-    .replace(/,,/g, ";");
+    .replace(/,,/g, ";")
+    .replace(/([\(\[\{]\s*),/g, "$1");
 
   x = y = z = a = 0;
   for(;__.match(__ga__);) { // put grave accents back
