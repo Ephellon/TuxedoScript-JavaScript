@@ -1,245 +1,303 @@
 /********
-  Tuxedo Script Help:
-    * general rules/notes: the Tuxedo escape characters are not needed in them, i.e. \#
-    - all loops/function need a matching semi-colon
-    - place comments on the NEXT line, or the code may become useless
-    - when changing a loop with eval enabled, delete the entire loop first, put an error before hand
-    - place dot assignments on a newline, i.e.:
-    $doc.$id(id).$html = 'foo-bar'.
-    #e = "hi".
-      // ugly code
-      // instead, use:
-    $doc.$id(id).$html
-      = 'foo-bar'.
-    #e = "hi".
+---- Tuxedo Baseline ----
 
---------
-HTML attributes: attribute - meaning
-    type - [input] required, can be any of the following [ts, tux, tuxedo, tuxedoscript, tuxedo-script, tscript, t-script]
-    type - [output] optional, can be one of the following [tso, tuxo, tuxedoo, tuxedoscriptout, tuxedo-script-out, tscriptout, t-script-out]
-    eval=! - execute the code
-    editor=! - try to style the code for easier reading
-    clean=! - remove the header and footer of the code
-    math=! - enable shorthand math, i.e. 2^5 = Math.pow(2, 5)
-    advance=! - enable advanced features
-    ugly=! - shorten code
-    hide=! - hide this element
-    legacy=! - switch newer features to old versions
-    wordy=! - allow use of "normal" English words
+  -- Special --
 
---------
-Symbols: symbol - meaning/equivalent
-\n: enter
+<$n> ... </$n> - no.t.ch
 
-    ##! - use strict mode
-    \character - escape character, i.e. "\#x" will make "#x", not "var x" /not needed too often, but just in case/
-      $  - $ /notice the space, for use in string, e.g. "$ ${dollarAmount}" === "$" + dollarAmount/
-    ## - comment/multi-line comment ender
-    #* - multiline comment starter
-    #*# - author comment (multi-line)
-    ## +feature - enable a feature without the use of the html attribute [Lazarus comments]
-    ## -feature - disable a feature without the use of the html attribute [Lazarus comments]
-    ## *x: y - declare a short hand var, such as $win, $doc, etc. [Lazarus comments]
-    ## **x: y - declare a short hand var, but parse it before returning the value [Lazarus comments]
-    #x - var x
-    x#i - x[i]
-    x..y = - x_y // automatic underscores !/deprecated/
-    x--y - x_y // automatic underscores
-    x.y..z - x.y_z // automatic underscores !/deprecated/
-    x?? - typeof x !== undefined && x !== null
-    ?x: - if(x)
-      ?x{ - if(x)
-    :: - else
-      }{ - else
-    :?x: - else if(x)
-      }?x{ - else if(x)
-/ count up, or to number /
-    ?#x,start,stop,increment: - for(var x = start, stop, increment)
-      ?#x,start,stop,increment { - for(var x = start, stop, increment)
-    ?#x,stop,increment: - for(var x = 0, stop, increment)
-      ?#x,stop,increment { - for(var x = 0, stop, increment)
-    ?#x,stop: - for(var x = 0, stop, auto increment to 0)
-      ?#x,stop { - for(var x = 0, stop, auto increment to 0)
-/ count down, or to number /
-    -?#x,start,stop,increment: - for(var x = start, stop, increment)
-      -?#x,start,stop,increment { - for(var x = start, stop, increment)
-    -?#x,stop,increment: - for(var x = 0, stop, increment)
-      -?#x,stop,increment { - for(var x = 0, stop, increment)
-    -?#x,stop: - for(var x = 0, stop, auto increment to 0)
-      -?#x,stop { - for(var x = 0, stop, auto increment to 0)
-    ?#x:y - for(x in y)
-    ?#x:y?z(m[x]) - for(x = 0 ... y.length) z(m[x])
-    ?(x) - switch
-    @x: - case x
-    ?: - do
-    ?x; - while x
-    $x: - function x
-      $x { - function x
-    try: - try
-    catch: - catch
-    finally: - finally
-    $x a,b,c,...: - function x (a,b,c,...)
-      $x a,b,c,... { - function x (a,b,c,...)
-    :$x,...: - :function(x,...) /use in an array/
-      :$x,... { - :function(x,...) /use in an array/
-    #$a,b,c,...: - (function(a,b,c,...)
-      #$a,b,c,... { - (function(a,b,c,...)
-    ; - used to end a loop/function, "}"
-    ` - embeded \' if within quotes, else `
-    <- x - return x
+<$s> ... </$s> - so.t.ch
 
-** Hangars (shortcuts to Tuxedo code) **
-    <!> - index_counter
-    <@> - arguments
-    <#> - undefined
-    <?> - ANON
+<$t> ... </$t> - to.t.ch
 
-** with math enabled **
-    %method - Math.method /notice there is not a space/
-    xy - if x is a digit, then it changes to x * y
-    x^y - Math.pow(x, y)
-      x**y - Math.pow(x, y)
-    \x\ - Math.sqrt(x)
-    x\y\ - Math.x-root(y) /y^(1/x)
-    |x| - Math.abs(x)
-    x~y - (([x % y] + y) % y)
-    x _ y - Math.floor( x / y) /notice the spaces/
-    +/-{x} - {equ: x, pos: x, neg: -x} !/proposal/
-      +/-{x}  - should return an object that gives back the positive and negative versions of x
 
-** with advanced enabled [ECMAS 6] **
-    .x - class x
-    .x y - class x extends y
-    @(...) - constructor(...)
-    *.x - super.x
-    x => y - const y = x
-    x --> y - x = () => y
-    x -> y - x => y
-    $* - void function
-    array#x - if x is a digit, then array[x]
-    array#00 - array[array.length-1]
-    array += n in object while ... - for(n in object) { array.push(object[n]) }
-      array = n in object while n in object - for(n in object) { array.push(object[n]) }
-      array += n in object - for(n in object) { array.push(object[n]) }
 
-++ advance and legacy enabled ++
-    $f a, ..., c - only args[0] and args[last] are used
-    $f a..., c - a = args[last-1] and c = args[last]
-    $f ..., c - only c is used
-    $f a, c... - a = args[0], and c = args[0 -- last]
-    $f a, ... - same as $f a
+  -- Comments --
 
-** with legacy enabled **
-    x |= y - x = x || y
-    x &= y - x = x && y
-    x ?= y - if(x == null) x = y
-    x ^= y - if(x != null) x = y
-    "${x}" - " + x + " /interpolation/
-    '${x}' - ' + x + ' /interpolation/
-    `${x}` - ' + x + ' /interpolation/
-    [x..y] - if x and y are digits, then .slice(x,y)
-    [..y] - if y is a digit, then .slice(0, y)
-    [x..] - if x is a digit, then .slice(x)
-    [.] - .slice(0)
-    [*] - .split("")
-    resv - reserved words are quoted where needed
+## - single line comment, or multi-line comment ender
 
-** with wordy enabled **
-    on - true
-      yes - true
-      good - true
-    off - false
-      no - false
-      bad - false
-    x = y if boolean - if(boolean) x = y
-    x = y unless boolean - if(!boolean) x = y
-    if boolean then x else y - (boolean)?x:y
-    if boolean - if(boolean)
-    else - } else {
-    else-if boolean - } else if(boolean) {
-/ count up, or to number /
-    for x,start,stop,increment: - for(var x = start, stop, increment)
-      for x,start,stop,increment{ - for(var x = start, stop, increment)
-    for x,stop,increment: - for(var x = 0, stop, increment)
-      for x,stop,increment{ - for(var x = 0, stop, increment)
-    for x,stop: - for(var x = 0, stop, auto increment to 0)
-      for x,stop{ - for(var x = 0, stop, auto increment to 0)
-/ count down, or to number /
-    -for x,start,stop,increment: - for(var x = start, stop, increment)
-      -for x,start,stop,increment{ - for(var x = start, stop, increment)
-    -for x,stop,increment: - for(var x = 0, stop, increment)
-      -for x,stop,increment{ - for(var x = 0, stop, increment)
-    -for x,stop: - for(var x = 0, stop, auto increment to 0)
-      -for x,stop{ - for(var x = 0, stop, auto increment to 0)
-    for x in y - for(x in y)
-    while boolean; - while(boolean)
-    until boolean; - while(!boolean)
-    switch x - switch(x)
-    AND - &&
-    OR - ||
-    x XOR y - x ^ y
-    NOT - !
-    isnt - !
-    is not - !
-    does - !!
-    does NOT - !
-    does not - !
-    is - ===
-    equals - ===
-    x exists - typeof x !== undefined && x !== null
-    x(y) if b - if(b) x(y)
-    x from a - a.indexOf(x)
-    x in a - a[x]
-    x(y) from a - for(i = 0 ... a.length) x(y)
-    x(y) from a if b - for(i = 0 ... a.length) if(b) x(y)
-    for x in y do z(m[x]) - for(x = 0 ... y.length) z(m[x])
+#* - multi-line starter
 
---------
-Variables: var - meaning/equivalent
+#*# - multi-line starter (author)
 
-    $# - Object
-    @ - this
-    @x - this.x
-    x@y - x(y) !/deprecated/
-    $doc - document
-    $win - window
-    $con - console
-    $args - arguments
-      ... - arguments !/deprecated/ see "Advance: Splats"
-    $of - typeof
-    $nav - navigator
-    $loc - location
-    $del - delete
-    $cont - continue
-    .$id - getElementById
-    .$class - getElementsByClassName
-    .$tag - getElementsByTagName
-    .$html - innerHTML
-    .$text - innerText
-    .$val - value
-    .$qy - querySelector
-    .$Qy - querySelectorAll
+  @aut - author
 
---------
-Author Comments: tag - meaning
+  @lie - license
 
-    @aut - author
-    @dat - date
-    @lie - license
-    @tie - time
-    @url - any url you want
-    @ver - version
+  @dat - date
 
---------
-Experimental Features: experiment - meaning
+  @tie - time
 
-    notch - the no.t.ch (No Tuxedo Channel)
-      disable ALL Tuxedo execution within <$n> ... </$n>
-    sotch - the so.t.ch (Some Tuxedo Channel, or Shortcut Table Channel)
-      disable some Tuxedo execution within <$s> ... </$s> [go straight to shortcuts]
-    totch - the to.t.ch (Total Tuxedo Channel)
-      enable all Tuxedo execution within <$t> ... </$t> [or simply disable notch and sotch]
+  @url - url
 
-    prom - make a "leased" Tuxedo element
-    #prom tux = (alert, "Tuxedo", 5000).
+  @ver - version
+##! - strict mode
+## +attribute - enable an attribute
+  can be: advance clean eval hide html-editor js-editor legacy math ugly wordy
+## -attribute - disable an attribute
+  can be: advance clean eval hide html-editor js-editor legacy math ugly wordy
+## *a: b - replace all $a with b
+## **a: b - replace all $a with parsed b
+
+
+
+  -- Sequences and Strings --
+
+\c - escape character, for use in/out of strings
+
+  can be: / \ & ? : ; . @ # % $
+$  - escape sequence for use in strings /notice the space/
+` - \' if inside of a string, else '
+
+
+
+  -- Variables --
+
+#a - var a
+
+a--b - a_b
+
+a#b - a[b]
+
+a#00 - a[a.length - 1]
+@ - this
+@a - this.a
+
+$of - typeof
+
+$del - delete
+
+$args - arguments
+
+$doc - document
+
+$win - window
+
+$nav - navigator
+
+$loc - location
+
+$cont - continue
+
+$con - console
+
+$# - Object
+
+  $Obj - Object
+
+  $obj - Object
+
+.$id - getElementById
+
+.$class - getElementsByClassName
+
+.$tag - getElementsByTagName
+
+.$html - innerHTML
+
+.$text - innerText
+
+.$val - value
+
+.$qy - querySelector
+
+.$Qy - querySelectorAll
+
+
+
+  -- functions --
+
+<- - return
+
+$a b, c, d - function a(b, c, d)
+
+ :$a, b, c - function(a, b, c)
+
+ =$a, b, c - function(a, b, c)
+$: - function()
+ ${ - function
+
+
+
+  -- Loops and Statements --
+
+a?? - test if a exsists
+
+a!?? - test if a doesn't exist
+
+
+
+?a: - if a
+
+  ?a { - if a
+
+:: - else
+
+  }{ - else
+
+:?a: - else if a
+
+  }?a{ - else if a
+
+
+
+?#a, b - for a, to b by 1
+
+  ?#a, b, c - for a = b, to c by 1
+
+  ?#a, b, c, d - for a = b, to c, by d
+
+-?#a, b - for a, to b by -1
+
+  -?#a, b, c - for a = b, to c by -1
+
+  -?#a, b, c, d - for a = b, to c, by d
+
+
+
+?#a:b - for a in b
+
+?#a:b ? c - for a, to b by 1, do c
+
+
+
+?: - do
+
+?a; - while a
+
+
+
+?(a) - switch a
+
+@def - default
+
+@a: - case a
+
+---- Advance features ----
+.a - class x
+.a b - class a extends y
+*. - super
+@(a, b, c) - constructor(a, b, c)
+b => a - const a = b
+a --> b - a = () => b
+-> - =>
+$*a, b, c: - void function(a, b, c)
+  $*a, b, c { - void function(a, b, c)
+prom a = (promise, signature, lease) - creates a promissory variable
+
+---- Legacy features ----
+a &= b - a = a && b
+a |= b - a = a || b
+a ^= b - if a != null, a = b
+a ?= b - if a == null, a = b
+a[b..c] - a.slice(b, c)
+a[..c] - a.slice(0, c)
+a[b..] - a.slice(b)
+a[.] - a.slice(0)
+a[*] - a.split("")
+r:a - if r is a reserved word, it will be double-quoted
+  .r - if r is a reserved word, it will be double-quoted and bracketized; ["r"]
+"${a}" - interpolation, ..." + a + "...
+'${a}' - interpolation, ...' + a + '...
+`${a}` - interpolation, ...' + a + '...
+
+---- Math features ----
+a(b) = c - function a(b){ return c; }
+da - if d is a number, then d * a
+a~b - ((a % b + b) % b)
+|a| - Math.abs(a)
+a^b - Math.pow(a, b)
+  a**b - Math.pow(a, b)
+\a\ - Math.sqrt(a)
+a\b\ - "a" root of b, i.e. 3\x\ is the cube root of x
+a _ b - Math.floor(a/b) /notice the spaces/
+log a (b) - log, base a, of b /log(b) / log(a)/
+%property - Math.property, i.e. %PI = Math.PI, %log = Math.log
+
+---- Wordy features ----
+#r - if r is a Tuxedo reserved word, then it will be a variable
+  \r - if r is a Tuxedo reserved word, then it will be a variable
+AND - &&
+OR - ||
+XOR - ^
+NOT - !
+  does not - !
+  do not - !
+  doesnt - !
+does - !!
+on - true
+  yes - true
+  good - true
+off - false
+  no - false
+  bad - false
+is not - !==
+  isnt - !==
+equals - ===
+  equal - ===
+  is = ===
+<?> - ? hangar
+<!> - ! hangar
+<#> - # hangar
+
+---- Ugly features ----
+single line comments become multi-line
+undefined - void 0
+true - !0
+  !false - !0
+  !!true - !0
+false - !1
+  !true - !1
+  !!false - !1
+Number(a) - (+a)
+a.toString() - a + ""
+while(x) - for(;x;)
+multiple zeros are "crunched" down to a 1eX form, i.e. 10000000 = 1e7
+
+---- Advance + Legacy features ----
+  -- Splats --
+$a b... - same as b = arguments
+$a b, c... - c will be all arguments after b
+$a b..., c - b will be all arguments before c
+$a b, c..., d - c will be al arguments between b and d
+a(b...) - same as a(b) uses .apply
+a(b, c...) - a([b c]) uses .apply
+a(b..., c) - a([b c]) uses .apply
+a(b, c..., d) - a([b c d]) uses .apply
+<@> - @ hangar
+
+---- Hangars ----
+! - "index_counter"
+@ - "arguments"
+# - "undefined"
+? - "ANON"
+
+---- Methods ----
+* $ means executable
+* tuxedo === tux
+
+tux
+  get
+    form
+$     data - get form data from the URI
+  storage
+$   set[...] - set the local storage [name, data, name, data ...]
+$   check[name] - see if the local storage at the name exists
+$   get[name] - get the local storage at the name
+$   delete[name] - delete the local storage at the name
+$ attr[element, attribute, value] - set the attribute as the value
+$ id[element, attribute, value] - set the attribute as the value
+  $ id[element, html] - set the innerHTML as the value
+  $ id[element] - just return the element, by id
+$ class[element, attribute, value] - set the attribute as the value
+  $ class[element, html] - set the innerHTML as the value
+  $ class[element] - just return the element, by class name
+$ tag[element, attribute, value] - set the attribute as the value
+  $ tag[element, html] - set the innerHTML as the value
+  $ tag[element] - just return the element, by tag name
+$ ele[element, number, attribute, value] - set the attribute as the value
+  $ ele[element, number, html] - set the innerHTML as the value
+  $ ele[element, number] - just return the element, by element name (via querySelector)
+$ save[data, name] - tux.storage.set(name, data)
+$ load[name] - tux.storage.get(name)
+$ delete[name] - tux.storage.delete(name)
 ********/
