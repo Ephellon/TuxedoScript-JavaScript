@@ -1,4 +1,4 @@
-// TuxedoScript 8.0.4 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 8.1.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -598,6 +598,13 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // rebuild;
 
+  __ = __
+    .replace(/([^;\.])\n/g, "$1;\n")
+    .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%]);(\s+)/g, "$1$2")
+    .replace(/;(\s*[\*\/\+\-\=%\.\]\}\?\:])/g, "$1")
+    .replace(/(\s+);(\s+)/g, "$1$2")
+    .replace(/\/\/(.+);\n/g, "//$1\n");
+
   x = y = z = a = 0;
   for(;__.match(__ga__);) { // put grave accents back
     __ = __.replace(__ga__, ga_[z]);
@@ -645,7 +652,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/~([1-9])/g, "/dol/$1") // $1 fix
     .replace(/\/dol\//g, "$")
     .replace(/~/g, '') // remove ~, fix \char
-    .replace(/\-tilde\-/g, '~'); // make ~
+    .replace(/\-tilde\-/g, '~') // make ~
+    .replace(/;{1,}/g, ";");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // handle other features
 

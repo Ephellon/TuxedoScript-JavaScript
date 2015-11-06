@@ -19,55 +19,55 @@
 ## -ugly
 
 ## Assignment
-#number = 42.
-#opposite = true.
-3.14 => PI.
+#number = 42
+#opposite = true
+3.14 => PI
 
 ## Conditions
 number = -42 if opposite.
-  #* OR you can use *#
-  number = -42 if opposite is true.
-  number = -42 unless opposite is false.
+  #* or you can use *#
+  number = -42 if opposite is true
+  number = -42 unless opposite is false
   ##
 
   ## Functions
   $square x {
-    <- x^2.
+    <- x^2
   }
 $eat f {
-  $doc.writeln("I ate the ${f}<br>").
+  $doc.writeln("I ate the ${f}<br>")
 }
 $discuss f {
   #s = "s" if f#00 != 's'.
-  else s = "";
-  $doc.writeln("The ${f} look${s} good<br>").
+    else s = "";
+  $doc.writeln("The ${f} look${s} good<br>")
 }
 $doc.writeln = $x {
-  $doc.body.$html += "${x}<br>".
+  $doc.body.$html += "${x}<br>"
 }
 
 ## Arrays
-#list = [1, 2, 3, 4, 5].
+#list = [1, 2, 3, 4, 5]
 
 ## Objects
 #math = {
 root: %sqrt,
   square: square,
     cube: $ x {
-      <- x^3.
+      <- x^3
     }
 }
 
 ## Splats + Interpolation
 $race winner, runners... {
-  $doc.writeln("${winner}, ${runners}").
+  $doc.writeln("${winner}, ${runners}")
 }
 
 ## Existence
 alert("I knew it") if Elvis exists.
 
 ## Array comprehension
-#menu = ['tacos', 'burritos', 'sushi', 'spaghetti'].
+#menu = ['tacos', 'burritos', 'sushi', 'spaghetti']
 
 if menu exists {
   discuss(food) from menu
@@ -80,7 +80,7 @@ eat(food) from menu while food isnt "sushi"
 #third = 3 in menu
 
 ## Reserved words
-#off = off.
+#off = off
 \off = off OR NOT on.</textarea><br><br>
 <span>
   <b>
