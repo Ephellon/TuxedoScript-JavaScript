@@ -2,7 +2,7 @@
 ---- Tuxedo Baseline ----
   -- Special --
 <$n> ... </$n> - no.t.ch, any code put between the tags will be treated as native JS
-<$s> ... </$s> - so.t.ch, any code put between te tags will be parsed as some TS, then JS
+<$s> ... </$s> - so.t.ch, any code put between the tags will be parsed as some TS, then JS
 <$t> ... </$t> - to.t.ch, no need, just a proposal
 
   -- Comments --
