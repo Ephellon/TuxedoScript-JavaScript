@@ -1,4 +1,4 @@
-// TuxedoScript 8.1.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 8.1.4 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -601,9 +601,11 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   __ = __
     .replace(/([^;\.])\n/g, "$1;\n")
     .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%]);(\s+)/g, "$1$2")
-    .replace(/;(\s*[\*\/\+\-\=%\.\]\}\?\:])/g, "$1")
+    .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:])/g, "$1")
+    .replace(/;(\s+[\)])/g, "$1")
     .replace(/(\s+);(\s+)/g, "$1$2")
-    .replace(/\/\/(.+);\n/g, "//$1\n");
+    .replace(/\/\/(.+);\n/g, "//$1\n")
+    .replace(/(["'])use\sstrict\1/g, "$1use strict$1;");
 
   x = y = z = a = 0;
   for(;__.match(__ga__);) { // put grave accents back
