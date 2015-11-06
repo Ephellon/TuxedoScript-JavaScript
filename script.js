@@ -455,21 +455,21 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     }
   }
 
-  var rq = (/\/\/\*\/\s*\*([\w\d\$_]+)\:\s*([^\n]+)/i);
+  var rq = (/\/\/\*\/\s*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i);
   for(;rq.test(__);) { // shorthand variables, literal
     __.replace(rq, '$1 $2');
     var k = RegExp.$1;
-    var K = RegExp.$2;
-    var r = RegExp('\\$' + k, 'g');
+    var K = RegExp.$2.replace(/;$/g, "");
+    var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
     __ = __.replace(r, K).replace(rq, "//*/ " + K + " => $" + k);
   }
 
-  var rq = (/\/\/\*\/\s*\*\*([\w\d\$_]+)\:\s*([^\n]+)/i);
+  var rq = (/\/\/\*\/\s*\*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i);
   for(;rq.test(__);) { // shorthand variables, parseable
     __.replace(rq, '$1 $2');
     var k = RegExp.$1;
-    var K = RegExp.$2;
-    var r = RegExp('\\$' + k, 'g');
+    var K = RegExp.$2.replace(/;$/g, "");
+    var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
     __ = __.replace(r, eval(K)).replace(rq, "//*/ " + eval(K) + " => $" + k);
   }
 
