@@ -127,7 +127,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/<(\w+.+)>/g, "&lt;$1&gt;") // replace HTML
     .replace(/([a-z\$_][\w\d\$_]*)(?:[\-]{2})([a-z\$_][\w\d\$_]*)/gi, "$1_$2") // automatic _
   // loops and statements
-    .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\!\s?(\?\?)/gi, "($of ($1 $2 $3) !== 'undefined' && ($1 $2 $3) !== null)")
+    .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s*\!\!\s*(\?\?)/gi, "($of ($1 $2 $3) !== 'undefined' && ($1 $2 $3) !== null)")
     .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s*\!\s*(\?\?)/gi, "($of ($1 $2 $3) === 'undefined' && ($1 $2 $3) !== null)")
     .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s*(\?\?)/gi, "($of ($1 $2 $3) !== 'undefined' && ($1 $2 $3) !== null)")
     .replace(/([\w\d\$_\.]+)\s*\!\s*(\?\?)/gi, "(typeof $1 === 'undefined' && $1 !== null)")
@@ -164,9 +164,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/case\sver\:/g, "Version:")
   // JS and shorthands
   //.replace(/([\d\w\$_]+)#/g, "let $1") // !/deprecated/-JS
-    .replace(/([a-z\$_][\w\d\$_\.]*)#([a-z\$_][\w\d\$_]*)/gi, "$1[$2]")
+    .replace(/([a-z\$_][\w\d\$_\.]*)#([0-9][\d]*|[a-z\$_][\w\d\$_]*)/gi, "$1[$2]")
     .replace(/([a-z\$_][\w\d\$_\.]*)#00/gi, "$1[$1.length-1]")
-    .replace(/#([0-9]+)/g, "[$1]")
     .replace(/#([a-z\$_][\w\d\$_]*)/gi, "var $1") // #([a-z\$_][\w\d\$_]*)
     .replace(/\$of/g, 'typeof')
     .replace(/\$del/g, "delete")
@@ -194,7 +193,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/\$([a-z\$_][\w\d\$_]*)\s+(.+)\s*\s?(\:|\{)/gi, "function $1($2){")
     .replace(/\$([a-z\$_][\w\d\$_]*)\s*(\:|\{)/gi, "function $1(){")
     .replace(/\$\s*(\:|\{)/g, "function(){")
-    .replace(/var\sfunction/g, "(function")
     .replace(/function\s\(/g, "$(")
   // TS / CSS
     .replace(/(.+)\:\s*(.+);/g, "$1,,,,$2,,")
@@ -275,7 +273,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/(.+)\s*\=>\s*([a-z\$_][\w\d\$_]*)/gi, "const $2 = $1")
       .replace(/([\s\w\d\$_]+)\s*\-\->\s*(.+)/gi, "$1 = () => $2")
       .replace(/\->/g, "=>")
-      .replace(/\$\*(.+)\s*(\:|\{)/g, "void function($1){")
+      .replace(/\$\*(.*)\s*(\:|\{)/g, "void function($1){")
       .replace(/(?:var\s+)?prom\s([a-z\$_][\.\w\d\$_]*)\s*\=?\s*\(/gi, "var $1 = new PROMISSORYTUXEDO(\"$1\",");
 
     if("!" === _legacy) {
@@ -525,13 +523,12 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=$3,,$1<$4,,$1+=$5){$7")
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1+=$4){$6")
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1++){$5")
-      .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+in\s+([a-z\$_][\w\d\$_]*)\s*([\:\{])(\s+)/gi, "for($1 in $2){$4")
-      .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+in\s+([a-z\$_][\w\d\$_]*)\s+do\s+(.+)(\s*)/gi, "for(var $1=0,,$1<$2.length,,$1++){$4  $3$4}")
+      .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+(?=in|\:)\s+([a-z\$_][\w\d\$_]*)\s*([\:\{])(\s+)/gi, "for($1 in $2){$4")
+      .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+(?=in|\:)\s+([a-z\$_][\w\d\$_]*)\s+(?=do|\?)\s+(.+)(\s*)/gi, "for(var $1=0,,$1<$2.length,,$1++){$4  $3$4}")
       .replace(/\sdo\:?\s*\n/g, "do{")
       .replace(/while\s*(?=[^\(])(.+)([\.;\n]\s*)/g, "while($1),,")
       .replace(/until\s*(?=[^\(])(.+)([\.;\n]\s*)/g, "while(!$1),,")
-      .replace(/switch\s+([^\n]+)([\{\:])/g, "switch($1){")
-      .replace(/switch\s+([^\n]+)/g, "switch($1){")
+      .replace(/switch\s+([^\n]+)(?=[\{\:]?)/g, "switch($1){")
       .replace(/\(([\w\d\$_\.])\s*(\&\&|\|\|)\s*([\w\d\$_\.])\s*([\=\!]\=+)\s*([^\)]+)\s?\)/gi, "($1 $4 $5 $2 $3 $4 $5)")
       .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\!\s?(exists|exist)/gi, "(typeof ($1 $2 $3) !== '<#>' && ($1 $2 $3) !== null)")
       .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\s?(exists|exist)/gi, "(typeof ($1 $2 $3) === '<#>' && ($1 $2 $3) !== null)")
@@ -599,13 +596,15 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   // rebuild;
 
   __ = __
+    .replace(/\(\s*;(.+);\s*\)/g, "(,,$1,,)")
     .replace(/([^;\.])\n/g, "$1;\n")
     .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%]);(\s+)/g, "$1$2")
     .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:])/g, "$1")
     .replace(/;(\s+[\)])/g, "$1")
     .replace(/(\s+);(\s+)/g, "$1$2")
     .replace(/\/\/(.+);\n/g, "//$1\n")
-    .replace(/(["'])use\sstrict\1/g, "$1use strict$1;");
+    .replace(/(["'])use\sstrict\1/g, "$1use strict$1;")
+    .replace(/,,/g, ";");
 
   x = y = z = a = 0;
   for(;__.match(__ga__);) { // put grave accents back
