@@ -1,4 +1,4 @@
-// TuxedoScript 8.1.4 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 8.1.6 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -55,6 +55,10 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   __os__ = __os__ || __ts__; // copy, or hold the input-element
   __ = ((__ts__.value || __ts__.innerHTML) + "\n"); // get the text of the element
 
+  __ = __
+    .replace(/\\\$/g, "$ ") // \$ fix
+    .replace(/\$([1-9])/g, "$ $1"); // $1 fix
+
   // channels
   for(;__.match(__nch__);) { // remove no.t.ch
     __.replace(__nch__, '$1');
@@ -76,8 +80,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __.replace(__rx__, '_re[' + a + ']re_');
     a++;
   } __rx__ = /(_re\[[\d]+\]re_)/;
-  __ = __
-    .replace(/\$([1-9])/g, "$ $1"); // $1 fix
+
   /*
   for(;__.match(__cms__);) { // remove single-line comments
     __.replace(__cms__, '$1');
@@ -114,7 +117,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   __ = __
     .replace(/~/g, '-tilde-')
     .replace(/\\\//g, "\\\\\/")
-    .replace(/\\([\/\\\&\?\:;\.@#%\$])/g, '~$1~');
+    .replace(/\\([\/\\\&\?\:;\.@#%])/g, '~$1~');
   //.replace(/undefined/g, "~~u"); // undefined fix
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   __ = __ // tuxedo-script
