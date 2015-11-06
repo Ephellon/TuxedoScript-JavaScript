@@ -164,8 +164,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/case\sver\:/g, "Version:")
   // JS and shorthands
   //.replace(/([\d\w\$_]+)#/g, "let $1") // !/deprecated/-JS
-    .replace(/([a-z\$_][\w\d\$_\.]*)#([0-9][\d]*|[a-z\$_][\w\d\$_]*)/gi, "$1[$2]")
     .replace(/([a-z\$_][\w\d\$_\.]*)#00/gi, "$1[$1.length-1]")
+    .replace(/([a-z\$_][\w\d\$_\.]*)#([0-9][\d]*|[a-z\$_][\w\d\$_]*)/gi, "$1[$2]")
     .replace(/#([a-z\$_][\w\d\$_]*)/gi, "var $1") // #([a-z\$_][\w\d\$_]*)
     .replace(/\$of/g, 'typeof')
     .replace(/\$del/g, "delete")
