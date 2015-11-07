@@ -207,7 +207,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   //.replace(/case\s+([^\w\d\$_"'`]+)/g, "this$1") // !/deprecated/-TS
   //.replace(/(.+)@(.+)(\.|;|\s|\n)/g, "$1($2)$3") // !/deprecated/-TS
     .replace(/\/\/\*\/!/g, '"use strict"; // use strict embed')
-    .replace(/([a-z\$_][\w\d\$_]*)\s*\:\s*(.+)([^,\{\[\(])\n$/gi, "$1: $2$3,\n");
+    .replace(/(?!\?)([a-z\$_][\w\d\$_]*)\s*\:\s*(.+)([^,\{\[\(])\n$/gi, "$1: $2$3,\n");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // [experimental] enable/disable features via ## +feature / ## -feature / ## *x: y
 
@@ -614,7 +614,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/([^;\.])\n/g, "$1;\n")
     .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%]);(\s+)/g, "$1$2")
     .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
-    .replace(/;(\s*.+\s*\:)/gi, ",$1")
+    .replace(/;(?!\s*var|\s*const)(\s*.+\s*\:)/gi, ",$1")
     .replace(/;(\s+[\)])/g, "$1")
     .replace(/(\s+);(\s+)/g, "$1$2")
     .replace(/\/\/(.+);\n/g, "//$1\n")
