@@ -1,4 +1,4 @@
-// TuxedoScript 8.2.7 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 8.2.9 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -206,7 +206,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/,,/g, ";")
   //.replace(/case\s+([^\w\d\$_"'`]+)/g, "this$1") // !/deprecated/-TS
   //.replace(/(.+)@(.+)(\.|;|\s|\n)/g, "$1($2)$3") // !/deprecated/-TS
-    .replace(/\/\/\*\/!/g, '"use strict"; // use strict embed');
+    .replace(/\/\/\*\/!/g, '"use strict"; // use strict embed')
+    .replace(/([a-z\$_][\w\d\$_]*)\s*\:\s*(.+)([^,\{\[\(])\n$/gi, "$1: $2$3,\n");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // [experimental] enable/disable features via ## +feature / ## -feature / ## *x: y
 
@@ -613,6 +614,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/([^;\.])\n/g, "$1;\n")
     .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%]);(\s+)/g, "$1$2")
     .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
+    .replace(/;(\s*.+\s*\:)/gi, ",$1")
     .replace(/;(\s+[\)])/g, "$1")
     .replace(/(\s+);(\s+)/g, "$1$2")
     .replace(/\/\/(.+);\n/g, "//$1\n")
