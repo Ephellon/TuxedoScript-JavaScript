@@ -1,4 +1,4 @@
-// TuxedoScript 8.2.6 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 8.2.7 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -456,7 +456,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/(?:\W%?)log\s(.+)\s\((.+)\s?\)/g, "%log($2) / %log($1)")
       .replace(/(\W)%([a-z\$_][\w\d\$_]+)/gi, "$1Math.$2") // strictly calls for at least at least 2 valid characters
       .replace(/\/or\//g, "||")
-      .replace(/\/or\-equ\//g, "|=");
+      .replace(/\/or\-equ\//g, "|=")
+      .replace(/0\s\*\s([ex])(\d+)/g, "0$1$2"); // fix hex, and e numbers
     Math.modulo = function(a, b) {
       a = +a; // Numnber(a)
       b = +b; // Numnber(b)
