@@ -612,7 +612,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/\(\s*;(.+);\s*\)/g, "(,,$1,,)")
     .replace(/([^;\.])\n/g, "$1;\n")
     .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%]);(\s+)/g, "$1$2")
-    .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:])/g, "$1")
+    .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
     .replace(/;(\s+[\)])/g, "$1")
     .replace(/(\s+);(\s+)/g, "$1$2")
     .replace(/\/\/(.+);\n/g, "//$1\n")
