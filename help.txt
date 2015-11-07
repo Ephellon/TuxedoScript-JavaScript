@@ -116,6 +116,7 @@ a[b..] - a.slice(b)
 a[.] - a.slice(0)
 a[*] - a.split("")
 d[] - if d is a digit, it creates a d-dimension array, i.e. 3[] === [[[]]] /called on as [x][y][z]/
+d{} - if d is a digit, it creates a d-dimension array, i.e. 3{} === {{{}}} /called on as x.$.y.$.z.$/
 r:a - if r is a reserved word, it will be double-quoted
   .r - if r is a reserved word, it will be double-quoted and bracketized; ["r"]
 "${a}" - interpolation, ..." + a + "...
