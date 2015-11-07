@@ -1,4 +1,4 @@
-// TuxedoScript 8.2.9 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 8.3.0 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -618,7 +618,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/;(\s+[\)])/g, "$1")
     .replace(/(\s+);(\s+)/g, "$1$2")
     .replace(/\/\/(.+);\n/g, "//$1\n")
-    .replace(/(["'])use\sstrict\1/g, "$1use strict$1;")
+    .replace(/(["'])use\sstrict\1/g, "$1use strict$1,,")
+    .replace(/break([,\n])/g, "break,,\n")
     .replace(/,,/g, ";")
     .replace(/([\(\[\{]\s*),/g, "$1");
 
