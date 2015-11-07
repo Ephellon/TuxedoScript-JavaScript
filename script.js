@@ -145,7 +145,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/\?#([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=$3,,$1<$4,,$1+=$5){$7")
     .replace(/\?#([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1+=$4){$6")
     .replace(/\?#([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1++){$5")
-    .replace(/\?#([a-z\$_][\w\d\$_]*)\s*\:\s*([a-z\$_][\w\d\$_]*)([\:\{])(\s+)/gi, "for($1 in $2){$4")
+    .replace(/\?#([a-z\$_][\w\d\$_]*)\s*\:\s*([a-z\$_][\w\d\$_]*)\s*([\:\{])(\s+)/gi, "for(var $1 in $2){$4")
     .replace(/\?#([a-z\$_][\w\d\$_]*)\s*\:\s*([a-z\$_][\w\d\$_]*)\s*\?\s*(.+)(\s*)/gi, "for(var $1=0,,$1<$2.length,,$1++){$4  $3$4}")
     .replace(/\?\:/g, "do{")
     .replace(/\?(.+);/g, "while($1),,")
@@ -257,6 +257,10 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\[(\-?[\w\d\$_]+)\.\.\]/gi, ".slice($1)")
       .replace(/\[\.\]/g, ".slice(0)")
       .replace(/\[\*\]/g, ".split(\"\")")
+      .replace(/\[\+\](.+)/g, ".concat($1)")
+      .replace(/\[-tilde-\](.+)/g, ".every($1)")
+      .replace(/\[&\](.+)/g, ".join($1)")
+      .replace(/\[\!\]/g, ".pop()")
       .replace(/(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)\s?\:(.+)(,?)/g, '"$1": $2$3')
       .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$_]+)/gi, "[\"$1\"]$2");
     for(;__.match(/([1-9][\d]*)\[\]/);) {
@@ -537,7 +541,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=$3,,$1<$4,,$1+=$5){$7")
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1+=$4){$6")
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1++){$5")
-      .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+(?=in|\:)\s+([a-z\$_][\w\d\$_]*)\s*([\:\{])(\s+)/gi, "for($1 in $2){$4")
+      .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+(?=in|\:)\s+([a-z\$_][\w\d\$_]*)\s*([\:\{])(\s+)/gi, "for(var $1 in $2){$4")
       .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+(?=in|\:)\s+([a-z\$_][\w\d\$_]*)\s+(?=do|\?)\s+(.+)(\s*)/gi, "for(var $1=0,,$1<$2.length,,$1++){$4  $3$4}")
       .replace(/\sdo\:?\s*\n/g, "do{")
       .replace(/while\s*(?=[^\(])(.+)([\.;\n]\s*)/g, "while($1),,")
