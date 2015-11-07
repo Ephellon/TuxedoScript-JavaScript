@@ -63,6 +63,7 @@ a: b - if there isn't a comma after b, there will be one added, ubless b is the 
 $a b, c, d - function a(b, c, d)
  :$a, b, c - function(a, b, c)
  =$a, b, c - function(a, b, c)
+ ,$a, b, c - function(a, b, c)
 $: - function()
  ${ - function
 
