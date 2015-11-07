@@ -65,7 +65,7 @@ $a b, c, d - function a(b, c, d)
  =$a, b, c - function(a, b, c)
  ,$a, b, c - function(a, b, c)
 $: - function()
- ${ - function
+ ${ - function()
 
   -- Loops and Statements --
 a?? - test if a exsists
