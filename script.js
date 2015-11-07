@@ -192,7 +192,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/\.\$Qy/g, ".querySelectorAll")
   // functions
     .replace(/<\-\s(.+)/g, "return $1")
-    .replace(/([\:\=])\s*\$(.+)\s*(\:|\{)/g, "$1 function($2){")
+    .replace(/([\:\=,])\s*\$(.+)\s*(\:|\{)/g, "$1 function($2){")
     .replace(/\$([a-z\$_][\w\d\$_]*)\s+(.+)\s*\s?(\:|\{)/gi, "function $1($2){")
     .replace(/\$([a-z\$_][\w\d\$_]*)\s*(\:|\{)/gi, "function $1(){")
     .replace(/\$\s*(\:|\{)/g, "function(){")
@@ -448,7 +448,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/([\w\d\$_]+)\(([^\n]+)\)\s\=([\s\w\d\$_\*\/\+\-%\^\\\|\.\(\)\[\];]+)\n/gi, "function $1($2){\nreturn $3\n}\n")
       .replace(/([^\a-z+][\d]+)([a-z\$_]+)/gi, "$1 * $2")
       .replace(/([\w\d\$_-]+)\s*-tilde-\s*([\w\d\$_-]+)/gi, "(($1 % $2 + $2) % $2)")
-      .replace(/\|([^"'`;]+)\|/g, " %abs($1)")
+      .replace(/\|([^"'`;\n]+)\|/g, " %abs($1)")
       .replace(/([^\\][\w\d\$_]+)\\([^\n"'`~\!@#,\:;\\]+)?\\/gi, " %pow($2, 1/$1)") // x\y\
       .replace(/\\([^\n"'`~\!@#,\:;\\]+)?\\/g, " %sqrt($1)") // \x\
       .replace(/([\w\d\.\$_-]+)\s*(?:\^|\*\*)\s*([\w\d\.\$_-]+)/gi, " %pow($1, $2)") // $1 ** $2 may not be supported
