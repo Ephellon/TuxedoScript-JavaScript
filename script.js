@@ -1,4 +1,4 @@
-// TuxedoScript 8.3.0 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 8.4.1 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -258,9 +258,16 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\[\.\]/g, ".slice(0)")
       .replace(/\[\*\]/g, ".split(\"\")")
       .replace(/\[\+\](.+)/g, ".concat($1)")
+      .replace(/\[\+\+\](.+)/g, ".push($1)")
+      .replace(/\[<\]/g, ".shift()")
+      .replace(/\[>\](.+)/g, ".unshift($1)")
       .replace(/\[-tilde-\](.+)/g, ".every($1)")
       .replace(/\[&\](.+)/g, ".join($1)")
-      .replace(/\[\!\]/g, ".pop()")
+      .replace(/\[\?\](.+)/g, ".indexOf($1)")
+      .replace(/\[\-\?\](.+)/g, ".lastIndexOf($1)")
+      .replace(/\[\=\]/g, ".reverse()")
+      .replace(/\[\^\](.*)/g, ".sort($1)")
+      .replace(/\[\-\]/g, ".pop()")
       .replace(/(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)\s?\:(.+)(,?)/g, '"$1": $2$3')
       .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$_]+)/gi, "[\"$1\"]$2");
     for(;__.match(/([1-9][\d]*)\[\]/);) {
