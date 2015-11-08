@@ -112,6 +112,7 @@ a &= b - a = a && b
 a |= b - a = a || b
 a ^= b - if a != null, a = b
 a ?= b - if a == null, a = b
+  -- Arrays (try limiting them to one per line) --
 a[b..c] - a.slice(b, c)
 a[..c] - a.slice(0, c)
 a[b..] - a.slice(b)
@@ -131,6 +132,7 @@ a[-] - a.pop()
 d[] - if d is a number, it creates a d-dimension array, i.e. 3[] === [[[]]] /called on as [x][y][z]/
 r:a - if r is a reserved word, it will be double-quoted
   .r - if r is a reserved word, it will be double-quoted and bracketized; ["r"]
+  -- Strings --
 "${a}" - interpolation, ..." + a + "...
 '${a}' - interpolation, ...' + a + '...
 `${a}` - interpolation, ...' + a + '...
