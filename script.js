@@ -1,4 +1,4 @@
-// TuxedoScript 8.4.3 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 8.5.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -622,20 +622,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // rebuild;
 
-  __ = __
-    .replace(/\(\s*;(.+);\s*\)/g, "(,,$1,,)")
-    .replace(/([^;\.])\n/g, "$1;\n")
-    .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%]);(\s+)/g, "$1$2")
-    .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
-    .replace(/;(?!\s*var|\s*const)(\s*.+\s*\:)/gi, ",$1")
-    .replace(/;(\s+[\)])/g, "$1")
-    .replace(/(\s+);(\s+)/g, "$1$2")
-    .replace(/\/\/(.+);\n/g, "//$1\n")
-    .replace(/(["'])use\sstrict\1/g, "$1use strict$1,,")
-    .replace(/break([,\n])/g, "break,,\n")
-    .replace(/,,/g, ";")
-    .replace(/([\(\[\{]\s*),/g, "$1");
-
   x = y = z = a = 0;
   for(;__.match(__ga__);) { // put grave accents back
     __ = __.replace(__ga__, ga_[z]);
@@ -672,8 +658,31 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __.replace(__rx__, rx_[a]);
     a++;
   }
+  
+  if("!" === _legacy) {
+    var reg = /(["'])(.*)\1\s+\1(.*)\1/;
+    for(;__.match(reg);) {
+      __.replace(reg, "$1 $2 $3");
+      var k = RegExp.$1;
+      var K = RegExp.$2;
+      var j = RegExp.$3;
+      __ = __.replace(reg, "$1$2$1 + $1$3$1");
+    }
+  }
 
   __ = __
+    .replace(/\(\s*;(.+);\s*\)/g, "(,,$1,,)")
+    .replace(/([^;\.])\n/g, "$1;\n")
+    .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%]);(\s+)/g, "$1$2")
+    .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
+    .replace(/;(?!\s*var|\s*const)(\s*.+\s*\:)/gi, ",$1")
+    .replace(/;(\s+[\)])/g, "$1")
+    .replace(/(\s+);(\s+)/g, "$1$2")
+    .replace(/\/\/(.+);\n/g, "//$1\n")
+    .replace(/(["'])use\sstrict\1/g, "$1use strict$1,,")
+    .replace(/break([,\n])/g, "break,,\n")
+    .replace(/,,/g, ";")
+    .replace(/([\(\[\{]\s*),/g, "$1")
     .replace(/\$\s/g, "$")
     .replace(/([\w\d\$_]+)@([\w\d\$_]+)/gi, "$1.prototype.$2")
     .replace(/@([\w\$_]+)/gi, "@.$1")
