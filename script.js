@@ -174,7 +174,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/\.\$Qy/g, ".querySelectorAll")
   // functions
     .replace(/<\-\s(.+)/g, "return $1")
-    .replace(/([\:\=,])\s*\$([^\(\)]+)\s*(\:|\{)/g, "$1 function($2){")
+    .replace(/([\:\=,])\s*\$([^\(\)\{\}\[\]\n]+)\s*(\:|\{)/g, "$1 function($2){")
     .replace(/\$([a-z\$_][\w\d\$_]*)\s+(.+)\s*\s?(\:|\{)/gi, "function $1($2){")
     .replace(/\$([a-z\$_][\w\d\$_]*)\s*(\:|\{)/gi, "function $1(){")
     .replace(/\$\s*(\:|\{)/g, "function(){")
