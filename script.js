@@ -946,5 +946,5 @@ if(document.onreadystatechange) {
 } else {
   document.onload = function() { // Tuxedo() when the page is ready (mobile users)
     TUX = Tuxedo();
-  }
+  };
 }
