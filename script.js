@@ -1,4 +1,4 @@
-// TuxedoScript 8.5.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 8.5.3 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -549,7 +549,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1+=$4){$6")
       .replace(/for\s+([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1<$3,,$1++){$5")
       .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+(?=in|\:)\s+([a-z\$_][\w\d\$_]*)\s*([\:\{])(\s+)/gi, "for(var $1 in $2){$4")
-      .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+(?=in|\:)\s+([a-z\$_][\w\d\$_]*)\s+(?=do|\?)\s+(.+)(\s*)/gi, "for(var $1=0,,$1<$2.length,,$1++){$4  $3$4}")
+      .replace(/for\s+([a-z\$_][\w\d\$_]*)\s+(?=in|\:)\s+([a-z\$_][\w\d\$_]*)\s+(?=do|\?)\s+(.+)/gi, "for(var $1=0,,$1<$2.length,,$1++){\n  $3\n}")
       .replace(/\sdo\:?\s*\n/g, "do{")
       .replace(/while\s*(?=[^\(])(.+)([\.;\n]\s*)/g, "while($1),,")
       .replace(/until\s*(?=[^\(])(.+)([\.;\n]\s*)/g, "while(!$1),,")
@@ -592,7 +592,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     }
     __ = __
       .replace(/\/e\/0/, 'e' + zero)
-      .replace(/(\/e\/)+/g, "");
+      .replace(/(\/e\/)+/g, "")
+      .replace(/\.e(\d)/, "e-$1");
   }
 
   __ = __
@@ -658,7 +659,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __.replace(__rx__, rx_[a]);
     a++;
   }
-  
+
   if("!" === _legacy) {
     var reg = /(["'])(.*)\1\s+\1(.*)\1/;
     for(;__.match(reg);) {
