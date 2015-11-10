@@ -1,11 +1,11 @@
-// TuxedoScript 8.5.3 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 9.6.6 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
 var TUX; // the parsable string return from Tuxedo()
 
 function Tuxedo(__ts__, __os__) { // main function, executes the code [input-element, output-element]
-  var __dq__, __sq__, __ga__, __rx__, __cms__, __cmm__, dq_, sq_, ga_, rx_, cms_, cmm_, __, _, _o, x, y, z, a, b, c, _eval, _htmleditor, _jseditor, _clean, _math, _advance, _ugly, _hide, _legacy, _wordy, nch_, sch_, tch_, __nch__, __sch__, __tch__, _notch, _sotch, _totch, N, S, T;
+  var __dq__, __sq__, __ga__, __rx__, __cms__, __cmm__, dq_, sq_, ga_, rx_, cms_, cmm_, __, _, _o, x, y, z, a, b, c, _eval, _htmleditor, _jseditor, _clean, _math, _advance, _ugly, _hide, _legacy, _wordy, _jsunit, nch_, sch_, tch_, __nch__, __sch__, __tch__, _notch, _sotch, _totch, N, S, T;
   __dq__ = /("[^\n]+")/; // used to hide, and keep quotes from being executed
   __sq__ = /('[^\n]+')/; // single quotes
   __ga__ = /(`[^\n]+`)/; // grave accents
@@ -131,9 +131,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/([a-z\$_][\w\d\$_]*)(?:[\-]{2})([a-z\$_][\w\d\$_]*)/gi, "$1_$2") // automatic _
   // loops and statements
     .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s*\!\!\s*(\?\?)/gi, "($of ($1 $2 $3) !== 'undefined' && ($1 $2 $3) !== null)")
-    .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s*\!\s*(\?\?)/gi, "($of ($1 $2 $3) === 'undefined' && ($1 $2 $3) !== null)")
+    .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s*\!\s*(\?\?)/gi, "($of ($1 $2 $3) === 'undefined' || ($1 $2 $3) === null)")
     .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s*(\?\?)/gi, "($of ($1 $2 $3) !== 'undefined' && ($1 $2 $3) !== null)")
-    .replace(/([\w\d\$_\.]+)\s*\!\s*(\?\?)/gi, "(typeof $1 === 'undefined' && $1 !== null)")
+    .replace(/([\w\d\$_\.]+)\s*\!\s*(\?\?)/gi, "(typeof $1 === 'undefined' || $1 === null)")
     .replace(/([\w\d\$_\.]+)\s*(\?\?)/gi, "(typeof $1 !== 'undefined' && $1 !== null)")
     .replace(/\((.+)\)\?(.+)\:/g, '($1),,,$2,,,,') // terenary operator
     .replace(/(\:|\})\?(.+)([\:\{])/g, "}else if ($2){")
@@ -211,7 +211,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // [experimental] enable/disable features via ## +feature / ## -feature / ## *x: y
 
-  var rq = (/\/\/\*\/\s*-\s*(eval|ugly|advance|html-editor|js-editor|clean|math|hide|legacy|wordy)/);
+  var rq = (/\/\/\*\/\s*-\s*(eval|ugly|advance|html-editor|js-editor|clean|math|hide|legacy|wordy|js-unit)/);
   for(;rq.test(__);) { // disable attributes
     __.replace(rq, '$1');
     var k = RegExp.$1;
@@ -219,7 +219,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __.replace(rq, '//*/ disable ' + k);
   }
 
-  var rq = (/\/\/\*\/\s*\+\s*(eval|ugly|advance|html-editor|js-editor|clean|math|hide|legacy|wordy)/);
+  var rq = (/\/\/\*\/\s*\+\s*(eval|ugly|advance|html-editor|js-editor|clean|math|hide|legacy|wordy|js-unit)/);
   for(;rq.test(__);) { // enable attributes
     __.replace(rq, '$1');
     var k = RegExp.$1;
@@ -237,6 +237,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   _hide = __ts__.getAttribute("hide");
   _legacy = __ts__.getAttribute("legacy");
   _wordy = __ts__.getAttribute("wordy");
+  _jsunit = __ts__.getAttribute("js-unit");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // other features
 
@@ -555,10 +556,10 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/until\s*(?=[^\(])(.+)([\.;\n]\s*)/g, "while(!$1),,")
       .replace(/switch\s+([^\n]+)(?=[\{\:]?)/g, "switch($1){")
       .replace(/\(([\w\d\$_\.])\s*(\&\&|\|\|)\s*([\w\d\$_\.])\s*([\=\!]\=+)\s*([^\)]+)\s?\)/gi, "($1 $4 $5 $2 $3 $4 $5)")
-      .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\!\s?(exists|exist)/gi, "(typeof ($1 $2 $3) !== '<#>' && ($1 $2 $3) !== null)")
-      .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\s?(exists|exist)/gi, "(typeof ($1 $2 $3) === '<#>' && ($1 $2 $3) !== null)")
+      .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\!\s?(exists|exist)/gi, "(typeof ($1 $2 $3) !== '<#>' || ($1 $2 $3) === null)")
+      .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s?\!\s?(exists|exist)/gi, "(typeof ($1 $2 $3) === '<#>' || ($1 $2 $3) === null)")
       .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s+(exists|exist)/gi, "(typeof ($1 $2 $3) !== '<#>' && ($1 $2 $3) !== null)")
-      .replace(/([\w\d\$_\.]+)\s+\!\s?(exists|exist)/gi, "(typeof $1 === '<#>' && $1 !== null)")
+      .replace(/([\w\d\$_\.]+)\s+\!\s?(exists|exist)/gi, "(typeof $1 === '<#>' || $1 === null)")
       .replace(/([\w\d\$_\.]+)\s+(exists|exist)/gi, "(typeof $1 !== '<#>' && $1 !== null)")
       .replace(/else-(if|when|where)/g, "else if")
     //.replace(/([a-z\$_][\w\d\$_]*)\s*([\=\!]\=+)\s*([^\|\&]+)(\&\&|\|\|)([^\)\n])/gi, "$1$2$3 $4 $1$2$5")
@@ -702,6 +703,118 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   for(;__.match(__nch__);) { // put no.t.ch back
     __ = __.replace(__nch__, nch_[N]);
     N++;
+  }
+
+  window.JSUNIT = {};
+
+  if("!" === _jsunit) {
+    window.JSUNIT = {
+      after: '',
+      before: '',
+      out: function(a) {
+        document.write(a.replace(/\n/g, "<br>"));
+      },
+      test: {}
+    }
+    __ = __
+      .replace(/this\.(Before|After)/g, function(c) {
+      c = c.replace(/this\./, "");
+      if(/Before/.test(c)) {
+        JSUNIT.before = c + '();';
+      } else if(/After/.test(c)) {
+        JSUNIT.after = c + '();\n';
+      }
+      return "function " + c + "()";
+    })
+      .replace(/this\.Test(.+)\{/g, "(function($1){\n" + JSUNIT.before)
+      .replace(/\}var\sallow\-test;?/g, JSUNIT.after + "})();")
+      .replace(/this@/g, "JSUNIT");
+    /*  
+  if(typeof JSUNIT.console.log === "undefined") {
+      JSUNIT.out = function(a) {
+        document.write(a.replace(/\n/g, "<br>"));
+      }
+      JSUNIT.out.toString = function(){
+        return "function write(){ [document] }";
+      }
+    } else {
+      JSUNIT.out = function(a) {
+        console.log(a);
+      }
+      JSUNIT.out.toString = function(){
+        return "function write(){ [console] }";
+      }
+    }
+    */
+    JSUNIT.assert = function(c, t) {
+      JSUNIT.out("expected: " + c + "\n  recieved: " + t + '\n');
+    }
+    JSUNIT.assertTrue = function(c, t) {
+      if(t === true) {
+        return;
+      }
+      c = c || "expected: true\n  recieved: ";
+      JSUNIT.out(c + t + '\n');
+    }
+    JSUNIT.assertFalse = function(c, t) {
+      if(t === false) {
+        return;
+      }
+      c = c || "expected: false\n  recieved: ";
+      JSUNIT.out(c + t + '\n');
+    }
+    JSUNIT.assertEquals = function(c, t, u) {
+      if(t === u) {
+        return;
+      }
+      c = c || "expected: " + t + "\n  recieved: ";
+      JSUNIT.out(c + u + '\n');
+    }
+    JSUNIT.assertNull = function(c, t) {
+      if(t === null) {
+        return;
+      }
+      c = c || "expected: null\n  recieved: ";
+      JSUNIT.out(c + t + '\n');
+    }
+    JSUNIT.assertNotNull = function(c, t) {
+      if(t !== null) {
+        return;
+      }
+      c = c || "did not expect: null\n  recieved: ";
+      JSUNIT.out(c + t + '\n');
+    }
+    JSUNIT.assertUndefined = function(c, t) {
+      if(t === undefined || t === "undefined") {
+        return;
+      }
+      c = c || "expected: undefined\n  recieved: ";
+      JSUNIT.out(c + t + '\n');
+    }
+    JSUNIT.assertNotUndefined = function(c, t) {
+      if(t !== undefined || t !== "undefined") {
+        return;
+      }
+      c = c || "did not expect: undefined\n  recieved: ";
+      JSUNIT.out(c + t + '\n');
+    }
+    JSUNIT.assertNaN = function(c, t) {
+      if(t === NaN) {
+        return;
+      }
+      c = c || "expected: NaN\n  recieved: ";
+      JSUNIT.out(c + t + '\n');
+    }
+    JSUNIT.assertNotNaN = function(c, t) {
+      if(t !== NaN) {
+        return;
+      }
+      c = c || "did not expect: NaN\n  recieved: ";
+      JSUNIT.out(c + t + '\n');
+    }
+    JSUNIT.assertFail = function(c) {
+      JSUNIT.out(c + '\n');
+    }
   }
 
   TUX = __.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">"); // make parsable
