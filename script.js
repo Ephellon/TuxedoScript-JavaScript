@@ -1,4 +1,4 @@
-// TuxedoScript 9.4.4 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 9.5 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -937,8 +937,14 @@ tux = tuxedo = nm || { // nm
   }
 };
 
-document.onreadystatechange = function() { // Tuxedo() when the page is ready
-  if(document.readyState === "complete") {
+if(document.onreadystatechange) {
+  document.onreadystatechange = function() { // Tuxedo() when the page is ready
+    if(document.readyState === "complete") {
+      TUX = Tuxedo();
+    }
+  };
+} else {
+  document.onload = function() { // Tuxedo() when the page is ready (mobile users)
     TUX = Tuxedo();
   }
-};
+}
