@@ -1,4 +1,4 @@
-// TuxedoScript 9.6.6 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 10.0.9 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -711,6 +711,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     window.JSUNIT = {
       after: '',
       before: '',
+      count: 0,
       out: function(a) {
         document.write(a.replace(/\n\s\s/g, "\n&nbsp;&nbsp;").replace(/\n/g, "<br>"));
       },
@@ -747,73 +748,115 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     }
     */
     JSUNIT.assert = function(c, t) {
-      JSUNIT.out("expected: " + c + "\n  recieved: " + t + '\n');
+      JSUNIT.count++;
+      if(typeof c === typeof '') {
+        c = '"' + c + '"';
+      }
+      c = "[Test #" + JSUNIT.count + "]\n  < assert(" + c + ", " + t + ") >\n  recieved: ";
+      JSUNIT.out(c + t + '\n');
     }
     JSUNIT.assertTrue = function(c, t) {
+      JSUNIT.count++;
       if(t === true) {
         return;
       }
-      c = c || "expected: true\n  recieved: ";
+      if(typeof c === typeof '') {
+        c = '"' + c + '"';
+      }
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertTrue(" + c + ", " + t + ") >\n  expected: true\n  recieved: ";
       JSUNIT.out(c + t + '\n');
     }
     JSUNIT.assertFalse = function(c, t) {
+      JSUNIT.count++;
       if(t === false) {
         return;
       }
-      c = c || "expected: false\n  recieved: ";
+      if(typeof c === typeof '') {
+        c = '"' + c + '"';
+      }
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertFalse(" + c + ", " + t + ") >\n  expected: false\n  recieved: ";
       JSUNIT.out(c + t + '\n');
     }
     JSUNIT.assertEquals = function(c, t, u) {
+      JSUNIT.count++;
       if(t === u) {
         return;
       }
-      c = c || "expected: " + t + "\n  recieved: ";
+      if(typeof c === typeof '') {
+        c = '"' + c + '"';
+      }
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertEquals(" + c + ", " + t + ", " + u + ") >\n  expected: " + t + "\n  recieved: ";
       JSUNIT.out(c + u + '\n');
     }
     JSUNIT.assertNull = function(c, t) {
+      JSUNIT.count++;
       if(t === null) {
         return;
       }
-      c = c || "expected: null\n  recieved: ";
+      if(typeof c === typeof '') {
+        c = '"' + c + '"';
+      }
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNull(" + c + ", " + t + ") >\n  expected: null\n  recieved: ";
       JSUNIT.out(c + t + '\n');
     }
     JSUNIT.assertNotNull = function(c, t) {
+      JSUNIT.count++;
       if(t !== null) {
         return;
       }
-      c = c || "did not expect: null\n  recieved: ";
+      if(typeof c === typeof '') {
+        c = '"' + c + '"';
+      }
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotNull(" + c + ", " + t + ") >\n  did not expect: null\n  recieved: ";
       JSUNIT.out(c + t + '\n');
     }
     JSUNIT.assertUndefined = function(c, t) {
+      JSUNIT.count++;
       if(t === undefined || t === "undefined") {
         return;
       }
-      c = c || "expected: undefined\n  recieved: ";
+      if(typeof c === typeof '') {
+        c = '"' + c + '"';
+      }
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertUndefined(" + c + ", " + t + ") >\n  expected: undefined\n  recieved: ";
       JSUNIT.out(c + t + '\n');
     }
     JSUNIT.assertNotUndefined = function(c, t) {
+      JSUNIT.count++;
       if(t !== undefined || t !== "undefined") {
         return;
       }
-      c = c || "did not expect: undefined\n  recieved: ";
+      if(typeof c === typeof '') {
+        c = '"' + c + '"';
+      }
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotUndefined(" + c + ", " + t + ") >\n  did not expect: undefined\n  recieved: ";
       JSUNIT.out(c + t + '\n');
     }
     JSUNIT.assertNaN = function(c, t) {
+      JSUNIT.count++;
       if(t === NaN) {
         return;
       }
-      c = c || "expected: NaN\n  recieved: ";
+      if(typeof c === typeof '') {
+        c = '"' + c + '"';
+      }
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNaN(" + c + ", " + t + ") >\n  expected: NaN\n  recieved: ";
       JSUNIT.out(c + t + '\n');
     }
     JSUNIT.assertNotNaN = function(c, t) {
+      JSUNIT.count++;
       if(t !== NaN) {
         return;
       }
-      c = c || "did not expect: NaN\n  recieved: ";
+      if(typeof c === typeof '') {
+        c = '"' + c + '"';
+      }
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotNaN(" + c + ", " + t + ") >\n  did not expect: NaN\n  recieved: ";
       JSUNIT.out(c + t + '\n');
     }
     JSUNIT.assertFail = function(c) {
-      JSUNIT.out(c + '\n');
+      JSUNIT.count++;
+      JSUNIT.out("[Error: Test #" + JSUNIT.count + "]\n  < assertFail(" + c + ") >\n");
     }
   }
 
