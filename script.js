@@ -1,4 +1,4 @@
-// TuxedoScript 9.5.7 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 9.6.6 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -678,9 +678,14 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       before: '',
       count: 0,
       out: function(a) {
-        document.write(a.replace(/\n\s\s/g, "\n&nbsp;&nbsp;").replace(/\n/g, "<br>"));
+        if(!JSUNIT.toconsole) {
+          document.write(a.replace(/\n\s\s/g, "\n&nbsp;&nbsp;").replace(/\n/g, "<br>"));
+        } else {
+          console.log(a);
+        }
       },
-      test: {}
+      test: {},
+      toconsole: false
     }
     __ = __
       .replace(/this\.(Before|After)/g, function(c) {
@@ -694,7 +699,11 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     })
       .replace(/this\.Test(.+)\{/g, "(function($1){\n" + JSUNIT.before)
       .replace(/\}var\sallow\-test;?/g, JSUNIT.after + "})();")
-      .replace(/this@/g, "JSUNIT");
+      .replace(/this@/g, "JSUNIT")
+      .replace(/JSUNIT\.toconsole/g, function(c) {
+      JSUNIT.toconsole = true;
+      return c;
+    });
     JSUNIT.assert = function(c, t) {
       JSUNIT.count++;
       if(typeof c === typeof '') {
