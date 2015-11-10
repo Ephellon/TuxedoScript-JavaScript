@@ -56,7 +56,7 @@ $# - Object
 .$val - value
 .$qy - querySelector
 .$Qy - querySelectorAll
-a: b - if there isn't a comma after b, there will be one added, ubless b is the last item
+a: b - if there isn't a comma after b, there will be one added, unless b is the last item
 
   -- functions --
 <- - return
@@ -68,7 +68,7 @@ $: - function()
  ${ - function()
 
   -- Loops and Statements --
-a?? - test if a exsists
+a?? - test if a exists
 a!?? - test if a doesn't exist
 
 ?a: - if a
@@ -131,7 +131,7 @@ a[^]b - a.sort(b)
 a[-] - a.pop()
 d[] - if d is a number, it creates a d-dimension array, i.e. 3[] === [[[]]] /called on as [x][y][z]/
 r:a - if r is a reserved word, it will be double-quoted
-  .r - if r is a reserved word, it will be double-quoted and bracketized; ["r"]
+  .r - if r is a reserved word, it will be double-quoted and bracketed; ["r"]
   -- Strings --
 "${a}" - interpolation, ..." + a + "...
 '${a}' - interpolation, ...' + a + '...
@@ -153,7 +153,7 @@ log a (b) - log, base a, of b /log(b) / log(a)/
 
 ---- Wordy features ----
   -- Loops and Statements --
-a exists - test if a exsists
+a exists - test if a exists
   a exist - test if a exists
 a !exists - test if a doesn't exist
   a !exist - test if a doesn't exist
@@ -167,7 +167,7 @@ else-if a: - else if a
   else-when a { - else if a
   else-where a: - else if a
   else-where a { - else if a
-if a then b else c - terenary operator, (a)?b:c
+if a then b else c - ternary operator, (a)?b:c
 
 for a, b - for a, to b by 1
   for a, b, c - for a = b, to c by 1
@@ -239,7 +239,7 @@ multiple zeros are "crunched" down to a 1eX form, i.e. 10000000 = 1e7
 $a b... - same as b = arguments
 $a b, c... - c will be all arguments after b
 $a b..., c - b will be all arguments before c
-$a b, c..., d - c will be al arguments between b and d
+$a b, c..., d - c will be all arguments between b and d
 a(b...) - same as a(b) uses .apply
 a(b, c...) - a([b c]) uses .apply
 a(b..., c) - a([b c]) uses .apply
