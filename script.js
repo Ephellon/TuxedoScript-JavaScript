@@ -679,7 +679,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       count: 0,
       out: function(a) {
         if(!JSUNIT.toconsole) {
-          document.write(a.replace(/\n\s\s/g, "\n&nbsp;&nbsp;").replace(/\n/g, "<br>"));
+          document.body.innerHTML += (a.replace(/\n\s\s/g, "\n&nbsp;&nbsp;").replace(/\n/g, "<br>"));
         } else {
           console.log(a);
         }
