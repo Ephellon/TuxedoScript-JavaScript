@@ -137,6 +137,8 @@ r:a - if r is a reserved word, it will be double-quoted
 '${a}' - interpolation, ...' + a + '...
 `${a}` - interpolation, ...' + a + '...
 "..." "..." - automatic concatination, "..." + "..."
+  '...' '...' - automatic concatination, '...' + '...'
+  `...` `...` - automatic concatination, '...' + '...'
 
 ---- Math features ----
 a(b) = c - function a(b){ return c; }
