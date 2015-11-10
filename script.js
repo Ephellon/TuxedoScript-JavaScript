@@ -712,7 +712,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       after: '',
       before: '',
       out: function(a) {
-        document.write(a.replace(/\n/g, "<br>"));
+        document.write(a.replace(/\n\s\s/g, "\n&nbsp;&nbsp;").replace(/\n/g, "<br>"));
       },
       test: {}
     }

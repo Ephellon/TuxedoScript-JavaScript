@@ -237,7 +237,8 @@ multiple zeros are "crunched" down to a 1eX form, i.e. 10000000 = 1e7
 ---- JS-Unit features ----
   -- Baseline --
 @@ - JSUNIT
-@Test ... - test to run, and optional event arguments
+@Test ... { ... }#allow-test - test to run, and optional event arguments
+  @Test ... { ... }) - "empty" test, doesn't run
 @Before - code to run before every test
 @After - code to run after every test
   -- Assert Tests --
