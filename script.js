@@ -1,4 +1,4 @@
-// TuxedoScript 10.0.9 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 9.5.7 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -80,21 +80,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __.replace(__rx__, '_re[' + a + ']re_');
     a++;
   } __rx__ = /(_re\[[\d]+\]re_)/;
-
-  /*
-  for(;__.match(__cms__);) { // remove single-line comments
-    __.replace(__cms__, '$1');
-    cms_[b] = RegExp.$1;
-    __ = __.replace(__cms__, '_cms:' + b + ':cms_');
-    b++;
-  } __cms__ = /(_cms\:[\d]+\:cms_)/;
-  for(;__.match(__cmm__);) { // remove multi-line comments
-    __.replace(__cmm__, '$1');
-    cmm_[c] = RegExp.$1;
-    __ = __.replace(__cmm__, '_cmm:' + c + ':cmm_');
-    c++;
-  } __cms__ = /(_cmm\:[\d]+\:cmm_)/;
-  */
   for(;__.match(__dq__);) { // remove double-quotes
     __.replace(__dq__, '$1');
     dq_[x] = RegExp.$1;
@@ -118,7 +103,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/~/g, '-tilde-')
     .replace(/\\\//g, "\\\\\/")
     .replace(/\\([\/\\\&\?\:;\.@#%])/g, '~$1~');
-  //.replace(/undefined/g, "~~u"); // undefined fix
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   __ = __ // tuxedo-script
   // [a-z\$_][\w\d\$_]* = proper JS variables
@@ -166,13 +150,11 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/case\surl\:/g, "URL:")
     .replace(/case\sver\:/g, "Version:")
   // JS and shorthands
-  //.replace(/([\d\w\$_]+)#/g, "let $1") // !/deprecated/-JS
     .replace(/([a-z\$_][\w\d\$_\.]*)#00/gi, "$1[$1.length-1]")
     .replace(/([a-z\$_][\w\d\$_\.]*)#([0-9][\d]*|[a-z\$_][\w\d\$_]*)/gi, "$1[$2]")
     .replace(/#([a-z\$_][\w\d\$_]*)/gi, "var $1") // #([a-z\$_][\w\d\$_]*)
     .replace(/\$of/g, 'typeof')
     .replace(/\$del/g, "delete")
-  //.replace(/\$args|\.\.\./g, "arguments") // !/deprecated/-TS
     .replace(/\$args/g, "arguments")
     .replace(/\$doc/g, "document")
     .replace(/\$win/g, "window")
@@ -199,13 +181,10 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/function\s\(/g, "$(")
   // TS / CSS
     .replace(/(.+)\:\s*(.+);/g, "$1,,,,$2,,")
-  //.replace(/;;(\s+|\n+)/g, "})$1") // !/deprecated/-TS
     .replace(/;([\s+\n+,\}\)]+)/g, "}$1")
     .replace(/,,,,/g, ":")
     .replace(/,,,/g, "?")
     .replace(/,,/g, ";")
-  //.replace(/case\s+([^\w\d\$_"'`]+)/g, "this$1") // !/deprecated/-TS
-  //.replace(/(.+)@(.+)(\.|;|\s|\n)/g, "$1($2)$3") // !/deprecated/-TS
     .replace(/\/\/\*\/!/g, '"use strict"; // use strict embed')
     .replace(/(?!\?)([a-z\$_][\w\d\$_]*)\s*\:\s*(.+)([^,\{\[\(])\n$/gi, "$1: $2$3,\n");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -280,13 +259,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       }
       __ = __.replace(/\/dimension\//, "[]");
     }
-    /* // very old tech, NA
-      .replace(/([a-z\$_][\w\d\.\$_]*)\s*\*\=/g, "$1 = $1*") // *=
-      .replace(/([a-z\$_][\w\d\.\$_]*)\s*\/\=/g, "$1 = $1/") // /=
-      .replace(/([a-z\$_][\w\d\.\$_]*)\s*\+\=/g, "$1 = $1+") // +=
-      .replace(/([a-z\$_][\w\d\.\$_]*)\s*\-\=/g, "$1 = $1-") // -=
-      .replace(/([a-z\$_][\w\d\.\$_]*)\s*\%\=/g, "$1 = $1%") // %=
-    */
   }
 
   if ("!" === _advance) {
@@ -562,7 +534,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/([\w\d\$_\.]+)\s+\!\s?(exists|exist)/gi, "(typeof $1 === '<#>' || $1 === null)")
       .replace(/([\w\d\$_\.]+)\s+(exists|exist)/gi, "(typeof $1 !== '<#>' && $1 !== null)")
       .replace(/else-(if|when|where)/g, "else if")
-    //.replace(/([a-z\$_][\w\d\$_]*)\s*([\=\!]\=+)\s*([^\|\&]+)(\&\&|\|\|)([^\)\n])/gi, "$1$2$3 $4 $1$2$5")
       .replace(/,,,,,/g, "^")
       .replace(/,,,,/g, ":")
       .replace(/,,,/g, "?")
@@ -577,7 +548,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   if ("!" === _ugly) {
     __ = __ // ugly
       .replace(/\/\/(?:\*\/)*(.+)/g, "/*$1*/")
-    //.replace(/\s+/g, " ")
       .replace(/undefined/g, "void 0")
       .replace(/(true|\!false|\!\!true)/g, "!0")
       .replace(/(false|\!true|\!\!false)/g, "!1")
@@ -605,8 +575,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __
       .replace(/\n{2,}/gm, "\n") // multiple \n
       .replace(/\n(a-z)/gi, "\n\n$1") // outside words, like function, if, etc.
-    //.replace(/\s*\+\s*(["'`])/g, "\n+$1") // + "'`
-    //.replace(/(.+),\s*(.+)/g, "$1, $2") // commas
       .replace(/\}\s+(.+);/g, "}\n\n$1;") // anything following a }
       .replace(/([\)\]\};\+\-])\}/g, "$1\n}") // anything before a }
       .replace(/([\w\)\]\}]+)\s*(\{)([^\n]+)/gi, "$1 $2\n$3") // before {
@@ -616,10 +584,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/([;\}])\n(if|for|switch|function|Object)/g, "$1\n\n$2") // var, const, etc. fix
       .replace(/([\(\[\{])\s+\//g, "$1\n\/") // comments
       .replace(/\{\s*\}/g, "{}") // fix {}
-    //.replace(/\.\s*([^\w\d\$_]+)/gi, "$1") // fix .
       .replace(/\!\s*([^\=a-z\$_\("'`])/gi, "!== $1"); // fix wordy
-    //.replace(/([\S])(\{|\(|\[)(\s+)/g, "$1 $2\n$3")
-    //.replace(/\s\s(\})(\w+)/gi, "$1\n$2");
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // rebuild;
@@ -730,23 +695,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/this\.Test(.+)\{/g, "(function($1){\n" + JSUNIT.before)
       .replace(/\}var\sallow\-test;?/g, JSUNIT.after + "})();")
       .replace(/this@/g, "JSUNIT");
-    /*  
-  if(typeof JSUNIT.console.log === "undefined") {
-      JSUNIT.out = function(a) {
-        document.write(a.replace(/\n/g, "<br>"));
-      }
-      JSUNIT.out.toString = function(){
-        return "function write(){ [document] }";
-      }
-    } else {
-      JSUNIT.out = function(a) {
-        console.log(a);
-      }
-      JSUNIT.out.toString = function(){
-        return "function write(){ [console] }";
-      }
-    }
-    */
     JSUNIT.assert = function(c, t) {
       JSUNIT.count++;
       if(typeof c === typeof '') {
