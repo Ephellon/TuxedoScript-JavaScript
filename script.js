@@ -705,9 +705,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       return c;
     });
     JSUNIT.assert = function(t, c) {
-      JSUNIT.count++;
+      JSUNIT.count++; var j = c;
       c = "[Test #" + JSUNIT.count + "]\n  < assert('" + t + "', '" + c + "') >\n  recieved: ";
-      JSUNIT.out(c + t + '\n');
+      JSUNIT.out(c + j + '\n');
     }
     JSUNIT.assertTrue = function(t, c) {
       JSUNIT.count++;
