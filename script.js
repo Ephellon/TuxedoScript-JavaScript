@@ -1,4 +1,4 @@
-// TuxedoScript 9.5 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 9.8.4 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -705,93 +705,93 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       return c;
     });
     JSUNIT.assert = function(t, c) {
-      JSUNIT.count++; var j = c;
-      c = "[Test #" + JSUNIT.count + "]\n  < assert('" + t + "', '" + c + "') >\n  recieved: ";
-      JSUNIT.out(c + j + '\n');
+      JSUNIT.count++;
+      c = "[Test #" + JSUNIT.count + "]\n  < assert(" + tux.typeof(t) + ", " + tux.typeof(c) + ") >\n  recieved: " + tux.typeof(c);
+      JSUNIT.out(c + '\n');
     }
     JSUNIT.assertTrue = function(t, c) {
       JSUNIT.count++;
       if(t === true) {
         return;
       }
-      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertTrue('" + t + "', '" + c + "') >\n  expected: true\n  recieved: ";
-      JSUNIT.out(c + t + '\n');
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertTrue(" + tux.typeof(t) + ", " + tux.typeof(c) + ") >\n  expected: true\n  recieved: " + tux.typeof(t);
+      JSUNIT.out(c + '\n');
     }
     JSUNIT.assertFalse = function(t, c) {
       JSUNIT.count++;
       if(t === false) {
         return;
       }
-      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertFalse('" + t + "', '" + c + "') >\n  expected: false\n  recieved: ";
-      JSUNIT.out(c + t + '\n');
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertFalse(" + tux.typeof(t) + ", " + tux.typeof(c) + ") >\n  expected: false\n  recieved: " + tux.typeof(t);
+      JSUNIT.out(c + '\n');
     }
     JSUNIT.assertEquals = function(t, u, c) {
       JSUNIT.count++;
       if(t === u) {
         return;
       }
-      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertEquals('" + t + "', '" + u + "', '" + c + "') >\n  expected: " + t + "\n  recieved: ";
-      JSUNIT.out(c + u + '\n');
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertEquals(" + tux.typeof(t) + ", " + tux.typeof(u) + ", " + tux.typeof(c) + ") >\n  expected: " + t + "\n  recieved: " + tux.typeof(u);
+      JSUNIT.out(c + '\n');
     }
     JSUNIT.assertNotEquals = function(t, u, c) {
       JSUNIT.count++;
       if(t !== u) {
         return;
       }
-      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotEquals('" + t + "', '" + u + "', '" + c + "') >\n  did not expect: " + t + "\n  recieved: ";
-      JSUNIT.out(c + u + '\n');
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotEquals(" + tux.typeof(t) + ", " + tux.typeof(u) + ", " + tux.typeof(c) + ") >\n  did not expect: " + t + "\n  recieved: " + tux.typeof(u);
+      JSUNIT.out(c + '\n');
     }
     JSUNIT.assertNull = function(t, c) {
       JSUNIT.count++;
       if(t === null) {
         return;
       }
-      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNull('" + t + "', '" + c + "') >\n  expected: null\n  recieved: ";
-      JSUNIT.out(c + t + '\n');
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNull(" + tux.typeof(t) + ", " + tux.typeof(c) + ") >\n  expected: null\n  recieved: " + tux.typeof(t);
+      JSUNIT.out(c + '\n');
     }
     JSUNIT.assertNotNull = function(t, c) {
       JSUNIT.count++;
       if(t !== null) {
         return;
       }
-      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotNull('" + t + "', '" + c + "') >\n  did not expect: null\n  recieved: ";
-      JSUNIT.out(c + t + '\n');
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotNull(" + tux.typeof(t) + ", " + tux.typeof(c) + ") >\n  did not expect: null\n  recieved: " + tux.typeof(t);
+      JSUNIT.out(c + '\n');
     }
     JSUNIT.assertUndefined = function(t, c) {
       JSUNIT.count++;
       if(t === undefined || t === "undefined") {
         return;
       }
-      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertUndefined('" + t + "', '" + c + "') >\n  expected: undefined\n  recieved: ";
-      JSUNIT.out(c + t + '\n');
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertUndefined(" + tux.typeof(t) + ", " + tux.typeof(c) + ") >\n  expected: undefined\n  recieved: " + tux.typeof(t);
+      JSUNIT.out(c + '\n');
     }
     JSUNIT.assertNotUndefined = function(t, c) {
       JSUNIT.count++;
       if(t !== undefined || t !== "undefined") {
         return;
       }
-      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotUndefined('" + t + "', '" + c + "') >\n  did not expect: undefined\n  recieved: ";
-      JSUNIT.out(c + t + '\n');
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotUndefined(" + tux.typeof(t) + ", " + tux.typeof(c) + ") >\n  did not expect: undefined\n  recieved: " + tux.typeof(t);
+      JSUNIT.out(c + '\n');
     }
     JSUNIT.assertNaN = function(t, c) {
       JSUNIT.count++;
       if(t === NaN) {
         return;
       }
-      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNaN('" + t + "', " + c + "') >\n  expected: NaN\n  recieved: ";
-      JSUNIT.out(c + t + '\n');
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNaN(" + tux.typeof(t) + ", " + tux.typeof(c) + ") >\n  expected: NaN\n  recieved: " + tux.typeof(t);
+      JSUNIT.out(c + '\n');
     }
     JSUNIT.assertNotNaN = function(t, c) {
       JSUNIT.count++;
       if(t !== NaN) {
         return;
       }
-      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotNaN('" + t + "', '" + c + "') >\n  did not expect: NaN\n  recieved: ";
-      JSUNIT.out(c + t + '\n');
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotNaN(" + tux.typeof(t) + ", " + tux.typeof(c) + ") >\n  did not expect: NaN\n  recieved: " + tux.typeof(t);
+      JSUNIT.out(c + '\n');
     }
     JSUNIT.assertFail = function(c) {
       JSUNIT.count++;
-      JSUNIT.out("[Error: Test #" + JSUNIT.count + "]\n  < assertFail('" + c + "') >\n");
+      JSUNIT.out("[Error: Test #" + JSUNIT.count + "]\n  < assertFail(" + tux.typeof(c) + ") >\n");
     }
   }
 
@@ -934,6 +934,40 @@ tux = tuxedo = nm || { // nm
     e = e || k.substring(k.lastIndexOf("/") + 1, k.length) + ".cache";
     var g = tux.storage.delete(name);
     return g;
+  },
+  "typeof": function(e) {
+    var n;
+    switch(typeof e) {
+      case typeof Boolean():
+        n = "<>";
+        break;
+      case typeof Function:
+        n = ["function ", "( ... )"];
+        break;
+      case typeof Number():
+        n = "";
+        break;
+      case typeof Object():
+        if(e[0]) {
+          n = "[]";
+        } else {
+          n = "{}";
+        }
+        break;
+      case typeof String():
+        n = "\"\"";
+        break;
+      case typeof Symbol():
+        n = ["(@@", ")"];
+        break;
+      case typeof null:
+        n = "";
+        break;
+      case typeof undefined:
+        n = "";
+        break;
+    }
+    return (n[0] || "") + e + (n[1] || "");
   }
 };
 
