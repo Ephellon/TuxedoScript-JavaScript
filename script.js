@@ -730,7 +730,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       if(t === u) {
         return;
       }
-      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertEquals(" + tux.typeof(t) + ", " + tux.typeof(u) + ", " + tux.typeof(c) + ") >\n  expected: " + t + "\n  recieved: " + tux.typeof(u);
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertEquals(" + tux.typeof(t) + ", " + tux.typeof(u) + ", " + tux.typeof(c) + ") >\n  expected: " + tux.typeof(t) + "\n  recieved: " + tux.typeof(u);
       JSUNIT.out(c + '\n');
     }
     JSUNIT.assertNotEquals = function(t, u, c) {
@@ -738,7 +738,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       if(t !== u) {
         return;
       }
-      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotEquals(" + tux.typeof(t) + ", " + tux.typeof(u) + ", " + tux.typeof(c) + ") >\n  did not expect: " + t + "\n  recieved: " + tux.typeof(u);
+      c = c || "[Error: Test #" + JSUNIT.count + "]\n  < assertNotEquals(" + tux.typeof(t) + ", " + tux.typeof(u) + ", " + tux.typeof(c) + ") >\n  did not expect: " + tux.typeof(t) + "\n  recieved: " + tux.typeof(u);
       JSUNIT.out(c + '\n');
     }
     JSUNIT.assertNull = function(t, c) {
