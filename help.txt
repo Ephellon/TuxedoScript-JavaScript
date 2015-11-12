@@ -304,4 +304,5 @@ $ ele[element, number, attribute, value] - set the attribute as the value
 $ save[data, name] - tux.storage.set(name, data)
 $ load[name] - tux.storage.get(name)
 $ delete[name] - tux.storage.delete(name)
+$ typeof[object] - returns the typeof "object" toString, i.e. true === "<true>", [1, 2, 3] === "[1, 2, 3]"
 ********/
