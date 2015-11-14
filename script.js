@@ -973,7 +973,7 @@ tux = tuxedo = nm || { // nm
   }
 };
 
-if(typeof document.onreadystatechange !== undefined && document.onreadystatechange !== null) {
+if(typeof document.onreadystatechange !== undefined) {
   document.onreadystatechange = function() { // Tuxedo() when the page is ready
     if(document.readyState === "complete") {
       TUX = Tuxedo();
