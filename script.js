@@ -1,4 +1,4 @@
-// TuxedoScript 9.8.4 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 9.8.6 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -103,6 +103,24 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/~/g, '-tilde-')
     .replace(/\\\//g, "\\\\\/")
     .replace(/\\([\/\\\&\?\:;\.@#%])/g, '~$1~');
+
+  var rq = (/##\s*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i);
+  for(;rq.test(__);) { // shorthand variables, literal
+    __.replace(rq, '$1 $2');
+    var k = RegExp.$1;
+    var K = RegExp.$2.replace(/;$/g, "");
+    var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
+    __ = __.replace(r, K).replace(rq, "//*/ " + K + " => $" + k);
+  }
+
+  var rq = (/##\s*\*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i);
+  for(;rq.test(__);) { // shorthand variables, parseable
+    __.replace(rq, '$1 $2');
+    var k = RegExp.$1;
+    var K = RegExp.$2.replace(/;$/g, "");
+    var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
+    __ = __.replace(r, eval(K)).replace(rq, "//*/ " + eval(K) + " => $" + k);
+  }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   __ = __ // tuxedo-script
   // [a-z\$_][\w\d\$_]* = proper JS variables
@@ -369,7 +387,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     }
 
     // Prom
-    function PROMISSORYTUXEDO(n, p, s, l) {
+    var PROMISSORYTUXEDO = function(n, p, s, l) {
       window._TUXEDO_ = [n, p, s, l];
       if(typeof p === "undefined" || typeof p === null || typeof s === "undefined" || typeof s === null || typeof l === "undefined" || typeof l === null) {
         return console.error("O_O bad lease for " + n + ", missing some arguments");
@@ -448,24 +466,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       b = +b; // Numnber(b)
       return (a % b + b) % b; // ([a % b] + b) % b
     }
-  }
-
-  var rq = (/\/\/\*\/\s*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i);
-  for(;rq.test(__);) { // shorthand variables, literal
-    __.replace(rq, '$1 $2');
-    var k = RegExp.$1;
-    var K = RegExp.$2.replace(/;$/g, "");
-    var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
-    __ = __.replace(r, K).replace(rq, "//*/ " + K + " => $" + k);
-  }
-
-  var rq = (/\/\/\*\/\s*\*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i);
-  for(;rq.test(__);) { // shorthand variables, parseable
-    __.replace(rq, '$1 $2');
-    var k = RegExp.$1;
-    var K = RegExp.$2.replace(/;$/g, "");
-    var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
-    __ = __.replace(r, eval(K)).replace(rq, "//*/ " + eval(K) + " => $" + k);
   }
 
   if("!" === _wordy) { // words
@@ -553,7 +553,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/(false|\!true|\!\!false)/g, "!1")
       .replace(/while\((.+)\s?\)/g, "for(;$1;)")
       .replace(/Number\(/g, "(+")
-      .replace(/\.toString\(\s?\)/g, "+\"\"");
+      .replace(/\.toString\(\s?\)/g, "+\"\"")
+      .replace(/([\&\|])\1/g, "$1");
     var zero = 1;
     for(;__.match(/00+/);) {
       __.replace(/00+/, '$1');
@@ -679,7 +680,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       count: 0,
       out: function(a) {
         if(!JSUNIT.toconsole) {
-          document.body.innerHTML += (a.replace(/\n\s\s/g, "\n&nbsp;&nbsp;").replace(/\n/g, "<br>"));
+          document.body.innerHTML += (a.toString().replace(/\n\s\s/g, "\n&nbsp;&nbsp;").replace(/\n/g, "<br>"));
         } else {
           console.log(a);
         }
@@ -942,7 +943,7 @@ tux = tuxedo = nm || { // nm
         n = "<>";
         break;
       case typeof Function:
-        n = ["function ", "( ... )"];
+        n = "";
         break;
       case typeof Number():
         n = "";
@@ -959,6 +960,7 @@ tux = tuxedo = nm || { // nm
         break;
       case typeof Symbol():
         n = ["(@@", ")"];
+        e = e.toString();
         break;
       case typeof null:
         n = "";
@@ -971,7 +973,7 @@ tux = tuxedo = nm || { // nm
   }
 };
 
-if(document.onreadystatechange) {
+if(typeof document.onreadystatechange !== undefined && document.onreadystatechange !== null) {
   document.onreadystatechange = function() { // Tuxedo() when the page is ready
     if(document.readyState === "complete") {
       TUX = Tuxedo();
