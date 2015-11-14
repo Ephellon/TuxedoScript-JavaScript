@@ -110,7 +110,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     var k = RegExp.$1;
     var K = RegExp.$2.replace(/;$/g, "");
     var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
-    __ = __.replace(r, K).replace(rq, "//*/ " + K + " => $" + k);
+    __ = __.replace(r, K).replace(rq, "//*/ " + K + " -> $" + k + ".\n");
   }
 
   var rq = (/##\s*\*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i);
@@ -119,7 +119,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     var k = RegExp.$1;
     var K = RegExp.$2.replace(/;$/g, "");
     var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
-    __ = __.replace(r, eval(K)).replace(rq, "//*/ " + eval(K) + " => $" + k);
+    __ = __.replace(r, eval(K)).replace(rq, "//*/ " + eval(K) + " -> $" + k + ".\n");
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   __ = __ // tuxedo-script
