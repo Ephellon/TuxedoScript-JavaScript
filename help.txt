@@ -33,7 +33,7 @@ $  - escape sequence for use in strings /notice the space/
 #a - var a
 a--b - a_b
 a#b - a[b]
-a#00 - a[a.length - 1]
+a#0b - a[a.length - b]
 @ - this
 @a - this.a
 $of - typeof
