@@ -1,4 +1,4 @@
-// TuxedoScript 9.8.6 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 9.8.8 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -168,7 +168,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/case\surl\:/g, "URL:")
     .replace(/case\sver\:/g, "Version:")
   // JS and shorthands
-    .replace(/([a-z\$_][\w\d\$_\.]*)#00/gi, "$1[$1.length-1]")
+    .replace(/([a-z\$_][\w\d\$_\.]*)#00/gi, "$1[$1.length]")
+    .replace(/([a-z\$_][\w\d\$_\.]*)#0([\w1-9\$_]+)/gi, "$1[$1.length-$2]")
     .replace(/([a-z\$_][\w\d\$_\.]*)#([0-9][\d]*|[a-z\$_][\w\d\$_]*)/gi, "$1[$2]")
     .replace(/#([a-z\$_][\w\d\$_]*)/gi, "var $1") // #([a-z\$_][\w\d\$_]*)
     .replace(/\$of/g, 'typeof')
@@ -204,7 +205,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/,,,/g, "?")
     .replace(/,,/g, ";")
     .replace(/\/\/\*\/!/g, '"use strict"; // use strict embed')
-    .replace(/(?!\?)([a-z\$_][\w\d\$_]*)\s*\:\s*(.+)([^,\{\[\(])\n$/gi, "$1: $2$3,\n");
+    .replace(/(?!\?)([\w\d\$_]+)\s*\:\s*(.+)([^,\{\[\(])\n$/gi, "$1: $2$3,\n");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // [experimental] enable/disable features via ## +feature / ## -feature / ## *x: y
 
@@ -248,8 +249,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __
       .replace(/([a-z\$_][\w\d\.\$_]*)\s*\&\=/gi, "$1 = $1&&") // &=
       .replace(/([a-z\$_][\w\d\.\$_]*)\s*\|\=/gi, "$1 = $1||") // |=
-      .replace(/([a-z\$_][\w\d\.\$_]*)\s*\^\=(.+)([\.;\n]\s)/gi, "var $1,,\nif($1 !== null){\n  $1 = $2$3\n}") // ^=
-      .replace(/([a-z\$_][\w\d\.\$_]*)\s*\?\=(.+)([\.;\n]\s)/gi, "var $1,,\nif($1 === null){\n  $1 = $2$3\n}") // ?=
+      .replace(/([a-z\$_][\w\d\.\$_]*)\s*\^\=(.+)([\.;\n]\s)/gi, "var $1,,\n$1 = ($1 !== null)?$2: $1$3\n}") // ^=
+      .replace(/([a-z\$_][\w\d\.\$_]*)\s*\?\=(.+)([\.;\n]\s)/gi, "var $1,,\n$1 = ($1 === null)?$2: $1$3\n}") // ?=
       .replace(/\[(\-?[\w\d\$_\.]+)\.\.(\-?[\w\d\$_\.]+)\]/gi, ".slice($1, $2)")
       .replace(/\[\.\.(\-?[\w\d\$_]+)\]/gi, ".slice(0, $2)")
       .replace(/\[(\-?[\w\d\$_]+)\.\.\]/gi, ".slice($1)")
@@ -809,7 +810,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\s/g, "&nbsp;");
     __ += // clean-up, make more readable
       (("!" != _clean)?
-       "<br/>/*---- TuxedoScript - Ephellon Dantzler ----*/<br/>":
+       "<br/>/* - TuxedoScript 9.8.8 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00 - */<br/>":
        "");
   }
   if(!__os__.value) {
@@ -827,6 +828,7 @@ var tux, tuxedo, nm;
 tux = tuxedo = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 tux = tuxedo = nm || { // nm
+  version: "9.8.8",
   get: {
     form: {
       data: function() {
@@ -921,14 +923,12 @@ tux = tuxedo = nm || { // nm
     tux.storage.set(t, e);
     return tux.storage.check(t);
   },
-  load: function(e, t, a, r) {
+  load: function(e, a) {
     a = a || !1;
-    e = a ? encodeURI(name) : name;
-    r = r || document.body;
-    t = t || e.substr(0, e.indexOf("."));
+    e = a ? encodeURI(e) : e;
     var k = window.location.pathname + "";
     e = e || k.substring(k.lastIndexOf("/") + 1, k.length) + ".cache";
-    return tux.storage.get(name);
+    return tux.storage.get(e);
   },
   "delete": function(e) {
     var k = window.location.pathname + "";
