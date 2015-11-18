@@ -836,7 +836,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\s/g, "&nbsp;");
     __ += // clean-up, make more readable
       (("!" != _clean)?
-       "<br/>/* - TuxedoScript 9.8.8 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00 - */<br/>":
+       "<br/>/* - TuxedoScript 10.1.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00 - */<br/>":
        "");
   }
   if(!__os__.value) {
@@ -854,7 +854,7 @@ var tux, tuxedo, nm;
 tux = tuxedo = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 tux = tuxedo = nm || { // nm
-  version: "9.8.8",
+  version: "10.1.2",
   get: {
     form: {
       data: function() {
