@@ -63,53 +63,53 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   for(;__.match(__nch__);) { // remove no.t.ch
     __.replace(__nch__, '$1');
     nch_[N] = RegExp.$1;
-    __ = __.replace(__nch__, '_nch[' + N + ']nch_');
+    __ = __.replace(__nch__, '\bnch[' + N + ']\b');
     N++;
-  } __nch__ = /(_nch\[[\d]+\]nch_)/;
+  } __nch__ = /([\b]nch\[[\d]+\][\b])/;
   for(;__.match(__sch__);) { // remove so.t.ch
     __.replace(__sch__, '$1');
     sch_[S] = RegExp.$1;
-    __ = __.replace(__sch__, '_sch[' + S + ']sch_');
+    __ = __.replace(__sch__, '\bsch[' + S + ']\b');
     S++;
-  } __sch__ = /(_sch\[[\d]+\]sch_)/;
+  } __sch__ = /([\b]sch\[[\d]+\][\b])/;
   for(;__.match(__cmm__);) { // remove single mnulti-line comments
     __.replace(__cmm__, '$1');
     cmm_[a] = RegExp.$1;
-    __ = __.replace(__cmm__, '_cmm[' + a + ']cmm_');
+    __ = __.replace(__cmm__, '\bcmm[' + a + ']\b');
     a++;
-  } __cmm__ = /(_cmm\[[\d]+\]cmm_)/;
+  } __cmm__ = /([\b]cmm\[[\d]+\][\b])/;
   for(;__.match(__cms__);) { // remove single line comments
     __.replace(__cms__, '$1');
     cms_[b] = RegExp.$1;
-    __ = __.replace(__cms__, '_cms[' + b + ']cms_');
+    __ = __.replace(__cms__, '\bcms[' + b + ']\b');
     b++;
-  } __cms__ = /(_cms\[[\d]+\]cms_)/;
+  } __cms__ = /([\b]cms\[[\d]+\][\b])/;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   for(;__.match(__rx__);) { // remove regular expressions
     __.replace(__rx__, '$1');
     rx_[a] = RegExp.$1;
-    __ = __.replace(__rx__, '_re[' + a + ']re_');
+    __ = __.replace(__rx__, '\bre[' + a + ']\b');
     a++;
-  } __rx__ = /(_re\[[\d]+\]re_)/;
+  } __rx__ = /([\b]re\[[\d]+\][\b])/;
   for(;__.match(__dq__);) { // remove double-quotes
     __.replace(__dq__, '$1');
     dq_[x] = RegExp.$1;
-    __ = __.replace(__dq__, '_dq[' + x + ']dq_');
+    __ = __.replace(__dq__, '\bdq[' + x + ']\b');
     x++;
-  } __dq__ = /(_dq\[[\d]+\]dq_)/;
+  } __dq__ = /([\b]dq\[[\d]+\][\b])/;
   for(;__.match(__sq__);) { // remove single-quotes
     __.replace(__sq__, '$1');
     sq_[y] = RegExp.$1;
-    __ = __.replace(__sq__, '_sq[' + y + ']sq_');
+    __ = __.replace(__sq__, '\bsq[' + y + ']\b');
     y++;
-  } __sq__ = /(_sq\[[\d]+\]sq_)/;
+  } __sq__ = /([\b]sq\[[\d]+\][\b])/;
   for(;__.match(__ga__);) { // remove grave-accent quotes
     __.replace(__ga__, '$1');
     ga_[z] = RegExp.$1;
-    __ = __.replace(__ga__, '_ga[' + z + ']ga_');
+    __ = __.replace(__ga__, '\bga[' + z + ']\b');
     z++;
-  } __ga__ = /(_ga\[[\d]+\]ga_)/;
+  } __ga__ = /([\b]ga\[[\d]+\][\b])/;
 
   __ = __
     .replace(/~/g, '-tilde-')
