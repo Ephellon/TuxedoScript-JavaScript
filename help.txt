@@ -279,6 +279,13 @@ a(b, c..., d) - a([b c d]) uses .apply
 # - "undefined"
 ? - "ANON"
 
+---- Godets ----
+a b - a(b)
+a "b" - a("b")
+  a 'b' - a('b')
+  a `b` - a('b')
+a /b/ - a(/b/)
+
 ---- Tuxedo Methods ----
 * $ means executable
 * ~ means above, but with different arguments
