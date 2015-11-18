@@ -481,6 +481,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\s(isnt|is\snot)\s/g, "!==")
       .replace(/\!\s?(equals|equal|is)\s/g, "!==")
       .replace(/\s(equals|equal|is)\s/g, "===")
+      .replace(/\sthe\s([a-z\$_][\w\d\$_]*)\s*\=\=+/gi, "$1 =") // "the" keyword
       .replace(/(\W)AND(\W)/g, "$1 && $2")
       .replace(/(\!?)\sAND([\s\!])/g, "&& $2$1")
       .replace(/([\w\d\$_]+)\s+XOR\s+([\w\d\$_]+)/gi, "$1,,,,,$2")
