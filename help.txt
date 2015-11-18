@@ -286,7 +286,7 @@ a(b, c..., d) - a([b c d]) uses .apply
 # - "undefined"
 ? - "ANON"
 
----- Godets ----
+---- Godets [Legacy] ----
 a b - a(b)
 a "b" - a("b")
   a 'b' - a('b')
