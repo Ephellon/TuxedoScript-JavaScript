@@ -112,6 +112,7 @@ a &= b - a = a && b
 a |= b - a = a || b
 a ^= b - if a != null, a = b
 a ?= b - if a == null, a = b
+
   -- Arrays (try limiting them to one per line) --
 a[b..c] - a.slice(b, c)
 a[..c] - a.slice(0, c)
@@ -133,6 +134,7 @@ a[-] - a.pop()
 d[] - if d is a number, it creates a d-dimension array, i.e. 3[] === [[[]]] /called on as [x][y][z]/
 r:a - if r is a reserved word, it will be double-quoted
   .r - if r is a reserved word, it will be double-quoted and bracketed; ["r"]
+
   -- Strings --
 "${a}" - interpolation, ..." + a + "...
 '${a}' - interpolation, ...' + a + '...
@@ -140,6 +142,10 @@ r:a - if r is a reserved word, it will be double-quoted
 "..." "..." - automatic concatination, "..." + "..."
   '...' '...' - automatic concatination, '...' + '...'
   `...` `...` - automatic concatination, '...' + '...'
+
+  -- RegExp --
+\j - JS variables, [a-zA-Z\$_][\w\d\$_]*
+\J - non-JS variables, [^a-zA-Z\$_][\w\d\$_]*
 
 ---- "Math thread" features ----
 a(b) = c - function a(b){ return c; }
@@ -152,7 +158,7 @@ a^b - Math.pow(a, b)
 a\b\ - "a" root of b, i.e. 3\x\ is the cube root of x
 a _ b - Math.floor(a/b) /notice the spaces/
 log a (b) - log, base a, of b /log(b) / log(a)/
-%property - Math.property, i.e. %PI = Math.PI, %log = Math.log
+@.property - Math.property, i.e. @.PI = Math.PI, @.log = Math.log /notice the ./
 
 ---- "Wordy thread" features ----
   -- Loops and Statements --
@@ -247,6 +253,7 @@ boolean tests become lazy, i.e. && = &, || = |
   (@Test ... { ... }) - "empty" test, doesn't run
 @Before - code to run before every test
 @After - code to run after every test
+
   -- Assert Tests --
 @@assert(value, [comment]) - log that you wanted value
 @@assertTrue(value, [comment]) - log that you wanted value to be true
