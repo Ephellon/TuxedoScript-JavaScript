@@ -124,6 +124,7 @@ a[<] - a.shift()
 a[>]<b,c,...> - a.unshift(b, c, ...)
 a[~]<b> - a.every(b)
 a[&]<b> - a.join(b)
+a[+?]<b,c> - a.indexOf(b, c) > -1
 a[?]<b,c> - a.indexOf(b, c)
 a[-?]<b,c> - a.lastIndexOf(b, c)
 a[=] - a.reverse()
