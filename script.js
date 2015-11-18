@@ -262,6 +262,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\[>\]<(.+?)>/g, ".unshift($1)")
       .replace(/\[-tilde-\]<(.+?)>/g, ".every($1)")
       .replace(/\[&\]<(.*?)>/g, ".join($1)")
+      .replace(/\[\+\?\]<(.+?)>/g, ".indexOf($1)>-1")
       .replace(/\[\?\]<(.+?)>/g, ".indexOf($1)")
       .replace(/\[\-\?\]<(.+?)>/g, ".lastIndexOf($1)")
       .replace(/\[\=\]/g, ".reverse()")
