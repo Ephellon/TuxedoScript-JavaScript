@@ -1,6 +1,8 @@
-// TuxedoScript 10.1.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 10.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
+
+// watch: 224, 496
 
 var TUX; // the parsable string return from Tuxedo()
 
@@ -14,7 +16,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   __sch__ = /<\$s>([\w\W]+)<\/\$s>/; // so.t.ch
   __tch__ = /<\$t>([\w\W]+)<\/\$t>/; // to.t.ch [no reason so far, proposed]
   __cms__ = /(\/\/[^\*].+\n)/; // single-line comments, only replace them so parsing wont generate errors
-  __cmm__ = /(\/\*[^\*][\w\W]+?\*\/)|(#\*[\w\W]+?\##)/; // multi-line comments
+  __cmm__ = /(\/\*[\w\W]+?\*\/)/; // multi-line comments
 
   dq_ = []; // holder for double-quotes
   sq_ = []; // holder for single-quotes
@@ -218,6 +220,11 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/,,/g, ";")
     .replace(/\/\/\*\/!/g, '"use strict"; // use strict embed')
     .replace(/(?!\?)([\w\d\$_]+)\s*\:\s*(.+)([^,\{\[\(])\n$/gi, "$1: $2$3,\n");
+
+  __ = __
+    .replace(/([a-z\$_][\w\d\$_]*)\s([\b].+?[\b])(\s)/gi, "$1($2)$3") // experimental [apply without ()] // whitespace godets
+    .replace(/([a-z\$_][\w\d\$_]*)\x20+(.+?)(\s)/gi, "$1($2)$3") // experimental [apply without ()] // all godets
+    .replace(/(var|const)\s*\((.+?)\)/g, "$1 $2");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // [experimental] enable/disable features via ## +feature / ## -feature / ## *x: y
 
@@ -486,6 +493,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __
       .replace(/var\s(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the)/g, "#0$1")
       .replace(/\\(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the)/g, "#00$1")
+      .replace(/(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the|if|for|while)\((.+?)\)/g, "$1 $2") // watch
       .replace(/\s(does\snot|doesnt|NOT)\s/g, "!")
       .replace(/\s?(does|do)\s?\!\s/g, "!")
       .replace(/\sdoes\s/g, "!!")
@@ -836,7 +844,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\s/g, "&nbsp;");
     __ += // clean-up, make more readable
       (("!" != _clean)?
-       "<br/>/* - TuxedoScript 10.1.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00 - */<br/>":
+       "<br/>/* - TuxedoScript 10.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00 - */<br/>":
        "");
   }
   if(!__os__.value) {
@@ -854,7 +862,7 @@ var tux, tuxedo, nm;
 tux = tuxedo = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 tux = tuxedo = nm || { // nm
-  version: "10.1.2",
+  version: "10.2",
   get: {
     form: {
       data: function() {
