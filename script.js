@@ -1,4 +1,4 @@
-// TuxedoScript 9.8.8 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 10.1.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict";
 
@@ -13,8 +13,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   __nch__ = /<\$n>([\w\W]+)<\/\$n>/; // no.t.ch
   __sch__ = /<\$s>([\w\W]+)<\/\$s>/; // so.t.ch
   __tch__ = /<\$t>([\w\W]+)<\/\$t>/; // to.t.ch [no reason so far, proposed]
-  // __cms__ = /(\/\/.+\n)|(##.+\n)/; // single-line comments, only replace them so parsing wont generate errors
-  // __cmm__ = /(\/\*[\w\W]+\*\/)|(#\*[\w\W]+\##)/; // multi-line comments
+  __cms__ = /(\/\/[^\*].+\n)/; // single-line comments, only replace them so parsing wont generate errors
+  __cmm__ = /(\/\*[^\*][\w\W]+?\*\/)|(#\*[\w\W]+?\##)/; // multi-line comments
 
   dq_ = []; // holder for double-quotes
   sq_ = []; // holder for single-quotes
@@ -23,8 +23,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   nch_ = []; // holder of no.t.ch
   sch_ = []; // holder of so.t.ch
   tch_ = []; // holder of to.t.ch
-  // cms_ = []; // holder for sinlge-line comments
-  // cmm_ = []; // holder for multi-line comments ** error with @tags not switching **
+  cms_ = []; // holder for sinlge-line comments
+  cmm_ = []; // holder for multi-line comments ** error with @tags not switching **
 
   x = y = z = a = b = c = N = S = T = 0;
 
@@ -72,6 +72,18 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __.replace(__sch__, '_sch[' + S + ']sch_');
     S++;
   } __sch__ = /(_sch\[[\d]+\]sch_)/;
+  for(;__.match(__cmm__);) { // remove single mnulti-line comments
+    __.replace(__cmm__, '$1');
+    cmm_[a] = RegExp.$1;
+    __ = __.replace(__cmm__, '_cmm[' + a + ']cmm_');
+    a++;
+  } __cmm__ = /(_cmm\[[\d]+\]cmm_)/;
+  for(;__.match(__cms__);) { // remove single line comments
+    __.replace(__cms__, '$1');
+    cms_[b] = RegExp.$1;
+    __ = __.replace(__cms__, '_cms[' + b + ']cms_');
+    b++;
+  } __cms__ = /(_cms\[[\d]+\]cms_)/;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   for(;__.match(__rx__);) { // remove regular expressions
@@ -667,6 +679,18 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/;{1,}/g, ";");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // handle other features
+
+  a = b = 0;
+
+  for(;__.match(__cmm__);) { // put multi-line comments back
+    __ = __.replace(__cmm__, cmm_[a]);
+    a++;
+  }
+
+  for(;__.match(__cms__);) { // put single line comments back
+    __ = __.replace(__cms__, cms_[b]);
+    b++;
+  }
 
   N = 0;
   for(;__.match(__nch__);) { // put no.t.ch back
