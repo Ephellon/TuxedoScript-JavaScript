@@ -129,7 +129,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/&gt;/g, ">")
     .replace(/&lt;/g, "<")
     .replace(/&amp;/g, "&") // in this order to prevent &amp;gt; from becoming > and &amp;lt; < 
-    .replace(/<(\w+.+)>/g, "&lt;$1&gt;") // replace HTML
+  //.replace(/<(\w+.+)>/g, "&lt;$1&gt;") // replace HTML
     .replace(/([a-z\$_][\w\d\$_]*)(?:[\-]{2})([a-z\$_][\w\d\$_]*)/gi, "$1_$2") // automatic _
   // loops and statements
     .replace(/([\w\d\$_\.]+)\s*(\&\&|\|\|)\s*([\w\d\$_\.]+)\s*\!\!\s*(\?\?)/gi, "($of ($1 $2 $3) !== 'undefined' && ($1 $2 $3) !== null)")
@@ -139,7 +139,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/([\w\d\$_\.]+)\s*(\?\?)/gi, "(typeof $1 !== 'undefined' && $1 !== null)")
     .replace(/\((.+)\)\?(.+)\:/g, '($1),,,$2,,,,') // terenary operator
     .replace(/(\:|\})\?(.+)([\:\{])/g, "}else if ($2){")
-    .replace(/\?([^#])(.+)([\:\{])(\s+)/g, "if($1$2){$4")
+    .replace(/\?([^#\]])(.+)([\:\{])(\s+)/g, "if($1$2){$4")
     .replace(/(\:\:|\}\{)/g, "}else{")
     .replace(/\-\?#([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=$3,,$1>$4,,$1-=$5){$7")
     .replace(/\-\?#([^\n"'`,;]+)([,;]+)([^\n"'`,;]+)\2([^\n"'`,;]+)([\:\{])(\s+)/g, "for(var $1=0,,$1>$3,,$1-=$4){$6")
@@ -256,16 +256,16 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\[(\-?[\w\d\$_]+)\.\.\]/gi, ".slice($1)")
       .replace(/\[\.\]/g, ".slice(0)")
       .replace(/\[\*\]/g, ".split(\"\")")
-      .replace(/\[\+\](.+)/g, ".concat($1)")
-      .replace(/\[\+\+\](.+)/g, ".push($1)")
+      .replace(/\[\+\]<(.+?)>/g, ".concat($1)")
+      .replace(/\[\+\+\]<(.+?)>/g, ".push($1)")
       .replace(/\[<\]/g, ".shift()")
-      .replace(/\[>\](.+)/g, ".unshift($1)")
-      .replace(/\[-tilde-\](.+)/g, ".every($1)")
-      .replace(/\[&\](.*)/g, ".join($1)")
-      .replace(/\[\?\](.+)/g, ".indexOf($1)")
-      .replace(/\[\-\?\](.+)/g, ".lastIndexOf($1)")
+      .replace(/\[>\]<(.+?)>/g, ".unshift($1)")
+      .replace(/\[-tilde-\]<(.+?)>/g, ".every($1)")
+      .replace(/\[&\]<(.*?)>/g, ".join($1)")
+      .replace(/\[\?\]<(.+?)>/g, ".indexOf($1)")
+      .replace(/\[\-\?\]<(.+?)>/g, ".lastIndexOf($1)")
       .replace(/\[\=\]/g, ".reverse()")
-      .replace(/\[\^\](.*)/g, ".sort($1)")
+      .replace(/\[\^\]<(.*?)>/g, ".sort($1)")
       .replace(/\[\-\]/g, ".pop()")
       .replace(/(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)\s?\:(.+)(,?)/g, '"$1": $2$3')
       .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$_]+)/gi, "[\"$1\"]$2");
@@ -471,8 +471,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
 
   if("!" === _wordy) { // words
     __ = __
-      .replace(/var\s(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until)/g, "#0$1")
-      .replace(/\\(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until)/g, "#00$1")
+      .replace(/var\s(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the)/g, "#0$1")
+      .replace(/\\(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the)/g, "#00$1")
       .replace(/\s(does\snot|doesnt|NOT)\s/g, "!")
       .replace(/\s?(does|do)\s?\!\s/g, "!")
       .replace(/\sdoes\s/g, "!!")
