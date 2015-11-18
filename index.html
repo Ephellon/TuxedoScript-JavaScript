@@ -1,4 +1,4 @@
-<textarea type=text/ts cols=128 rows=8>#*# TuxedoScript 9.8.8
+<textarea type=text/ts cols=128 rows=8>#*# TuxedoScript 10.2.5
   @aut: Ephellon Dantzler
   @dat: Tue Sept 8, 2015
   @tie: 23:51 CST -06:00
@@ -25,22 +25,22 @@
 
 ## Conditions
 number = -42 if opposite.
-  #* or you can use *#
-  number = -42 if opposite is true
-  number = -42 unless opposite is false
+  #*# or you can use
+    number = -42 if opposite is true.
+    number = -42 unless opposite is false.
   ##
 
-  ## Functions
-  $square x {
-    <- x^2
-  }
+## Functions
+$square x {
+  <- x^2
+}
 $eat f {
-  $doc.writeln("I ate the ${f}<br>")
+  $doc.writeln "I ate the ${f}<br>"
 }
 $discuss f {
-  #s = "s" if f#00 != 's'.
-    else s = "";
-  $doc.writeln("The ${f} look${s} good<br>")
+  #s = "s" if f#01 != 's'.
+  else s = "";
+  $doc.writeln "The ${f} look${s} good<br>"
 }
 $doc.writeln = $x {
   $doc.body.$html += "${x}<br>"
@@ -51,7 +51,7 @@ $doc.writeln = $x {
 
 ## Objects
 #math = {
-root: %sqrt
+  root: @.sqrt
   square: square
     cube: $ x {
       <- x^3
@@ -60,20 +60,20 @@ root: %sqrt
 
 ## Splats + Interpolation
 $race winner, runners... {
-  $doc.writeln("${winner}, ${runners}")
+  $doc.writeln "${winner}, ${runners}"
 }
 
 ## Existence
-alert("I knew it") if Elvis exists.
+alert "I knew it" if Elvis exists.
 
 ## Array comprehension
 #menu = ['tacos', 'burritos', 'sushi', 'spaghetti']
 
 if menu exists {
-  discuss(food) from menu
+  discuss food from menu
 }
 
-eat(food) from menu while food isnt "sushi"
+eat food from menu while the food isnt "sushi"
 
 ## Simple English
 #sushi = "sushi" from menu
@@ -81,7 +81,7 @@ eat(food) from menu while food isnt "sushi"
 
 ## Reserved words
 #off = off
-\off = off OR NOT on.</textarea><br><br>
+\off = off OR NOT on</textarea><br><br>
 <span>
   <b>
     See above in <a href="javascript:window.open('http://s.codepen.io/Ephellon/debug/NGbmKJ?coffee')">Tux Editor</a>
