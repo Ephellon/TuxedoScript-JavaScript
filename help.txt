@@ -27,7 +27,8 @@
 \c - escape character, for use in/out of strings (darns)
   can be: / \ & ? : ; . @ # % $
 $  - escape sequence for use in strings /notice the space/
-` - \' if inside of a string, else ' /to be changed to interpolation/
+`...` - multiline string /runs script/
+  `...!white-sapce` - removes extra white space characters /!white-space can be put anywhere in the string/
 
   -- Variables --
 #a - var a
@@ -86,7 +87,7 @@ a!?? - test if a doesn't exist
   -?#a, b, c, d - for a = b, to c, by d
 
 ?#a:b - for a in b
-?#a:b ? c - for a, to b by 1, do c
+?#a:b ? c - for a, to b by 1, do c /!deprecated/ use ?#a,b {c}
 
 ?: - do
 ?a; - while a
@@ -101,7 +102,7 @@ a!?? - test if a doesn't exist
 *. - super
 @(a, b, c) - constructor(a, b, c)
 b => a - const a = b
-a --> b - a = () => b
+a --> b - a = (arguments) => b
 -> - =>
 $*a, b, c: - void function(a, b, c)
   $*a, b, c { - void function(a, b, c)
@@ -119,6 +120,7 @@ a[..c] - a.slice(0, c)
 a[b..] - a.slice(b)
 a[.] - a.slice(0)
 a[*] - a.split("")
+a[*]b - a.split(b)
 a[+]<b,c,...> - a.concat(b, c, ...)
 a[++]<b,c,...> - a.push(b, c, ...)
 a[<] - a.shift()
@@ -138,10 +140,10 @@ r:a - if r is a reserved word, it will be double-quoted
   -- Strings --
 "${a}" - interpolation, ..." + a + "...
 '${a}' - interpolation, ...' + a + '...
-`${a}` - interpolation, ...' + a + '...
+`${a}` - interpolation, ...` + a + `...
 "..." "..." - automatic concatination, "..." + "..."
   '...' '...' - automatic concatination, '...' + '...'
-  `...` `...` - automatic concatination, '...' + '...'
+  `...` `...` - automatic concatination, `...` + `...`
 
   -- RegExp --
 \j - JS variables, [a-zA-Z\$_][\w\d\$_]*
@@ -279,18 +281,21 @@ a(b, c...) - a([b c]) uses .apply
 a(b..., c) - a([b c]) uses .apply
 a(b, c..., d) - a([b c d]) uses .apply
 <@> - @ armscye
+<&> - & armscye
 
 ---- Armscyes ----
 ! - "index_counter"
 @ - "arguments"
 # - "undefined"
 ? - "ANON"
+* - "use strict"
+& - "Array" or "[].slice.call"
 
 ---- Godets [Legacy] ----
 a b - a(b)
 a "b" - a("b")
   a 'b' - a('b')
-  a `b` - a('b')
+  a `b` - a(`b`)
 a /b/ - a(/b/)
 
 ---- Tuxedo Methods ----
