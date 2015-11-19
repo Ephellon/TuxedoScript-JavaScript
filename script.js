@@ -2,7 +2,6 @@
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict"; // use strict mode for all of TuxedoScript
 
-// watch: 287, 495
 
 var TUX; // the parsable string return from Tuxedo()
 
@@ -79,7 +78,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     cms_[L] = RegExp.$1;
     __ = __.replace(__cms__, '\bcms[' + L + ']\b');
     L++;
-  } __cms__ = /([\b]cms\[[\d]+\][\b])/;
+  }
   for(;__.match(__cmm__);) { // remove multi-line comments
     __.replace(__cmm__, '$1');
     cmm_[M] = RegExp.$1;
@@ -118,22 +117,22 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/\\\//g, "\\\\\/") // redo all escape forward-slashes
     .replace(/\\([\/\\\&\?\:;\.@#%])/g, '~$1~'); // most code wont accept a ~ after a symbol
 
-  var rq = (/##\s*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i); // ## parse thread
-  for(;rq.test(__);) { // shorthand variables, literal
-    __.replace(rq, '$1 $2');
-    var k = RegExp.$1;
-    var K = RegExp.$2.replace(/;$/g, "");
-    var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
-    __ = __.replace(r, K).replace(rq, "// " + K + " -> $" + k + ".\n");
-  }
-
-  var rq = (/##\s*\*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i); // ## replace thread
+  var rq = (/##\s*\*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i); // ## parse thread
   for(;rq.test(__);) { // shorthand variables, parseable
     __.replace(rq, '$1 $2');
     var k = RegExp.$1;
     var K = RegExp.$2.replace(/;$/g, "");
     var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
-    __ = __.replace(r, eval(K)).replace(rq, "// " + eval(K) + " -> $" + k + ".\n");
+    __ = __.replace(r, eval(K)).replace(rq, "// " + eval(K) + " => $" + k);
+  }
+  
+  var rq = (/##\s*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i); // ## replace thread
+  for(;rq.test(__);) { // shorthand variables, literal
+    __.replace(rq, '$1 $2');
+    var k = RegExp.$1;
+    var K = RegExp.$2.replace(/;$/, "");
+    var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
+    __ = __.replace(r, K).replace(rq, "// " + K + " => $" + k);
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   __ = __ // tuxedo-script
@@ -251,6 +250,14 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   _legacy = __ts__.getAttribute("legacy");
   _wordy = __ts__.getAttribute("wordy");
   _jsunit = __ts__.getAttribute("js-unit");
+
+
+  for(;__.match(__cms__);) { // remove single line comments
+    __.replace(__cms__, '$1');
+    cms_[L] = RegExp.$1;
+    __ = __.replace(__cms__, '\bcms[' + L + ']\b');
+    L++;
+  } __cms__ = /([\b]cms\[[\d]+\][\b])/;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // other features
 
