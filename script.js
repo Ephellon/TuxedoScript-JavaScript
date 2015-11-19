@@ -667,7 +667,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   // string multi-lining
   __ = __
     .replace(/`(.*)\n+([\w\W]+?)`/gm, function(e) {
-    e = e.replace(/\n/g, " ").replace(/`(.+)`/g, function(e) {
+    e = e.replace(/\n/g, "\\n").replace(/`(.+)`/g, function(e) {
       if(/\!white-space/.test(e)) {
         e = e
           .replace(/\!white-space/, "")
