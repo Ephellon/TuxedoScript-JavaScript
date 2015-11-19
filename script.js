@@ -1,4 +1,4 @@
-// TuxedoScript 10.3.8 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 10.4.3 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict"; // use strict mode for all of TuxedoScript
 
@@ -288,8 +288,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$_]+)/gi, "$1[\"$2\"]$3") // bracket reserved words
       .replace(/([a-z\$_][\w\d\$_]*)\s([\b].+?[\b])(\s)/gi, "$1($2)$3") // experimental [apply without ()] // whitespace godets
       .replace(/([a-z\$_][\w\d\$_]*)\x20+([\w\d\$_@][\w\d\$_\.]*?)(\s)/gi, "$1($2)$3") // experimental [apply without ()] // all godets
-      .replace(/(\W)(var|const|return|i[fn]|for|while|else)\((.+?)\)/g, "$1$2 $3") // remove () before these reserved words
-      .replace(/(\W)(var|const|return|i[fn]|for|while|else)\(/g, "$1($2") // must run twice to re-enter code
+      .replace(/(\W)(var|const|return|i[fn]|for|while|else|true|false)\((.+?)\)/g, "$1$2 $3") // remove () before these reserved words
+      .replace(/(\W)(var|const|return|i[fn]|for|while|else|true|false)\(/g, "$1($2") // must run twice to re-enter code
       .replace(/([a-z\$_][\w\d\$_]*)\.\.([a-z\$_][\w\d\$_]*)/gi, "$1().$2") // a..b
       .replace(/\.([a-z\$_][\w\d\$_]*)\(([a-z\$_][\w\d\$_]*)\)\s*\{/gi, ".$1 $2 {"); // restructure .class extends
     for(;__.match(/([1-9][\d]*)\[\]/);) { // dimension arrays
@@ -305,8 +305,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
 
   if ("!" === _advance) {
     __ = __ // advance, experimental features
-      .replace(/\.([\s\w\d\$_]+)\s([\s\w\d\$_]+)\{/gi, "class $1 extends $2{") // class extends
-      .replace(/\.([\s\w\d\$_]+)\{/gi, "class $1{") // class
+      .replace(/(\W)\.([\s\w\d\$_]+)\s([\s\w\d\$_]+)\{/gi, "$1class $2 extends $3{") // class extends
+      .replace(/(\W)\.([\s\w\d\$_]+)\{/gi, "$1class $2{") // class
       .replace(/@\((.*?)\)/g, "constructor($1)") // constructor
       .replace(/\*\./g, "super.") // super
       .replace(/(.+)\s*\=>\s*([a-z\$_][\w\d\$_]*)/gi, "const $2 = $1") // set constants
@@ -499,7 +499,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\sdoes\s/g, "!!")
       .replace(/([^\w\d\$_])(on|yes|good)([^\w\d\$_])/gi, "$1true$3")
       .replace(/([^\w\d\$_])(off|no|bad)([^\w\d\$_])/gi, "$1false$3")
-      .replace(/([^\w\d\$_])(maybe)([^\w\d\$_])/g, "$1" + Boolean(Math.round(Math.random())) + "$3")
+      .replace(/([^\w\d\$_])(maybe)([^\w\d\$_])/g, function(e){
+      return e.replace(/maybe/, Boolean(Math.round( Math.random() )))
+    })
       .replace(/\s(isnt|is\snot)\s/g, "!==")
       .replace(/\!\s?(equals|equal|is)\s/g, "!==")
       .replace(/\s(equals|equal|is)\s/g, "===")
@@ -596,7 +598,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
 
   __ = __
     .replace(/\.(\s*)([\)\]\}])/g, "$2.$1")
-    .replace(/\}\./g, ".\n}");
+    .replace(/\}\./g, ".\n}")
+    .replace(/([\]\}])\s+\)/g, "$1)")
+    .replace(/([\)\]\}]\s)\s+\}/g, "$1}");
 
   if("!" === _htmleditor || _jseditor) {
     __ = __
@@ -682,6 +686,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   });
 
   __ = __
+    .replace(/@([a-z\$_][\w\d\$_]*)/gi, "this.$1")
     .replace(/\(\s*;(.+);\s*\)/g, "(,,$1,,)")
     .replace(/([^;\.])\n/g, "$1;\n")
     .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%>]);(\s+)/g, "$1$2")
@@ -880,7 +885,7 @@ var tux, tuxedo, nm;
 tux = tuxedo = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 tux = tuxedo = nm || { // nm
-  version: "10.3.8",
+  version: "10.4.3",
   get: {
     form: {
       data: function() {
