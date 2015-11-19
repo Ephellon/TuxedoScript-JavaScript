@@ -116,22 +116,22 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/\\\//g, "\\\\\/") // redo all escape forward-slashes
     .replace(/\\([\/\\\&\?\:;\.@#%])/g, '~$1~'); // most code wont accept a ~ after a symbol
 
-  var rq = (/##\s*\*\*([\w\d\$_]+)\:\s*(.+?);?/); // ## parse thread
+  var rq = (/##\s*\*\*([\w\d\$_]+)\:\s*(.+)/); // ## parse thread
   for(;rq.test(__);) { // shorthand variables, parseable
     __.replace(rq, '$1 $2');
     var k = RegExp.$1;
-    var K = RegExp.$2.replace(/;$/g, "");
+    var K = RegExp.$2.replace(/;/, "");
     var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
-    __ = __.replace(r, eval(K)).replace(rq, "// " + eval(K) + " => $" + k);
+    __ = __.replace(r, eval(K)).replace(rq, "// " + eval(K) + " => " + k);
   }
   
-  var rq = (/##\s*\*([\w\d\$_]+)\:\s*(.+?);?/); // ## replace thread
+  var rq = (/##\s*\*([\w\d\$_]+)\:\s*(.+)/); // ## replace thread
   for(;rq.test(__);) { // shorthand variables, literal
     __.replace(rq, '$1 $2');
     var k = RegExp.$1;
-    var K = RegExp.$2.replace(/;$/, "");
+    var K = RegExp.$2.replace(/;/, "");
     var r = RegExp('\\$' + k + '(?![\\w\\d\\$_])', 'g');
-    __ = __.replace(r, K).replace(rq, "// " + K + " => $" + k);
+    __ = __.replace(r, K).replace(rq, "// " + K + " => " + k);
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   __ = __ // tuxedo-script
