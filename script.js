@@ -1,4 +1,4 @@
-// TuxedoScript 10.3.7 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 10.3.8 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict"; // use strict mode for all of TuxedoScript
 
@@ -490,15 +490,16 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
 
   if("!" === _wordy) { // words
     __ = __
-      .replace(/var\s(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the)/g, "#0$1")
-      .replace(/\\(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the)/g, "#00$1")
-      .replace(/\.(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the)/g, "#000$1")
-      .replace(/(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the)\((.+?)\)/g, "$1 $2") // watch
+      .replace(/var\s(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the|maybe)/g, "#0$1")
+      .replace(/\\(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the|maybe)/g, "#00$1")
+      .replace(/\.(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the|maybe)/g, "#000$1")
+      .replace(/(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals|equal|is|when|where|from|unless|until|the|maybe)\((.+?)\)/g, "$1 $2") // watch
       .replace(/\s(does\snot|doesnt|NOT)\s/g, "!")
       .replace(/\s?(does|do)\s?\!\s/g, "!")
       .replace(/\sdoes\s/g, "!!")
       .replace(/([^\w\d\$_])(on|yes|good)([^\w\d\$_])/gi, "$1true$3")
       .replace(/([^\w\d\$_])(off|no|bad)([^\w\d\$_])/gi, "$1false$3")
+      .replace(/([^\w\d\$_])(maybe)([^\w\d\$_])/g, "$1" + Boolean(Math.round(Math.random())) + "$3")
       .replace(/\s(isnt|is\snot)\s/g, "!==")
       .replace(/\!\s?(equals|equal|is)\s/g, "!==")
       .replace(/\s(equals|equal|is)\s/g, "===")
@@ -879,7 +880,7 @@ var tux, tuxedo, nm;
 tux = tuxedo = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 tux = tuxedo = nm || { // nm
-  version: "10.3.7",
+  version: "10.3.8",
   get: {
     form: {
       data: function() {
