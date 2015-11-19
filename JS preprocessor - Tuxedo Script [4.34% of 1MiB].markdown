@@ -1,6 +1,6 @@
 JS preprocessor - Tuxedo Script [4.34% of 1MiB]
 -----------------------------------------------
-JS TS (Tuxedo Script 10.1.2)
+JS TS (Tuxedo Script 10.4.8)
 
 Inspiration:
 ECMA Script6 and CoffeeScript
