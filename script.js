@@ -2,7 +2,6 @@
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict"; // use strict mode for all of TuxedoScript
 
-
 var TUX; // the parsable string return from Tuxedo()
 
 function Tuxedo(__ts__, __os__) { // main function, executes the code [input-element, output-element]
@@ -274,7 +273,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/([a-z\$_][\w\d\.\$_]*)\s*\^\=(.+)([\.;\n]\s)/gi, "var $1,,\n$1 = ($1 !== null)?$2: $1$3\n}") // ^=
       .replace(/([a-z\$_][\w\d\.\$_]*)\s*\?\=(.+)([\.;\n]\s)/gi, "var $1,,\n$1 = ($1 === null)?$2: $1$3\n}") // ?=
       .replace(/\[(\-?[\w\d\$_\.]+)\.\.(\-?[\w\d\$_\.]+)\]/gi, ".slice($1, $2)") // [a..b]
-      .replace(/\[\.\.(\-?[\w\d\$_]+)\]/gi, ".slice(0, $2)") // [..b]
+      .replace(/\[\.\.(\-?[\w\d\$_]+)\]/gi, ".slice(0, $1)") // [..b]
       .replace(/\[(\-?[\w\d\$_]+)\.\.\]/gi, ".slice($1)") // [a..]
       .replace(/\[\.\]/g, ".slice(0)") // [.]
       .replace(/\[\*\]<(.+?)>/g, ".split($1)") // [*]<...>
