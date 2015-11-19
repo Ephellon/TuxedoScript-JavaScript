@@ -116,7 +116,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/\\\//g, "\\\\\/") // redo all escape forward-slashes
     .replace(/\\([\/\\\&\?\:;\.@#%])/g, '~$1~'); // most code wont accept a ~ after a symbol
 
-  var rq = (/##\s*\*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i); // ## parse thread
+  var rq = (/##\s*\*\*([\w\d\$_]+)\:\s*(.+?);?/); // ## parse thread
   for(;rq.test(__);) { // shorthand variables, parseable
     __.replace(rq, '$1 $2');
     var k = RegExp.$1;
@@ -125,7 +125,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     __ = __.replace(r, eval(K)).replace(rq, "// " + eval(K) + " => $" + k);
   }
   
-  var rq = (/##\s*\*([\w\d\$_]+)\:\s*([^\n]+)(?=;\n)?/i); // ## replace thread
+  var rq = (/##\s*\*([\w\d\$_]+)\:\s*(.+?);?/); // ## replace thread
   for(;rq.test(__);) { // shorthand variables, literal
     __.replace(rq, '$1 $2');
     var k = RegExp.$1;
@@ -291,7 +291,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
       .replace(/\[\^\]<(.*?)>/g, ".sort($1)") // [^]<...>
       .replace(/\[\-\]/g, ".pop()") // [-]
       .replace(/([^\w\d\$_]+)(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)\s?\:/g, '$1"$2":') // quote reserved words
-      .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$_]+)/gi, "$1[\"$2\"]$3") // bracket reserved words
+      .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$_]+)/gi, "[\"$1\"]$2") // bracket reserved words
       .replace(/([a-z\$_][\w\d\$_]*)\s([\b].+?[\b])(\s)/gi, "$1($2)$3") // experimental [apply without ()] // whitespace godets
       .replace(/([a-z\$_][\w\d\$_]*)\x20+([\w\d\$_@][\w\d\$_\.]*?)(\s)/gi, "$1($2)$3") // experimental [apply without ()] // all godets
       .replace(/(\W)(var|const|return|i[fn]|for|while|else|true|false)\((.+?)\)/g, "$1$2 $3") // remove () before these reserved words
@@ -606,7 +606,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
     .replace(/\.(\s*)([\)\]\}])/g, "$2.$1")
     .replace(/\}\./g, ".\n}")
     .replace(/([\]\}])\s+\)/g, "$1)")
-    .replace(/([\)\]\}]\s)\s+\}/g, "$1}");
+    .replace(/([\)\]\}]\s)\s+\}/g, "$1}")
+    .replace(/;(?!\s*var|\s*const)(\s*.+\s*\:)/gi, ",$1");
 
   if("!" === _htmleditor || _jseditor) {
     __ = __
@@ -692,12 +693,12 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code [input-ele
   });
 
   __ = __
-    .replace(/@([a-z\$_][\w\d\$_]*)/gi, "this.$1")
+    .replace(/([^\\~])@([a-z\$_][\w\d\$_]*)/gi, "$1this.$2")
+    .replace(/@/g, "this")
     .replace(/\(\s*;(.+);\s*\)/g, "(,,$1,,)")
     .replace(/([^;\.])\n/g, "$1;\n")
     .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%>]);(\s+)/g, "$1$2")
     .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
-    .replace(/;(?!\s*var|\s*const)(\s*.+\s*\:)/gi, ",$1")
     .replace(/;(\s+[\)])/g, "$1")
     .replace(/(\s+);(\s+)/g, "$1$2")
     .replace(/\/\/(.+);\n/g, "//$1\n")
