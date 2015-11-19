@@ -220,6 +220,7 @@ on - true
 off - false
   no - false
   bad - false
+maybe - true | false /uses Math.random()/
 is not - !==
   isnt - !==
 equals - ===
