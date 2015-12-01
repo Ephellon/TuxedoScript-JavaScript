@@ -312,8 +312,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
 
   if ("!" === _advance) {
     __ = __ // advance, experimental features
-      .replace(/\.([\s\w\d\$]+)\s+([\s\w\d\$]+)\{/gi, "class $1 extends $2{") // class extends
-      .replace(/\.([\s\w\d\$]+)\{/gi, "class $1{") // class
+      .replace(/(\W)\.([\s\w\d\$]+)\s+([\s\w\d\$]+)\{/gi, "$1class $2 extends $3{") // class extends
+      .replace(/(\W)\.([\s\w\d\$]+)\{/gi, "$1class $2{") // class
       .replace(/@\((.*?)\)/g, "constructor($1)") // constructor
       .replace(/\*\./g, "super.") // super
       .replace(/(.+)\s*\=>\s*([a-z\$_][\w\d\$]*)/gi, "const $2 = $1") // set constants
@@ -699,8 +699,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   });
 
   __ = __
-  //.replace(/([^\\~])@([a-z\$_][\w\d\$]*)/gi, "$1this.$2")
-    .replace(/@/g, "this")
+    .replace(/@([a-z\$_][\w\d\$]*)/gi, "this.$1")
     .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%>]);(\s+)/g, "$1$2")
     .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
     .replace(/;(\s+[\)])/g, "$1")
