@@ -45,7 +45,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   }
 
   if(!__ts__) { // stop execution here
-    return console.error("Tuxedo Script [" + tux.version + "]: ", "fatal error", "No TuxedoScript element found");
+    return console.error("Tuxedo Script [" + tux.version + "]: ", "\"No TuxedoScript element found\"");
   }
 
   _o = ['tso','tuxo','tuxso','tuxedoo','tux-script-out','tuxedoscriptout','tuxedo-script-out','tscriptout','t-script-o']; // accepted types for the type attribute to output tuxedo-script
@@ -631,6 +631,18 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // rebuild;
 
+  __ = __
+    .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%>]);(\s+)/g, "$1$2")
+    .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
+    .replace(/;(\s+[\)])/g, "$1")
+    .replace(/(\s+);(\s+)/g, "$1$2")
+    .replace(/(["'])use\sstrict\1/g, "$1use strict$1,,")
+    .replace(/switch\((.+)\);/g, "switch($1){")
+    .replace(/break([,\n])/g, "break,,\n")
+    .replace(/([\w\d\$]+)@([\w\d\$]+)/gi, "$1.prototype.$2")
+    .replace(/,,/g, ";")
+    .replace(/;+/g, ";");
+
   x = y = z = a = 0;
   for(;__.match(__sq__);) { // put single quotes back
     __ = __.replace(__sq__, sq_[y]);
@@ -699,18 +711,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   });
 
   __ = __
-    .replace(/@([a-z\$_][\w\d\$]*)/gi, "this.$1")
-    .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%>]);(\s+)/g, "$1$2")
-    .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
-    .replace(/;(\s+[\)])/g, "$1")
-    .replace(/(\s+);(\s+)/g, "$1$2")
-    .replace(/(["'])use\sstrict\1/g, "$1use strict$1,,")
-    .replace(/switch\((.+)\);/g, "switch($1){")
-    .replace(/break([,\n])/g, "break,,\n")
-    .replace(/,,/g, ";")
-    .replace(/;+/g, ";")
+    .replace(/([^\\~])@([a-z\$_@][\w\d\$]*)/gi, "$1this.$2")
+    .replace(/([^\\~])@/g, "$1this")
     .replace(/([\(\[\{]\s*),/g, "$1")
-    .replace(/([\w\d\$]+)@([\w\d\$]+)/gi, "$1.prototype.$2")
     .replace(/([^\\])\.([\s;\}]+)/g, "$1;$2") // ;
     .replace(/~([1-9])/g, "$ $1") // $1 fix
     .replace(/\$\s/g, "$")
