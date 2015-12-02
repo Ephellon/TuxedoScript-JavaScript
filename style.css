@@ -134,6 +134,9 @@ a[=] - a.reverse()
 a[^]<b> - a.sort(b)
 a[-] - a.pop()
 d[] - if d is a number, it creates a d-dimension array, i.e. 3[] === [[[]]] /called on as [x][y][z]/
+d"..." - if d is a number, then the string will be repeated d many times
+  d'...' - if d is a number, then the string will be repeated d many times
+  d`...` - if d is a number, then the string will be repeated d many times
 r:a - if r is a reserved word, it will be double-quoted
   .r - if r is a reserved word, it will be double-quoted and bracketed; ["r"]
 

@@ -1,4 +1,4 @@
-// TuxedoScript 10.6.4 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 10.9.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict"; // use strict mode for all of TuxedoScript
 
@@ -631,22 +631,20 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // rebuild;
 
-  __ = __
-    .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%>]);(\s+)/g, "$1$2")
-    .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
-    .replace(/;(\s+[\)])/g, "$1")
-    .replace(/(\s+);(\s+)/g, "$1$2")
-    .replace(/(["'])use\sstrict\1/g, "$1use strict$1,,")
-    .replace(/switch\((.+)\);/g, "switch($1){")
-    .replace(/break([,\n])/g, "break,,\n")
-    .replace(/([\w\d\$]+)@([\w\d\$]+)/gi, "$1.prototype.$2")
-    .replace(/,,/g, ";")
-    .replace(/;+/g, ";");
-
   x = y = z = a = 0;
   for(;__.match(__sq__);) { // put single quotes back
     __ = __.replace(__sq__, sq_[y]);
     if("!" === _legacy) { // TS related, and interpolation
+      for(;__.match(r = /([1-9][\d]*)'(.*?)'/);) { // dimension strings
+        __.replace(r, '$1 $2');
+        k = Number(RegExp.$1);
+        K = RegExp.$2;
+        __ = __.replace(r, "'" + K + "' + /str/");
+        for(var x = 0; x < k-1; x++) {
+          __ = __.replace(/\/str\//, "'" + K + "' + /str/");
+        }
+        __ = __.replace(/\s\+\s\/str\//, "");
+      }
       __ = __
         .replace(/\$\{([^'\}]+)\}/g, "' + ( $1 ) +\n'") // interpolation "${}"
         .replace(/''\s\+\s|\s\+\s''/g, "");
@@ -656,14 +654,35 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   for(;__.match(__dq__);) { // put double quotes back
     __ = __.replace(__dq__, dq_[x]);
     if("!" === _legacy) { // TS related, and interpolation
+      for(;__.match(r = /([1-9][\d]*)"(.*?)"/);) { // dimension strings
+        __.replace(r, '$1 $2');
+        k = Number(RegExp.$1);
+        K = RegExp.$2;
+        __ = __.replace(r, "\"" + K + "\" + /str/");
+        for(var x = 0; x < k-1; x++) {
+          __ = __.replace(/\/str\//, "\"" + K + "\" + /str/");
+        }
+        __ = __.replace(/\s\+\s\/str\//, "");
+      }
       __ = __
         .replace(/\$\{([^"\}]+)\}/g, "\" + ( $1 ) +\n\"") // interpolation "${}"
         .replace(/""\s\+\s|\s\+\s""/g, "");
     }
     x++;
   } __ = __.replace(/([^\\])`/g, "$1\\'"); // embeded grave accents
+
   for(;__.match(__ga__);) { // put grave accents back
     __ = __.replace(__ga__, ga_[z]);
+    for(;__.match(r = /([1-9][\d]*)`(.*?)`/);) { // dimension strings
+      __.replace(r, '$1 $2');
+      k = Number(RegExp.$1);
+      K = RegExp.$2;
+      __ = __.replace(r, "`" + K + "` + /str/");
+      for(var x = 0; x < k-1; x++) {
+        __ = __.replace(/\/str\//, "`" + K + "` + /str/");
+      }
+      __ = __.replace(/\s\+\s\/str\//, "");
+    }
     if("!" === _legacy) { // TS related, and interpolation
       __ = __
         .replace(/\$\{([^'\}]+)\}/g, "` + ( $1 ) +\n`") // interpolation `${}`
@@ -711,9 +730,18 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   });
 
   __ = __
-    .replace(/([^\\~])@([a-z\$_@][\w\d\$]*)/gi, "$1this.$2")
-    .replace(/([^\\~])@/g, "$1this")
+    .replace(/@([a-z\$_][\w\d\$]*)/gi, "this.$1")
+    .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%>]);(\s+)/g, "$1$2")
+    .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
+    .replace(/;(\s+[\)])/g, "$1")
+    .replace(/(\s+);(\s+)/g, "$1$2")
+    .replace(/(["'])use\sstrict\1/g, "$1use strict$1,,")
+    .replace(/switch\((.+)\);/g, "switch($1){")
+    .replace(/break([,\n])/g, "break,,\n")
+    .replace(/,,/g, ";")
+    .replace(/;+/g, ";")
     .replace(/([\(\[\{]\s*),/g, "$1")
+    .replace(/([\w\d\$]+)@([\w\d\$]+)/gi, "$1.prototype.$2")
     .replace(/([^\\])\.([\s;\}]+)/g, "$1;$2") // ;
     .replace(/~([1-9])/g, "$ $1") // $1 fix
     .replace(/\$\s/g, "$")
@@ -900,7 +928,7 @@ var tux, tuxedo, nm;
 tux = tuxedo = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 tux = tuxedo = nm || { // nm
-  version: "10.6.4",
+  version: "10.9.2",
   get: {
     form: {
       data: function() {
