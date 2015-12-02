@@ -1,4 +1,4 @@
-// TuxedoScript 10.4.3 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 10.6.4 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict"; // use strict mode for all of TuxedoScript
 
@@ -900,7 +900,7 @@ var tux, tuxedo, nm;
 tux = tuxedo = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 tux = tuxedo = nm || { // nm
-  version: "10.4.3",
+  version: "10.6.4",
   get: {
     form: {
       data: function() {
