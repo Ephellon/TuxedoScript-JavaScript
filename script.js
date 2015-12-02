@@ -1,4 +1,4 @@
-// TuxedoScript 10.9.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 11.0.4 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
 "use strict"; // use strict mode for all of TuxedoScript
 
@@ -10,10 +10,10 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   __sq__ = /('.+')/; // single quotes
   __ga__ = /(`.+`)/; // grave accents
   __rx__ = /(\/.+\/[gmiy,\.;\n])/; // regular expressions ** problem when using quotes and $1 within them **
-  __nch__ = /<\$n>([\w\W]+?)<\/\$n>/; // no.t.ch
-  __sch__ = /<\$s>([\w\W]+?)<\/\$s>/; // so.t.ch
-  __tch__ = /<\$t>([\w\W]+?)<\/\$t>/; // to.t.ch [no reason so far, proposed]
-  __cms__ = /(\/\/.+\n)/; // single-line comments, only replace them so parsing wont generate errors
+  __nch__ = /<\$n>([\w\W]+?)<\/\$n>/m; // no.t.ch
+  __sch__ = /<\$s>([\w\W]+?)<\/\$s>/m; // so.t.ch
+  __tch__ = /<\$t>([\w\W]+?)<\/\$t>/m; // to.t.ch [no reason so far, proposed]
+  __cms__ = /(\/\/.+\n)/m; // single-line comments, only replace them so parsing wont generate errors
   __cmm__ = /(\/\*[\w\W]+?\*\/)/m; // multi-line comments
 
   dq_ = []; // holder for double-quotes
@@ -65,56 +65,61 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     nch_[N] = RegExp.$1;
     __ = __.replace(__nch__, '\bnch[' + N + ']\b');
     N++;
-  } __nch__ = /([\b]nch\[[\d]+\][\b])/;
+  } __nch__ = /([\b]nch\[\d+\][\b])/;
   for(;__.match(__sch__);) { // remove so.t.ch
     __.replace(__sch__, '$1');
     sch_[S] = RegExp.$1;
     __ = __.replace(__sch__, '\bsch[' + S + ']\b');
     S++;
-  } __sch__ = /([\b]sch\[[\d]+\][\b])/;
+  } __sch__ = /([\b]sch\[\d+\][\b])/;
   for(;__.match(__cms__);) { // remove single line comments
     __.replace(__cms__, '$1');
     cms_[L] = RegExp.$1;
     __ = __.replace(__cms__, '\bcms[' + L + ']\b');
     L++;
-  }
+  } // first of 2
   for(;__.match(__cmm__);) { // remove multi-line comments
     __.replace(__cmm__, '$1');
     cmm_[M] = RegExp.$1;
     __ = __.replace(__cmm__, '\bcmm[' + M + ']\b');
     M++;
-  } __cmm__ = /([\b]cmm\[[\d]+\][\b])/;
+  } __cmm__ = /([\b]cmm\[\d+\][\b])/m;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  __ = __
+    .replace(/\\\//g, "\b.re.")
+    .replace(/\\"/g, "\b.dq.")
+    .replace(/\\'/g, "\b.sq.")
+    .replace(/\\`/g, "\b.ga.");
 
   for(;__.match(__rx__);) { // remove regular expressions
     __.replace(__rx__, '$1');
     rx_[a] = RegExp.$1;
     __ = __.replace(__rx__, '\bre[' + a + ']\b');
     a++;
-  } __rx__ = /([\b]re\[[\d]+\][\b])/;
+  } __rx__ = /([\b]re\[\d+\][\b])/;
   for(;__.match(__dq__);) { // remove double-quotes
     __.replace(__dq__, '$1');
     dq_[x] = RegExp.$1;
     __ = __.replace(__dq__, '\bdq[' + x + ']\b');
     x++;
-  } __dq__ = /([\b]dq\[[\d]+\][\b])/;
+  } __dq__ = /([\b]dq\[\d+\][\b])/;
   for(;__.match(__sq__);) { // remove single-quotes
     __.replace(__sq__, '$1');
     sq_[y] = RegExp.$1;
     __ = __.replace(__sq__, '\bsq[' + y + ']\b');
     y++;
-  } __sq__ = /([\b]sq\[[\d]+\][\b])/;
+  } __sq__ = /([\b]sq\[\d+\][\b])/;
   for(;__.match(__ga__);) { // remove grave-accent quotes
     __.replace(__ga__, '$1');
     ga_[z] = RegExp.$1;
     __ = __.replace(__ga__, '\bga[' + z + ']\b');
     z++;
-  } __ga__ = /([\b]ga\[[\d]+\][\b])/;
+  } __ga__ = /([\b]ga\[\d+\][\b])/;
 
   __ = __
-    .replace(/~/g, '-tld-') // replace all tildes, they are least likely to be used
     .replace(/\\\//g, "\\\\\/") // redo all escape forward-slashes
-    .replace(/\\([\/\\&?:;.@#%])/g, '~$1~'); // most code wont accept a ~ after a symbol
+    .replace(/\\([\/\\&?:;.@#%])/g, '[\b]$1[\b]'); // most code wont accept a \b after a symbol
 
   var rq = (/##\s*\*\*([\w\d\$]+)\:\s*(.+)/); // ## parse phantom thread
   for(;rq.test(__);) { // shorthand variables, parseable
@@ -256,7 +261,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     cms_[L] = RegExp.$1;
     __ = __.replace(__cms__, '\bcms[' + L + ']\b');
     L++;
-  } __cms__ = /([\b]cms\[[\d]+\][\b])/;
+  } __cms__ = /([\b]cms\[\d+\][\b])/;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // other features
 
@@ -282,7 +287,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
       .replace(/\[\+\+\]<(.+?)>/g, ".push($1)") // [++]<...>
       .replace(/\[<\]/g, ".shift()") // [<]
       .replace(/\[>\]<(.+?)>/g, ".unshift($1)") // [>]<...>
-      .replace(/\[\-tld\-\]<(.+?)>/g, ".every($1)") // [~]<...>
+      .replace(/\[~\]<(.+?)>/g, ".every($1)") // [~]<...>
       .replace(/\[&\]<(.*?)>/g, ".join($1)") // [&]<...>
       .replace(/\[\+\?\]<(.+?)>/g, ".indexOf($1)>-1") // [+?]<...>
       .replace(/\[\?\]<(.+?)>/g, ".indexOf($1)") // [?]<...>
@@ -476,10 +481,10 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
       .replace(/\|\|/g, "/or/")
       .replace(/\|\=/g, "/ore/")
       .replace(/([\w\d\$]+)\((.+)\)\s\=([\s\w\d\$\*\/\+\-%\^\\\|\.\(\)\[\];]+)\n/gi, "function $1($2){return $3}\n")
-      .replace(/([^\a-z+][\d]+)([a-z\$_@]+)/gi, "$1 * $2")
-      .replace(/([\w\d\$-]+)\s*\-tld\-\s*([\w\d\$-]+)/gi, "(($1 % $2 + $2) % $2)")
+      .replace(/([^\a-z+]\d+)([a-z\$_@]+)/gi, "$1 * $2")
+      .replace(/([\w\d\$-]+)\s*~\s*([\w\d\$-]+)/gi, "(($1 % $2 + $2) % $2)")
       .replace(/\|([^"'`;\n]+)\|/g, " @.abs($1)")
-      .replace(/([^\\][\w\d\$]+)\\([^\n"'`~\!@#,\:;\\]+)?\\/gi, " @.pow($2, 1/$1)") // x\y\
+      .replace(/([^\\][\w\d\$]+)\\([^\n"'`\!#,\:;\\]+?)\\/gi, " @.pow($2, 1/$1)") // x\y\
       .replace(/\\(.+?)\\/g, " @.sqrt($1)") // \x\
       .replace(/([\w\d\.\$_-]+)\s*(?:\^|\*\*)\s*([\w\d\.\$_-]+)/gi, " @.pow($1, $2)") // $1 ** $2 may not be supported
       .replace(/([\w\d\$]+)\s+_\s+([\w\d\$]+)/gi, " @.floor($1 / $2)")
@@ -710,6 +715,12 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
       .replace(/\\J/g, "[^a-zA-Z\\$_][\\w\\d\\$]*"); // \J
   }
 
+  __ = __
+    .replace(/[\b]\.re\./g, "\\\/")
+    .replace(/[\b]\.dq\./g, "\\\"")
+    .replace(/[\b]\.sq\./g, "\\'")
+    .replace(/[\b]\.ga\./g, "\\`");
+
   // string multi-lining
   __ = __
     .replace(/`(.*)\n+([\w\W]+?)`/gm, function(e) {
@@ -743,10 +754,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     .replace(/([\(\[\{]\s*),/g, "$1")
     .replace(/([\w\d\$]+)@([\w\d\$]+)/gi, "$1.prototype.$2")
     .replace(/([^\\])\.([\s;\}]+)/g, "$1;$2") // ;
-    .replace(/~([1-9])/g, "$ $1") // $1 fix
+    .replace(/[\b]([1-9])/g, "$ $1") // $1 fix
     .replace(/\$\s/g, "$")
-    .replace(/~/g, '') // remove ~, fix \char
-    .replace(/\-tld\-/g, '~') // make ~
     .replace(/function\s+([^\(\)]+?)\s?\{/g, "function($1) {")
     .replace(/([\{\[\(])\n+/g, "$1\n");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -763,8 +772,11 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     __ = __.replace(__cms__, cms_[L]);
     L++;
   } __ = __
-    .replace(/(.+)\/\/(.+)/g, "$1; //$2")
-    .replace(/\/\/(.+)\n+;/g, "//$1");
+    .replace(/(.+)\/\/(.+)([;,])/g, "$1$3 //$2")
+    .replace(/\/\/(.+)\n+;/g, "//$1")
+    .replace(/;\s*,/g, ";")
+    .replace(/,\s*;/g, ",")
+    .replace(/[\b]/g, ''); // remove trailing \b, fix \char
 
   N = 0;
   for(;__.match(__nch__);) { // put no.t.ch back
@@ -928,7 +940,7 @@ var tux, tuxedo, nm;
 tux = tuxedo = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 tux = tuxedo = nm || { // nm
-  version: "10.9.2",
+  version: "11.0.4",
   get: {
     form: {
       data: function() {
