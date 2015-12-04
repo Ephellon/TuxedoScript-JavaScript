@@ -6,9 +6,9 @@ var TUX; // the parsable string returned from Tuxedo()
 
 function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-element, output-element*]
   var __dq__, __sq__, __ga__, __rx__, __cms__, __cmm__, dq_, sq_, ga_, rx_, cms_, cmm_, __, _, _o, x, y, z, a, b, c, _eval, _htmleditor, _jseditor, _clean, _math, _advance, _ugly, _hide, _legacy, _wordy, _jsunit, nch_, sch_, tch_, __nch__, __sch__, __tch__, _notch, _sotch, _totch, N, S, T, M, L; // declare all variables that Tuxedo will use
-  __dq__ = /(".+")/; // used to hide, and keep double quotes from being executed
-  __sq__ = /('.+')/; // single quotes
-  __ga__ = /(`.+`)/; // grave accents
+  __dq__ = /(".+?")/; // used to hide, and keep double quotes from being executed
+  __sq__ = /('.+?')/; // single quotes
+  __ga__ = /(`.+?`)/; // grave accents
   __rx__ = /(\/.+\/[gmiy,\.;\n])/; // regular expressions ** problem when using quotes and $1 within them **
   __nch__ = /<\$n>([\w\W]+?)<\/\$n>/m; // no.t.ch
   __sch__ = /<\$s>([\w\W]+?)<\/\$s>/m; // so.t.ch
@@ -121,8 +121,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     __.replace(rq, '$1 $2');
     var k = RegExp.$1;
     var K = RegExp.$2.replace(/;/, "");
-    var r = RegExp('\\$' + k + '(?![\\w\\d\\$])', 'g');
-    __ = __.replace(r, eval(K)).replace(rq, "// " + eval(K) + " => " + k);
+    var r = RegExp('\\$' + k + '([^\\w\\d\\$])', 'g');
+    __ = __.replace(r, eval(K) + "$1").replace(rq, "// " + eval(K) + " => " + k);
   }
 
   var rq = (/##\s*\*([\w\d\$]+)\:\s*(.+)/); // ## replace phantom thread
@@ -130,8 +130,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     __.replace(rq, '$1 $2');
     var k = RegExp.$1;
     var K = RegExp.$2.replace(/;/, "");
-    var r = RegExp('\\$' + k + '(?![\\w\\d\\$])', 'g');
-    __ = __.replace(r, K).replace(rq, "// " + K + " => " + k);
+    var r = RegExp('\\$' + k + '([^\\w\\d\\$])', 'g');
+    __ = __.replace(r, K + "$1").replace(rq, "// " + K + " => " + k);
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   __ = __ // tuxedo-script
