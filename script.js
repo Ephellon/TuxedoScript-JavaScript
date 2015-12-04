@@ -1,4 +1,4 @@
-// TuxedoScript 11.1.5 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 11.1.7 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name ("Ephellon Dantzler" or "Mink CBOS"), CoffeeScript, Python, Java, and ECMA are mentioned
 "use strict"; // use strict mode for all of TuxedoScript
 
@@ -57,7 +57,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
 
   __ = __
     .replace(/\\\$/g, "$\b") // \$ fix
-    .replace(/\$([1-9])/g, "$\b$1"); // $1 fix
+    .replace(/\$([1-9])/g, "$\b$1") // $1 fix
+    .replace(/(\d)(["'`])/g, "$1\b$2") // number fix
 
   // patches [use "illegal" characters, so that they never match user code (un)intentionally]
   for(;__.match(__nch__);) { // remove no.t.ch
@@ -293,6 +294,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
       .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$]+)/gi, "[\"$1\"]$2") // bracket reserved words
       .replace(/([a-z\$_][\w\d\$]*)\s([\b].+?[\b])(\s)/gi, "$1($2)$3") // experimental [apply without ()] // whitespace godets
       .replace(/([a-z\$_][\w\d\$]*)\x20+([\w\d\$@][\w\d\$\.]*?)(\s)/gi, "$1($2)$3") // experimental [apply without ()] // all godets
+      .replace(/\(([\b]cm[ms]\[\d+\][\b])\)/g, "\n$1") // comments
       .replace(/(\W)(var|const|return|i[fn]|for|while|else|true|false)\((.+?)\)/g, "$1$2 $3") // remove () before these reserved words
       .replace(/(\W)(var|const|return|i[fn]|for|while|else|true|false)\(/g, "$1($2") // must run twice to re-enter code
       .replace(/\((abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)\)/gi, " $1 ") // fix (reserved word)
@@ -944,7 +946,7 @@ var tux, tuxedo, nm;
 tux = tuxedo = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 tux = tuxedo = nm || { // nm
-  version: "11.1.5",
+  version: "11.1.7",
   get: {
     form: {
       data: function() {
