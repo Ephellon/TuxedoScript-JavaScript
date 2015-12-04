@@ -417,7 +417,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
         .replace(/<\&>/g, "[].slice.call");
     }
 
-    // Prom
+    // Prom "Gussets"
     var n = /PROM\s<([a-z\$_][\w\d\$]*)>/i;
     for(;__.match(n);) {
       __ = __.replace(n, "<\b$1>");
@@ -444,7 +444,16 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
           var T = [];
           K = (k === "")?0: K;
           __ = __.replace(r, "function " + m + "__" + K + "() {\n" + k.every(function(e){
-            return T.push("  var " + e + " = arguments[" + (t++) + "]\n"), true;
+            e = e.split(" ");
+            if(e.length > 2) {
+              e.reverse().pop();
+              e.reverse();
+            }
+            var g = e.length > 1;
+            return T.push(!g?
+                          "  var " + e[0] + " = arguments[" + (t++) + "]\n":
+                          "  var " + e[1] + " = typeof arguments[" + (t++) + "] === typeof " + e[0] + "()? arguments[" + t + "]: null\n"
+                         ), true;
           }).toString().replace(/true/, (T + "").replace(/,/g, "") ));
           window[m].max.push(K);
         }
@@ -927,7 +936,7 @@ var tux, tuxedo, nm;
 tux = tuxedo = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 tux = tuxedo = nm || { // nm
-  version: "11.0.4",
+  version: "10.9",
   get: {
     form: {
       data: function() {
