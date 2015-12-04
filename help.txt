@@ -105,7 +105,7 @@ a --> b - a = (arguments) => b
 -> - =>
 $*a, b, c: - void function(a, b, c)
   $*a, b, c { - void function(a, b, c)
-prom a - creates a promissory function (like Java's "implements"), i.e.:
+prom a - creates a promissory function (like Java's "interface"), i.e.:
     ********
 #prom open // create, and tell Tux you want "open" to be a Promissory function
 $open <letter> { // each "version" of a Promise function MUST have a different number of arguments
