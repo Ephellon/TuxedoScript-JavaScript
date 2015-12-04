@@ -105,7 +105,7 @@ a --> b - a = (arguments) => b
 -> - =>
 $*a, b, c: - void function(a, b, c)
   $*a, b, c { - void function(a, b, c)
-prom a - creates a promissory function (like Java's "interface"), i.e.:
+prom a - creates a promissory function (like Java's "interface", Tux "gusset"), i.e.:
     ********
 #prom open // create, and tell Tux you want "open" to be a Promissory function
 $open <letter> { // each "version" of a Promise function MUST have a different number of arguments
@@ -151,8 +151,8 @@ a[-?]<b,c> - a.lastIndexOf(b, c)
 a[=] - a.reverse()
 a[^]<b> - a.sort(b)
 a[-] - a.pop()
-d[] - if d is a number, it creates a d-dimension array, i.e. 3[] === [[[]]] /called on as [x][y][z]/
-d"..." - if d is a number, then the string will be repeated d many times
+d[] - if d is a number, it creates a d-dimension array (Tux Array "gores"), i.e. 3[] === [[[]]] /called on as [x][y][z]/
+d"..." - (Tux String "gores") if d is a number, then the string will be repeated d many times
   d'...' - if d is a number, then the string will be repeated d many times
   d`...` - if d is a number, then the string will be repeated d many times
 r:a - if r is a reserved word, it will be double-quoted
