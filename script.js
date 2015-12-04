@@ -727,6 +727,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
 
   __ = __
     .replace(/@([a-z\$_][\w\d\$]*)/gi, "this.$1")
+    .replace(/(?![\b])@(?![\b])/g, "this")
     .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%<>]);(\s+)/g, "$1$2")
     .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
     .replace(/;(\s+[\)])/g, "$1")
