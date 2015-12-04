@@ -1,5 +1,5 @@
-// TuxedoScript 11.0.4 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
-// Free for use, as long as my name, CoffeeScript, and ECMA are mentioned
+// TuxedoScript 10.9 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// Free for use, as long as my name, CoffeeScript, Python, and ECMA are mentioned
 "use strict"; // use strict mode for all of TuxedoScript
 
 var TUX; // the parsable string returned from Tuxedo()
@@ -56,31 +56,25 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   __ = ((__ts__.value || __ts__.innerHTML) + "\n"); // get the text of the element
 
   __ = __
-    .replace(/\\\$/g, "$ ") // \$ fix
-    .replace(/\$([1-9])/g, "$ $1"); // $1 fix
+    .replace(/\\\$/g, "$\b") // \$ fix
+    .replace(/\$([1-9])/g, "$\b$1"); // $1 fix
 
   // patches [use "illegal" characters, so that they never match user code (un)intentionally]
   for(;__.match(__nch__);) { // remove no.t.ch
     __.replace(__nch__, '$1');
-    nch_[N] = RegExp.$1;
+    nch_.push(RegExp.$1);
     __ = __.replace(__nch__, '\bnch[' + N + ']\b');
     N++;
   } __nch__ = /([\b]nch\[\d+\][\b])/;
   for(;__.match(__sch__);) { // remove so.t.ch
     __.replace(__sch__, '$1');
-    sch_[S] = RegExp.$1;
+    sch_.push(RegExp.$1);
     __ = __.replace(__sch__, '\bsch[' + S + ']\b');
     S++;
   } __sch__ = /([\b]sch\[\d+\][\b])/;
-  for(;__.match(__cms__);) { // remove single line comments
-    __.replace(__cms__, '$1');
-    cms_[L] = RegExp.$1;
-    __ = __.replace(__cms__, '\bcms[' + L + ']\b');
-    L++;
-  } // first of 2
   for(;__.match(__cmm__);) { // remove multi-line comments
     __.replace(__cmm__, '$1');
-    cmm_[M] = RegExp.$1;
+    cmm_.push(RegExp.$1);
     __ = __.replace(__cmm__, '\bcmm[' + M + ']\b');
     M++;
   } __cmm__ = /([\b]cmm\[\d+\][\b])/m;
@@ -90,29 +84,30 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     .replace(/\\\//g, "\b.re.")
     .replace(/\\"/g, "\b.dq.")
     .replace(/\\'/g, "\b.sq.")
-    .replace(/\\`/g, "\b.ga.");
+    .replace(/\\`/g, "\b.ga.")
+    .replace(/\\([@#\$%\^\&\*\\\+\-\/\.<>\:;\(\)\[\]\{\}\|])/g, "\b#$1\b");
 
   for(;__.match(__rx__);) { // remove regular expressions
     __.replace(__rx__, '$1');
-    rx_[a] = RegExp.$1;
+    rx_.push(RegExp.$1);
     __ = __.replace(__rx__, '\bre[' + a + ']\b');
     a++;
   } __rx__ = /([\b]re\[\d+\][\b])/;
   for(;__.match(__dq__);) { // remove double-quotes
     __.replace(__dq__, '$1');
-    dq_[x] = RegExp.$1;
+    dq_.push(RegExp.$1);
     __ = __.replace(__dq__, '\bdq[' + x + ']\b');
     x++;
   } __dq__ = /([\b]dq\[\d+\][\b])/;
   for(;__.match(__sq__);) { // remove single-quotes
     __.replace(__sq__, '$1');
-    sq_[y] = RegExp.$1;
+    sq_.push(RegExp.$1);
     __ = __.replace(__sq__, '\bsq[' + y + ']\b');
     y++;
   } __sq__ = /([\b]sq\[\d+\][\b])/;
   for(;__.match(__ga__);) { // remove grave-accent quotes
     __.replace(__ga__, '$1');
-    ga_[z] = RegExp.$1;
+    ga_.push(RegExp.$1);
     __ = __.replace(__ga__, '\bga[' + z + ']\b');
     z++;
   } __ga__ = /([\b]ga\[\d+\][\b])/;
@@ -255,10 +250,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   _wordy = __ts__.getAttribute("wordy");
   _jsunit = __ts__.getAttribute("js-unit");
 
-
   for(;__.match(__cms__);) { // remove single line comments
     __.replace(__cms__, '$1');
-    cms_[L] = RegExp.$1;
+    cms_.push(RegExp.$1);
     __ = __.replace(__cms__, '\bcms[' + L + ']\b');
     L++;
   } __cms__ = /([\b]cms\[\d+\][\b])/;
@@ -325,7 +319,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
       .replace(/([\s\w\d\$]+)\s*\-\->(\s*.+)/gi, "$1 = (args) => $2") // $1 = function(args) { return $2 }
       .replace(/\->/g, "=>")
       .replace(/\$\*(.*?)\s*[\:\{]/g, "void function($1){")
-      .replace(/(?:var\s+)?prom\s([a-z\$_][\.\w\d\$]*)\s*\=?\s*\(/gi, "var $1 = new PROMISSORYTUXEDO(\"$1\",");
+      .replace(/(?:var\s+)?prom\s([a-z\$_][\.\w\d\$]*)/gi, "PROM <$1>");
 
     if("!" === _legacy) { // advance + legacy threads
       // Splats
@@ -424,63 +418,54 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     }
 
     // Prom
-    var PROMISSORYTUXEDO = function(n, p, s, l) {
-      window[n] = {
-        arguments: [n, p, s, l],
-        lease: l,
-        name: n,
-        promise: p,
-        signature: s
-      };
-      if(typeof p === "undefined" || typeof p === (null || "") || typeof s === "undefined" || typeof s === (null || "") || typeof l === "undefined" || typeof l === (null || "")) {
-        return console.error("TuxedoScript [" + tux.version + "]:", "O_O bad lease for " + n + ", missing some arguments");
-      }
-      if(typeof p !== typeof Function) {
-        return console.error("TuxedoScript [" + tux.version + "]:", "O_O bad promise, it should be a function");
-      }
-      if(typeof s !== typeof String) {
-        return console.error("TuxedoScript [" + tux.version + "]:", "O_O bad signature, did you mean " + ("" + s));
-      }
-      if(typeof l !== typeof Number) {
-        return console.error("TuxedoScript [" + tux.version + "]:", "O_O bad lifetime, did you mean " + (+l));
-      }
-      return {
-        advance: _advance === "!",
-        clean: _clean === "!",
-        eval: _eval === "!",
-        hide: _hide === "!",
-        html_editor: _htmleditor === "!",
-        js_editor: _jseditor === "!",
-        legacy: _legacy === "!",
-        math: _math === "!",
-        ugly: _ugly === "!",
-        wordy: _wordy === "!",
-        execution: (function(n, p, s, l) {
-          setTimeout(function(){
-            console.warn("O_O the lease for '" + n + "' is at its half-life [" + ((l/2)*(1/1000)) + "s]");
-          }, l/2);
-          setTimeout(function(){
-            window[n] = {};
-            console.error("O_O the lease ended for '" + n + "'");
-          }, l);
-          console.log("O_O the lease for '" + n + "' is active [" + (l*(1/1000)) + "s]");
-        })(n, p, s, l),
-        toString: function() {
-          return (Tuxedo.toString).toString().replace(/toString/g, (n || "?"));
+    var n = /PROM\s<([a-z\$_][\w\d\$]*)>/i;
+    for(;__.match(n);) {
+      __ = __.replace(n, "<\b$1>");
+      var m = RegExp.$1; // name
+      var R = RegExp("function\\s+" + m.replace(/\$/g, "\\$") + "\\s*\\(<\\.\\.\\.>\\s*\\)\\s*\\{");
+      var r = RegExp("function\\s+" + m.replace(/\$/g, "\\$") + "\\s*\\(<(.*)>\\s*\\)\\s*\\{");
+      if(Array(window).indexOf(m) === -1) {
+        window[m] = {
+          max: [],
+          name: m,
+          prototype: {},
+          splat: R.test(__),
+          stamp: new Date(),
+          toString: function() {
+            return {}, "function *() {[native code]}"
+          }
+        };
+        __ = __.replace(R, "function __" + m + "() {");
+        for(;__.match(r);) {
+          __.replace(r, "$1");
+          var k = RegExp.$1.split(",");
+          var K = k.length;
+          var t = 0;
+          var T = [];
+          K = (k === "")?0: K;
+          __ = __.replace(r, "function " + m + "__" + K + "() {\n" + k.every(function(e){
+            return T.push("  var " + e + " = arguments[" + (t++) + "]\n"), true;
+          }).toString().replace(/true/, (T + "").replace(/,/g, "") ));
+          window[m].max.push(K);
         }
-      };
-    };
-    PROMISSORYTUXEDO.toString = function() {
-      return (Tuxedo.toString).toString().replace(/toString/g, "#");
-    };
-    window.PROMISSORYTUXEDO = PROMISSORYTUXEDO;
+        r = RegExp("<[\\b](" + m.replace(/\$/g, "\\$") + ")>");
+        __ = __.replace(r, "function $1(){\n  switch(arguments.length){\n  /\b/\n  }\n}");
+        for(var K = 0; K < window[m].max.length; K++) {
+          var g = 0;
+          __ = __
+            .replace(/\/[\b]\//, "  case " + (g = window[m].max[K]) + ":\n      return " + m + "__" + g + ".apply(null, arguments);\n      break;\n  /\b/");
+        }
+        __ = __
+          .replace(/\/[\b]\//, R? "default: return __" + m + ".apply(null, arguments)": "");
+      }
+    }
   }
 
   if ("!" === _math) {
     __ = __ // enable math shortcuts
       .replace(/\|\|/g, "/or/")
       .replace(/\|\=/g, "/ore/")
-      .replace(/([\w\d\$]+)\((.+)\)\s\=([\s\w\d\$\*\/\+\-%\^\\\|\.\(\)\[\];]+)\n/gi, "function $1($2){return $3}\n")
+      .replace(/([\w\d\$]+)\((.+)\)\s?\=\s?(.+)\n/gi, "function $1($2){return $3}\n")
       .replace(/([^\a-z+]\d+)([a-z\$_@]+)/gi, "$1 * $2")
       .replace(/([\w\d\$-]+)\s*~\s*([\w\d\$-]+)/gi, "(($1 % $2 + $2) % $2)")
       .replace(/\|([^"'`;\n]+)\|/g, " @.abs($1)")
@@ -497,7 +482,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     Math.modulo = function(a, b) {
       a = +a; // Numnber(a)
       b = +b; // Numnber(b)
-      return (a % b + b) % b; // ([a % b] + b) % b
+      return ((a % b) + b) % b; // ([a % b] + b) % b
     }
   }
 
@@ -651,7 +636,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
         __ = __.replace(/\s\+\s\/str\//, "");
       }
       __ = __
-        .replace(/\$\{([^'\}]+)\}/g, "' + ( $1 ) +\n'") // interpolation "${}"
+        .replace(/\$\{([^'\}]+)\}/g, "' + ( $1 ) + '") // interpolation "${}"
         .replace(/''\s\+\s|\s\+\s''/g, "");
     }
     y++;
@@ -670,7 +655,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
         __ = __.replace(/\s\+\s\/str\//, "");
       }
       __ = __
-        .replace(/\$\{([^"\}]+)\}/g, "\" + ( $1 ) +\n\"") // interpolation "${}"
+        .replace(/\$\{([^"\}]+)\}/g, "\" + ( $1 ) + \"") // interpolation "${}"
         .replace(/""\s\+\s|\s\+\s""/g, "");
     }
     x++;
@@ -690,7 +675,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     }
     if("!" === _legacy) { // TS related, and interpolation
       __ = __
-        .replace(/\$\{([^'\}]+)\}/g, "` + ( $1 ) +\n`") // interpolation `${}`
+        .replace(/\$\{([^'\}]+)\}/g, "` + ( $1 ) + `") // interpolation `${}`
         .replace(/``\s\+\s|\s\+\s``/g, "");
     }
     z++;
@@ -742,7 +727,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
 
   __ = __
     .replace(/@([a-z\$_][\w\d\$]*)/gi, "this.$1")
-    .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%>]);(\s+)/g, "$1$2")
+    .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%<>]);(\s+)/g, "$1$2")
     .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
     .replace(/;(\s+[\)])/g, "$1")
     .replace(/(\s+);(\s+)/g, "$1$2")
@@ -754,10 +739,11 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     .replace(/([\(\[\{]\s*),/g, "$1")
     .replace(/([\w\d\$]+)@([\w\d\$]+)/gi, "$1.prototype.$2")
     .replace(/([^\\])\.([\s;\}]+)/g, "$1;$2") // ;
-    .replace(/[\b]([1-9])/g, "$ $1") // $1 fix
-    .replace(/\$\s/g, "$")
+    .replace(/[\b]([1-9])/g, "$\b$1") // $1 fix
+    .replace(/\$[\b]/g, "$")
     .replace(/function\s+([^\(\)]+?)\s?\{/g, "function($1) {")
-    .replace(/([\{\[\(])\n+/g, "$1\n");
+    .replace(/([\{\[\(])\n+/g, "$1\n")
+    .replace(/[\b]#([@#\$%\^\&\*\\\+\-\/\.<>\:;\(\)\[\]\{\}\|])[\b]/g, "$1");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // handle other features
 
