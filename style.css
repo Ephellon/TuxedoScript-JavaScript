@@ -25,7 +25,7 @@
 
   -- Sequences and Strings --
 \c - escape character, for use in/out of strings (darns)
-  can be: / \ & ? : ; . @ # % $
+  can be: / \ & ? : ; . @ # % $ < > + - * ( ) [ ] { } | ^
 $  - escape sequence for use in strings /notice the space/
 `...` - multiline string /runs script/
   `...!white-sapce` - removes extra white space characters /!white-space can be put anywhere in the string/
