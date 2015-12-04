@@ -1,4 +1,4 @@
-// TuxedoScript 10.9 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 11.1.5 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name ("Ephellon Dantzler" or "Mink CBOS"), CoffeeScript, Python, Java, and ECMA are mentioned
 "use strict"; // use strict mode for all of TuxedoScript
 
@@ -426,6 +426,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
       var r = RegExp("function\\s+" + m.replace(/\$/g, "\\$") + "\\s*\\(<(.*)>\\s*\\)\\s*\\{");
       if(Array(window).indexOf(m) === -1) {
         window[m] = {
+          args: [],
           max: [],
           name: m,
           prototype: {},
@@ -438,31 +439,38 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
         __ = __.replace(R, "function __" + m + "() {");
         for(;__.match(r);) {
           __.replace(r, "$1");
-          var k = RegExp.$1.split(",");
-          var K = k.length;
-          var t = 0;
-          var T = [];
+          var k = RegExp.$1.split(","),
+              K = k.length,
+              j = k,
+              t = 0,
+              T = [],
+              E = [],
+              u = 0,
+              U = false;
           K = (k === "")?0: K;
-          __ = __.replace(r, "function " + m + "__" + K + "() {\n" + k.every(function(e){
-            e = e.split(" ");
-            if(e.length > 2) {
-              e.reverse().pop();
-              e.reverse();
+          __ = __.replace(r, "function " + m + "__" + K + "\bu\b() {\n" + k.every(function(e){
+            var g = false, gg = g;
+            e = e.replace(/^\s(.+)/, "$1");
+            if(g = e.split(" ").length > 1) {
+              e = e.split(" ");
             }
-            var g = e.length > 1;
             return T.push(!g?
-                          "  var " + e[0] + " = arguments[" + (t++) + "]\n":
-                          "  var " + e[1] + " = typeof arguments[" + t + "] === typeof " + e[0] + "()? arguments[" + (t++) + "]: null\n"
+                          "  var " + e + " = arguments[" + (t++) + "]\n":
+                          "  var " + e[1] + " = typeof arguments[" + t + "] === typeof " + (E.push(e[0]), e[0]) + "()? arguments[" + (t++) + "]: null\n"
                          ), true;
           }).toString().replace(/true/, (T + "").replace(/,/g, "") ));
+          window[m].args.push(E);
           window[m].max.push(K);
         }
         r = RegExp("<[\\b](" + m.replace(/\$/g, "\\$") + ")>");
-        __ = __.replace(r, "function $1(){\n  switch(arguments.length){\n  /\b/\n  }\n}");
+        __ = __
+          .replace(r, "function $1(){\n  switch(" + ((U = (E + "").replace(/,/g, "") !== "")? "tux.typeof.apply(null, arguments)": "arguments.length") + "){\n  /\b/\n  }\n}");
         for(var K = 0; K < window[m].max.length; K++) {
-          var g;
+          var g = window[m].max[K];
+          var G = ((U)? (g = '"' + window[m].args[u] + '"', window[m].args[u]): g) + "";
           __ = __
-            .replace(/\/[\b]\//, "  case " + (g = window[m].max[K]) + ":\n      return " + m + "__" + g + ".apply(null, arguments);\n      break;\n  /\b/");
+            .replace(RegExp(m.replace(/\$/g, "\\$") + "__" + window[m].max[K] + "[\\b]u[\\b]"), ((U)?m + "__" + window[m].args[u++].toString().replace(/,/g, "_"): m + "__" + window[m].max[K]))
+            .replace(/\/[\b]\//, "  case " + g + ":\n      return " + m + "__" + G.replace(/,/g, "_") + ".apply(null, arguments);\n      break;\n  /\b/");
         }
         __ = __
           .replace(/\/[\b]\//, R? "default: return __" + m + ".apply(null, arguments)": "");
@@ -936,7 +944,7 @@ var tux, tuxedo, nm;
 tux = tuxedo = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 tux = tuxedo = nm || { // nm
-  version: "10.9",
+  version: "11.1.5",
   get: {
     form: {
       data: function() {
@@ -1045,6 +1053,7 @@ tux = tuxedo = nm || { // nm
     return g;
   },
   "typeof": function(e) {
+    if(arguments.length > 1) return tux.apply(null, arguments);
     var n = "";
     switch(typeof e) {
       case typeof Boolean():
@@ -1084,6 +1093,12 @@ tux = tuxedo = nm || { // nm
         break;
     }
     return (n[0] || "") + e + (n[1] || "");
+  },
+  typeofArray: function() {
+    var E = [];
+    return ([].slice.call(arguments).every(function(e){
+      E.push(typeof e)
+    })), (E + "");
   }
 };
 
