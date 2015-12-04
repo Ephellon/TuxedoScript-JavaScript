@@ -106,7 +106,26 @@ a --> b - a = (arguments) => b
 -> - =>
 $*a, b, c: - void function(a, b, c)
   $*a, b, c { - void function(a, b, c)
-prom a = (promise, signature, lease) - creates a promissory variable
+prom a - creates a promissory function (like Java's "implements"), i.e.:
+    ********
+#prom open // create, and tell Tux you want "open" to be a Promissory function
+$open <letter> { // each "version" of a Promise function MUST have a different number of arguments
+  // open a "letter"
+}
+$open <email, from> { // each "version" must also have the same name, so that Tux can find them accordingly
+  // open an "email" from "sender"
+  // if open(a, b) is called, then you'd know that it's an e-mail, not a letter in the example
+}
+$open <letter, sender, return--address, date> { // notice that open(a, b, c) doesn't exist, and doesn't have to
+  // open the "letter" this way
+}
+$open <...> { // default function to go to if one of the above doesn't work
+  // open "..." however pleased
+  // open(a, b, c) will be directed here
+}
+// Tux will automatiacally create a main function to call from, and switch through the number of arguments to find a match
+## end example
+    ********
 
 ---- "Legacy thread" features ----
 a &= b - a = a && b
