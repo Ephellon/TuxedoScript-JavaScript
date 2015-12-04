@@ -182,25 +182,25 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     .replace(/([a-z\$_][\w\d\$\.]*)#0([\w1-9\$]+)/gi, "$1[$1.length-$2]")
     .replace(/([a-z\$_][\w\d\$\.]*)#(\d+|[a-z\$_][\w\d\$]*)/gi, "$1[$2]")
     .replace(/#([a-z\$_][\w\d\$]*)/gi, "var $1") // #([a-z\$_][\w\d\$]*)
-    .replace(/\$of/g, 'typeof')
-    .replace(/\$del/g, "delete")
-    .replace(/\$args/g, "arguments")
-    .replace(/\$doc/g, "document")
-    .replace(/\$win/g, "window")
-    .replace(/\$nav/g, 'navigator')
-    .replace(/\$loc/g, 'location')
-    .replace(/\$cont/g, "continue")
-    .replace(/\$con/g, "console")
-    .replace(/\$(#|[Oo]bj)/g, 'Object')
+    .replace(/\$of([^\w\d\$])/g, 'typeof$1')
+    .replace(/\$del([^\w\d\$])/g, "delete$1")
+    .replace(/\$args([^\w\d\$])/g, "arguments$1")
+    .replace(/\$doc([^\w\d\$])/g, "document$1")
+    .replace(/\$win([^\w\d\$])/g, "window$1")
+    .replace(/\$nav([^\w\d\$])/g, 'navigator$1')
+    .replace(/\$loc([^\w\d\$])/g, 'location$1')
+    .replace(/\$cont([^\w\d\$])/g, "continue$1")
+    .replace(/\$con([^\w\d\$])/g, "console$1")
+    .replace(/\$(#|[Oo]bj)([^\w\d\$])/g, 'Object$2')
   // phantom thread methods
-    .replace(/\.\$id/g, ".getElementById")
-    .replace(/\.\$class/g, ".getElementsByClassName")
-    .replace(/\.\$tag/g, ".getElementsByTagName")
-    .replace(/\.\$html/g, ".innerHTML")
-    .replace(/\.\$text/g, ".innerText")
-    .replace(/\.\$val/g, ".value")
-    .replace(/\.\$qy/g, ".querySelector")
-    .replace(/\.\$Qy/g, ".querySelectorAll")
+    .replace(/\.\$id([^\w\d\$])/g, ".getElementById$1")
+    .replace(/\.\$class([^\w\d\$])/g, ".getElementsByClassName$1")
+    .replace(/\.\$tag([^\w\d\$])/g, ".getElementsByTagName$1")
+    .replace(/\.\$html([^\w\d\$])/g, ".innerHTML$1")
+    .replace(/\.\$text([^\w\d\$])/g, ".innerText$1")
+    .replace(/\.\$val([^\w\d\$])/g, ".value$1")
+    .replace(/\.\$qy([^\w\d\$])/g, ".querySelector$1")
+    .replace(/\.\$Qy([^\w\d\$])/g, ".querySelectorAll$1")
   // functions
     .replace(/<\-\s(.+)/g, "return $1")
     .replace(/([\:\=,]\s*)\$([^\(\)\{\}\[\]\n]+)\s*(\:|\{)/g, "$1function($2){")
@@ -460,7 +460,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
         r = RegExp("<[\\b](" + m.replace(/\$/g, "\\$") + ")>");
         __ = __.replace(r, "function $1(){\n  switch(arguments.length){\n  /\b/\n  }\n}");
         for(var K = 0; K < window[m].max.length; K++) {
-          var g = 0;
+          var g;
           __ = __
             .replace(/\/[\b]\//, "  case " + (g = window[m].max[K]) + ":\n      return " + m + "__" + g + ".apply(null, arguments);\n      break;\n  /\b/");
         }
