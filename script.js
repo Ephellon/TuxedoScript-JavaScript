@@ -452,7 +452,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
             var g = e.length > 1;
             return T.push(!g?
                           "  var " + e[0] + " = arguments[" + (t++) + "]\n":
-                          "  var " + e[1] + " = typeof arguments[" + (t++) + "] === typeof " + e[0] + "()? arguments[" + t + "]: null\n"
+                          "  var " + e[1] + " = typeof arguments[" + t + "] === typeof " + e[0] + "()? arguments[" + (t++) + "]: null\n"
                          ), true;
           }).toString().replace(/true/, (T + "").replace(/,/g, "") ));
           window[m].max.push(K);
