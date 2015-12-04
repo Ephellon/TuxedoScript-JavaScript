@@ -38,21 +38,25 @@ if I try $1 will $2?
 
 ## Conditions
 number = -42 if opposite.
-  #*# or you can use
+  /* or
     number = -42 if opposite is true.
     number = -42 unless opposite is false.
-  ##
+  */
 
 ## Functions
 $square x {
   <- x^2
 }
+  /* or, with +math
+     square(x) = x^2
+  */
 $eat f {
   $doc.writeln "I ate the ${f}<br>"
 }
 $discuss f {
+  // f[f.length-1]
   #s = "s" if f#01 != 's'.
-  else s = "";
+    else s = "";
   $doc.writeln "The ${f} look${s} good<br>"
 }
 $doc.writeln = $x {
@@ -66,9 +70,9 @@ $doc.writeln = $x {
 #math = {
   root: @.sqrt
   square: square
-    cube: $ x {
-      <- x^3
-    }
+  cube: $x {
+     <- x^3
+  }
 }
 
 ## Splats + Interpolation
@@ -83,14 +87,14 @@ alert "I knew it" if Elvis exists.
 #menu = ['tacos', 'burritos', 'sushi', 'spaghetti']
 
 if menu exists {
-  discuss food from menu
+  discuss food from the menu
 }
 
-eat food from menu while the food isnt "sushi"
+eat food from the menu while the food isnt "sushi"
 
 ## Simple English
-#sushi = "sushi" from menu
-#third = 3 in menu
+#sushi = "sushi" from the menu
+#third = 3 in the menu
 
 ## Reserved words
 #off = off
