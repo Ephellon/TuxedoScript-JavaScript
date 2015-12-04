@@ -3,7 +3,7 @@ JS preprocessor - Tuxedo Script [4.34% of 1MiB]
 JS TS (Tuxedo Script 10.9)
 
 Inspiration:
-ECMA Script6 and CoffeeScript
+ECMA Script6, CoffeeScript, Java, and Python
 
 Not for use in IE
 

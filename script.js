@@ -1,5 +1,5 @@
 // TuxedoScript 10.9 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
-// Free for use, as long as my name, CoffeeScript, Python, and ECMA are mentioned
+// Free for use, as long as my name ("Ephellon Dantzler" or "Mink CBOS"), CoffeeScript, Python, Java, and ECMA are mentioned
 "use strict"; // use strict mode for all of TuxedoScript
 
 var TUX; // the parsable string returned from Tuxedo()
