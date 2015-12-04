@@ -470,7 +470,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
           var G = ((U)? (g = '"' + window[m].args[u] + '"', window[m].args[u]): g) + "";
           __ = __
             .replace(RegExp(m.replace(/\$/g, "\\$") + "__" + window[m].max[K] + "[\\b]u[\\b]"), ((U)?m + "__" + window[m].args[u++].toString().replace(/,/g, "_"): m + "__" + window[m].max[K]))
-            .replace(/\/[\b]\//, "  case " + g + ":\n      return " + m + "__" + G.replace(/,/g, "_") + ".apply(null, arguments);\n      break;\n  /\b/");
+            .replace(/\/[\b]\//, "  case " + (g + "").toUpperCase() + ":\n      return " + m + "__" + G.replace(/,/g, "_") + ".apply(null, arguments);\n      break;\n  /\b/");
         }
         __ = __
           .replace(/\/[\b]\//, R? "default: return __" + m + ".apply(null, arguments)": "");
@@ -1053,7 +1053,7 @@ tux = tuxedo = nm || { // nm
     return g;
   },
   "typeof": function(e) {
-    if(arguments.length > 1) return tux.apply(null, arguments);
+    if(arguments.length > 1) return tux.typeofArray.apply(null, arguments);
     var n = "";
     switch(typeof e) {
       case typeof Boolean():
@@ -1096,9 +1096,10 @@ tux = tuxedo = nm || { // nm
   },
   typeofArray: function() {
     var E = [];
-    return ([].slice.call(arguments).every(function(e){
-      E.push(typeof e)
-    })), (E + "");
+    for(var x = 0; x < arguments.length; x++) {
+      E.push(typeof arguments[x]);
+    }
+    return (E + "").toUpperCase();
   }
 };
 
