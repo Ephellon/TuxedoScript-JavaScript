@@ -290,13 +290,12 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
       .replace(/\[\=\]/g, ".reverse()") // [=]
       .replace(/\[\^\]<(.*?)>/g, ".sort($1)") // [^]<...>
       .replace(/\[\-\]/g, ".pop()") // [-]
-      .replace(/(\s*)case\s(\d+)\.\.(\d+)\:/g, function(e){
+      .replace(/(\x20*)case\s(\d+)\.\.(\d+)\:/g, function(e){
       e = [];
       var x, y;
       for(var k = (x = +RegExp.$2); k <= (y = +RegExp.$3); k += (y - x) > 1? 1: -1) {
         e.push(RegExp.$1 + "case " + k + ":");
       }
-      console.log(e);
       return e.toString().replace(/,/g, "\n")
     })
       .replace(/([a-z\$_][\w\d\$]*)\x20+([\b].+?[\b])/gi, "$1($2)") // experimental [apply without ()] // whitespace godets
