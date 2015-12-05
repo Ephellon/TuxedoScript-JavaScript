@@ -105,32 +105,18 @@ a --> b - a = (arguments) => b
 -> - =>
 $*a, b, c: - void function(a, b, c)
   $*a, b, c { - void function(a, b, c)
-prom a - creates a promissory function (like Java's "interface", Tux "gusset"), i.e.:
-    ********
-#prom open // create, and tell Tux you want "open" to be a Promissory function
-$open <letter> { // each "version" of a Promise function MUST have a different number of arguments
-  // open a "letter"
-}
-$open <email, from> { // each "version" must also have the same name, so that Tux can find them accordingly
-  // open an "email" from "sender"
-  // if open(a, b) is called, then you'd know that it's an e-mail, not a letter in the example
-}
-$open <letter, sender, return--address, date> { // notice that open(a, b, c) doesn't exist, and doesn't have to
-  // open the "letter" this way
-}
-$open <...> { // default function to go to if one of the above doesn't work
-  // open "..." however pleased
-  // open(a, b, c) will be directed here
-}
-// Tux will automatiacally create a main function to call from, and switch through the number of arguments to find a match
-## end example
-    ********
+prom a - creates a promissory function (like Java's "interface", Tux "gusset"); see http://codepen.io/Ephellon/pen/MKWaja
+  Tux will automatically create a main function to call from, and switch through the number/type(s) of arguments to find a match
+  supported types: Array Boolean Function Number Object RegExp String Symbol * [any]
 
 ---- "Legacy thread" features ----
 a &= b - a = a && b
 a |= b - a = a || b
 a ^= b - if a != null, a = b
 a ?= b - if a == null, a = b
+
+  -- Special --
+@x..y: - "case x..y:" -- this will repeat "case ...:" for (x-y) times /i.e. "@4..6:" -> "case 4: case 5: case 6:"
 
   -- Arrays (try limiting them to one per line) --
 a[b..c] - a.slice(b, c)
