@@ -172,12 +172,12 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     .replace(/#\*/g, "/*")
     .replace(/##/g, "//*/")
   // @embroideries
-    .replace(/@aut\:/g, "author:")
-    .replace(/@lie\:/g, "license:")
-    .replace(/@dat\:/g, "date:")
-    .replace(/@tie\:/g, "time:")
-    .replace(/@url\:/g, "URL:")
-    .replace(/@ver\:/g, "Version:")
+    .replace(/@aut\:(.+)/g, "author: $1")
+    .replace(/@lie\:(.+)/g, "license: $1")
+    .replace(/@dat\:(.+)/g, "date: $1")
+    .replace(/@tie\:(.+)/g, "time: $1")
+    .replace(/@url\:(.+)/g, "URL: $1")
+    .replace(/@ver\:(.+)/g, "Version: $1")
   // JS and phantom threads
     .replace(/([a-z\$_][\w\d\$\.]*)#00/gi, "$1[$1.length]")
     .replace(/([a-z\$_][\w\d\$\.]*)#0([\w1-9\$]+)/gi, "$1[$1.length-$2]")
@@ -213,7 +213,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     .replace(/@(.+)\:/g, "case $1:")
     .replace(/@([a-z\$_][\w\d\$]*)/gi, "this.$1")
     .replace(/case\s([\w\d\$]+)\s*\=\s?/gi, "this.$1 = ")
-    .replace(/;([\s+\n+,\}\)]+)/g, "}$1")
+    .replace(/;([\s\n,\}\)]+)/g, "}$1")
     .replace(/,,,,/g, ":")
     .replace(/,,,/g, "?")
     .replace(/,,/g, ";")
@@ -292,7 +292,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
       .replace(/\[\-\]/g, ".pop()") // [-]
       .replace(/([^\w\d\$]+)(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)\s?\:/g, '$1"$2":') // quote reserved words, expelled: "default"
       .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$]+)/gi, "[\"$1\"]$2") // bracket reserved words
-      .replace(/([a-z\$_][\w\d\$]*)\s([\b].+?[\b])/gi, "$1($2)") // experimental [apply without ()] // whitespace godets
+      .replace(/([a-z\$_][\w\d\$]*)\x20+([\b].+?[\b])/gi, "$1($2)") // experimental [apply without ()] // whitespace godets
       .replace(/([a-z\$_][\w\d\$]*)\x20+([\w\d\$@][\w\d\$\.]*)/gi, "$1($2)") // experimental [apply without ()] // all godets
       .replace(/\(([\b]cms\[\d+\][\b])\)/g, "\n$1") // comments
       .replace(/(\W)(var|const|return|i[fn]|for|while|else|true|false)\((.+?)\)/g, "$1$2 $3") // remove () before these reserved words
@@ -946,7 +946,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   if("!" === _hide) {
     __os__.setAttribute("style", "display:none"); // hide or not
   }
-  return TUX;
+
+  return Tuxedo.toString = (function toString(){ ["compiled code"] }), TUX;
 }
 
 var tux, tuxedo, nm;

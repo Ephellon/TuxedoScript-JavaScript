@@ -108,7 +108,7 @@ $*a, b, c: - void function(a, b, c)
 prom a - creates a promissory function (like Java's "interface", Tux "gusset"), i.e.:
     ********
 #prom open // create, and tell Tux you want "open" to be a Promissory function
-$open <letter> { // each "version" of a Promise function MUST have a different number of arguments
+$open <letter> { // each "version" of a Promise function MUST have a different number/type of arguments
   // open a "letter"
 }
 $open <email, from> { // each "version" must also have the same name, so that Tux can find them accordingly
@@ -118,7 +118,7 @@ $open <email, from> { // each "version" must also have the same name, so that Tu
 $open <letter, sender, return--address, date> { // notice that open(a, b, c) doesn't exist, and doesn't have to
   // open the "letter" this way
 }
-$open <...> { // default function to go to if one of the above doesn't work
+$open <...> { // default function to go to if none of the above work
   // open "..." however pleased
   // open(a, b, c) will be directed here
 }
