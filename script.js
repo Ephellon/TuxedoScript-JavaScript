@@ -290,15 +290,24 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
       .replace(/\[\=\]/g, ".reverse()") // [=]
       .replace(/\[\^\]<(.*?)>/g, ".sort($1)") // [^]<...>
       .replace(/\[\-\]/g, ".pop()") // [-]
-      .replace(/([^\w\d\$]+)(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)\s?\:/g, '$1"$2":') // quote reserved words, expelled: "default"
-      .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$]+)/gi, "[\"$1\"]$2") // bracket reserved words
+      .replace(/(\s*)case\s(\d+)\.\.(\d+)\:/g, function(e){
+      e = [];
+      var x, y;
+      for(var k = (x = +RegExp.$2); k <= (y = +RegExp.$3); k += (y - x) > 1? 1: -1) {
+        e.push(RegExp.$1 + "case " + k + ":");
+      }
+      console.log(e);
+      return e.toString().replace(/,/g, "\n")
+    })
       .replace(/([a-z\$_][\w\d\$]*)\x20+([\b].+?[\b])/gi, "$1($2)") // experimental [apply without ()] // whitespace godets
       .replace(/([a-z\$_][\w\d\$]*)\x20+([\w\d\$@][\w\d\$\.]*)/gi, "$1($2)") // experimental [apply without ()] // all godets
       .replace(/\(([\b]cms\[\d+\][\b])\)/g, "\n$1") // comments
       .replace(/(\W)(var|const|return|i[fn]|for|while|else|true|false)\((.+?)\)/g, "$1$2 $3") // remove () before these reserved words
       .replace(/(\W)(var|const|return|i[fn]|for|while|else|true|false)\(/g, "$1($2") // must run twice to re-enter code
       .replace(/function\((.+)\)\s*\((.*)\)/g, "function $1($2)") // fix function($1)($2)
-      .replace(/\((abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)\)/gi, " $1 ") // fix (reserved word)
+      .replace(/([^\w\d\$]+)(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)\s?\:/g, '$1"$2":') // quote reserved words, expelled: "default"
+      .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$]+)/gi, "[\"$1\"]$2") // bracket reserved words
+      .replace(/\((abstract|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|export|extends|final|finally|float|for|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|switch|synchronized|throw|throws|transient|try|typeof|var|volatile|while|with|yield)\)/gi, " $1 ") // fix (reserved word)
       .replace(/([a-z\$_][\w\d\$]*)\.\.([a-z\$_][\w\d\$]*)/gi, "$1().$2") // a..b
       .replace(/\.([a-z\$_][\w\d\$]*)\(([a-z\$_][\w\d\$]*)\)\s*\{/gi, ".$1 $2 {"); // restructure .class extends
     for(;__.match(/([1-9][\d]*)\[\]/);) { // dimension arrays
@@ -476,9 +485,22 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
         for(var K = 0; K < window[m].max.length; K++) {
           var g = window[m].max[K];
           var G = ((U)? (g = '"' + window[m].args[u] + '"', window[m].args[u]): g) + "";
+          var E = [];
           __ = __
             .replace(RegExp(m.replace(/\$/g, "\\$") + "__" + window[m].max[K] + "[\\b]u[\\b]"), ((U)?m + "__" + window[m].args[u++].toString().replace(/,/g, "_"): m + "__" + window[m].max[K]))
-            .replace(/\/[\b]\//, "  case " + (g + "").toUpperCase() + ":\n      return " + m + "__" + G.replace(/,/g, "_") + ".apply(null, arguments);\n      break;\n  /\b/");
+            .replace(/\/[\b]\//, "  case " + (g = (g + "").toUpperCase())
+                     .split(",").every(function(e){
+            var r = g.split(",");
+            for(var k = 0; k < r.length; k++) {
+              if(/ANY/.test(r[k])) {
+                r[k] = '"+tux.typeofArray(arguments[' + k + '])+"'
+              }
+              if(k === r.length-1) {
+                r[k] = r[k].replace(/\+"$/, "");
+              }
+            }
+            return E = r, true
+          }).toString().replace(/true/, E) + ":\n      return " + m + "__" + G.replace(/,/g, "_") + ".apply(null, arguments);\n      break;\n  /\b/");
         }
         __ = __
           .replace(/\/[\b]\//, R? "default: return __" + m + ".apply(null, arguments)": "");
