@@ -1,4 +1,4 @@
-// TuxedoScript 11.2.2 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
+// TuxedoScript 11.2.8 - Ephellon Dantzler: Tue Sept 8, 2015 23:51 CDT -06:00
 // Free for use, as long as my name ("Ephellon Dantzler" or "Mink CBOS"), CoffeeScript, Python, Java, and ECMA are mentioned
 "use strict"; // use strict mode for all of TuxedoScript
 
@@ -454,6 +454,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
           __ = __.replace(r, "function " + m + "__" + K + "\bu\b() {\n" + k.every(function(e){
             var g = false, gg = g;
             e = e
+              .replace(/\*/, "Any")
               .replace(/\((.+)\)/, " $1")
               .replace(/^\s(.+)/, "$1");
             if(g = e.split(" ").length > 1) {
@@ -461,7 +462,9 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
             }
             return T.push(!g?
                           "  var " + e + " = arguments[" + (t++) + "]\n":
-                          "  var " + e[1] + " = typeof arguments[" + t + "] === typeof " + (E.push(e[0]), e[0]) + "()? arguments[" + (t++) + "]: null\n"
+                          (E.push(e[0]), e[0]).indexOf("Any") === -1?
+                          "  var " + e[1] + " = typeof arguments[" + t + "] === typeof " + e[0] + "()? arguments[" + (t++) + "]: null\n":
+                          " var " + e[1] + " = arguments[" + (t++) + "]\n"
                          ), true;
           }).toString().replace(/true/, (T + "").replace(/,/g, "") ));
           window[m].args.push(E);
@@ -514,15 +517,13 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
       .replace(/\\(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals?|is|when|where|from|unless|until|the|maybe)/g, "#00$1")
       .replace(/\.(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals?|is|when|where|from|unless|until|the|maybe)/g, "#000$1")
       .replace(/\((does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals?|is|when|where|from|unless|until|the|maybe)\)/g, " $1") // remove () before these reserved words
-      .replace(/(\W)(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals?|is|when|where|from|unless|until|the|maybe)\(/g, "$1($2") // must run twice to re-enter code
+      .replace(/(\W)(does|do|NOT|AND|XOR|OR|isnt|on|yes|good|off|no|bad|equals?|is|when|where|from|unless|until|the|maybe)\((.+?)\)/g, "$1$2 $3") // must run twice to re-enter code
       .replace(/\s(does\snot|doesnt|NOT)\s/g, "!")
       .replace(/\s?(does|do)\s?\!\s/g, "!")
       .replace(/\sdoes\s/g, "!!")
       .replace(/([^\w\d\$])(on|yes|good)([^\w\d\$])/gi, "$1true$3")
       .replace(/([^\w\d\$])(off|no|bad)([^\w\d\$])/gi, "$1false$3")
-      .replace(/([^\w\d\$])(maybe)([^\w\d\$])/g, function(e){
-      return e.replace(/maybe/, Boolean(Math.round( Math.random() )))
-    })
+      .replace(/([^\w\d\$])(maybe)([^\w\d\$])/g, "$1tux.random()$3")
       .replace(/\s(isnt|is\snot)\s/g, "!==")
       .replace(/\!\s?(equals|equal|is)\s/g, "!==")
       .replace(/\s(equals|equal|is)\s/g, "===")
@@ -753,9 +754,11 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     .replace(/(?![\b])@(?![\b])/g, "this")
     .replace(/([\(\[\{,;\:\?\!\*\/\+\-\=%<>]);(\s+)/g, "$1$2")
     .replace(/;(\s*[\*\/\+\-\=%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
+    .replace(/\*(\s*[\/\+\-%,\.\}\]\?\:]|\s*else|\s*while)/g, "$1")
     .replace(/;(\s+[\)])/g, "$1")
     .replace(/(\s+);(\s+)/g, "$1$2")
     .replace(/(["'])use\sstrict\1/g, "$1use strict$1,,")
+    .replace(/(["'])use\(strict\)\1/g, "$1use strict$1")
     .replace(/switch\((.+)\);/g, "switch($1){")
     .replace(/break([,\n])/g, "break,,\n")
     .replace(/,,/g, ";")
@@ -950,7 +953,7 @@ var tux, tuxedo, nm;
 tux = tuxedo = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 tux = tuxedo = nm || { // nm
-  version: "11.2.2",
+  version: "11.2.8",
   get: {
     form: {
       data: function() {
@@ -1105,7 +1108,10 @@ tux = tuxedo = nm || { // nm
     for(var x = 0; x < arguments.length; x++) {
       E.push(typeof arguments[x]);
     }
-    return (E + "").toUpperCase();
+    return (E + "").replace(/\*/g, "ANY").toUpperCase();
+  },
+  random: function() {
+    return Boolean(Math.round(Math.random()));
   }
 };
 
