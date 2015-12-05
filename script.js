@@ -254,7 +254,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   for(;__.match(__cms__);) { // remove single line comments
     __.replace(__cms__, '$1');
     cms_.push(RegExp.$1);
-    __ = __.replace(__cms__, '\bcms[' + L + ']\b');
+    __ = __.replace(__cms__, '\n\n\bcms[' + L + ']\b');
     L++;
   } __cms__ = /([\b]cms\[\d+\][\b])/;
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -469,10 +469,10 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
               e = e.split(" ");
             }
             return T.push(!g?
-                          "  var " + e + " = arguments[" + (t++) + "]\n":
+                          "  var " + e + " = arguments[" + (t++) + "];\n":
                           (E.push(e[0]), e[0]).indexOf("Any") === -1?
-                          "  var " + e[1] + " = typeof arguments[" + t + "] === typeof " + e[0] + "()? arguments[" + (t++) + "]: null\n":
-                          " var " + e[1] + " = arguments[" + (t++) + "]\n"
+                          "  var " + e[1] + " = typeof arguments[" + t + "] === typeof " + e[0] + "()? arguments[" + (t++) + "]: null;\n":
+                          " var " + e[1] + " = arguments[" + (t++) + "];\n"
                          ), true;
           }).toString().replace(/true/, (T + "").replace(/,/g, "") ));
           window[m].args.push(E);
@@ -641,6 +641,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   }
 
   __ = __
+    .replace(/\n{2,}|\n\x20+\n/g, "\n")
     .replace(/\.(\s*)([\)\]\}])/g, "$2.$1")
     .replace(/\}\./g, ".\n}")
     .replace(/([\]\}])\s+(\)|\])/g, "$1$2")
