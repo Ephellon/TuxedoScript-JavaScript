@@ -336,4 +336,5 @@ $ .save[data, name] - tux.storage.set(name, data)
 $ .load[name] - tux.storage.get(name)
 $ .delete[name] - tux.storage.delete(name)
 $ .typeof[object] - returns the typeof "object" to a string, i.e. true === "<true>", [1, 2, 3] === "[1, 2, 3]"
+$ .typeOf[a, b, c] - returns a string of each arguments type
 ********/
