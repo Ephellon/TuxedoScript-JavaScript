@@ -171,13 +171,6 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     .replace(/#\*#/g, "/**")
     .replace(/#\*/g, "/*")
     .replace(/##/g, "//*/")
-  // @embroideries
-    .replace(/@aut\:(.+)/g, "author: $1")
-    .replace(/@lie\:(.+)/g, "license: $1")
-    .replace(/@dat\:(.+)/g, "date: $1")
-    .replace(/@tie\:(.+)/g, "time: $1")
-    .replace(/@url\:(.+)/g, "URL: $1")
-    .replace(/@ver\:(.+)/g, "Version: $1")
   // JS and phantom threads
     .replace(/([a-z\$_][\w\d\$\.]*)#00/gi, "$1[$1.length]")
     .replace(/([a-z\$_][\w\d\$\.]*)#0([\w1-9\$]+)/gi, "$1[$1.length-$2]")
@@ -674,7 +667,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   M = L = 0;
 
   for(;__.match(__cmm__);) { // put multi-line comments back
-    __ = __.replace(__cmm__, cmm_[M]);
+    __ = __.replace(__cmm__, cmm_[M].replace(/\/$/, "*/"));
     M++;
   }
 
@@ -682,6 +675,16 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     __ = __.replace(__cms__, cms_[L]);
     L++;
   }
+
+
+  // @embroideries
+  __ = __
+    .replace(/(@|this\.)aut\:(.+)/g, "author: $2")
+    .replace(/(@|this\.)lie\:(.+)/g, "license: $2")
+    .replace(/(@|this\.)dat\:(.+)/g, "date: $2")
+    .replace(/(@|this\.)tie\:(.+)/g, "time: $2")
+    .replace(/(@|this\.)url\:(.+)/g, "URL: $2")
+    .replace(/(@|this\.)ver\:(.+)/g, "Version: $2");
 
   x = y = z = a = 0;
   for(;__.match(__sq__);) { // put single quotes back
