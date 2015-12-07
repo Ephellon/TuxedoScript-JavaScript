@@ -210,7 +210,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     .replace(/,,,,/g, ":")
     .replace(/,,,/g, "?")
     .replace(/,,/g, ";")
-    .replace(/\/\/\*\/!/g, '"use strict"; // use strict embed')
+    .replace(/\/\/\!/g, '"use strict"; // use strict embed')
     .replace(/(?!\?)([\w\d\$]+)\s*\:\s*(.+)([^,\{\[\(])\n$/gi, "$1: $2$3,\n");
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // [experimental] enable/disable features via ## +feature / ## -feature
