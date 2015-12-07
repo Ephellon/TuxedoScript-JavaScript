@@ -170,7 +170,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   // comments
     .replace(/#\*#/g, "/**")
     .replace(/#\*/g, "/*")
-    .replace(/##/g, "//*/")
+    .replace(/##/g, "//")
   // JS and phantom threads
     .replace(/([a-z\$_][\w\d\$\.]*)#00/gi, "$1[$1.length]")
     .replace(/([a-z\$_][\w\d\$\.]*)#0([\w1-9\$]+)/gi, "$1[$1.length-$2]")
@@ -215,7 +215,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // [experimental] enable/disable features via ## +feature / ## -feature
 
-  var rq = (/\/\/\*\/\s*\-\s*(eval|ugly|advance|html-editor|js-editor|clean|math|hide|legacy|wordy|js-unit)/);
+  var rq = (/\/\/\s*\-\s*(eval|ugly|advance|html-editor|js-editor|clean|math|hide|legacy|wordy|js-unit)/);
   for(;rq.test(__);) { // disable attributes
     __.replace(rq, '$1');
     var k = RegExp.$1;
@@ -223,7 +223,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     __ = __.replace(rq, '// disable ' + k);
   }
 
-  var rq = (/\/\/\*\/\s*\+\s*(eval|ugly|advance|html-editor|js-editor|clean|math|hide|legacy|wordy|js-unit)/);
+  var rq = (/\/\/\s*\+\s*(eval|ugly|advance|html-editor|js-editor|clean|math|hide|legacy|wordy|js-unit)/);
   for(;rq.test(__);) { // enable attributes
     __.replace(rq, '$1');
     var k = RegExp.$1;
@@ -246,7 +246,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
 
   for(;__.match(__cms__);) { // remove single line comments
     __.replace(__cms__, '$1');
-    cms_.push(RegExp.$1);
+    cms_.push(RegExp.$1.replace(/##/g, "//"));
     __ = __.replace(__cms__, '\n\n\bcms[' + L + ']\b');
     L++;
   } __cms__ = /([\b]cms\[\d+\][\b])/;
