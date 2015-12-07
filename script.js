@@ -669,7 +669,19 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
       .replace(/function\s?([^\(\)]+?)\{/g, "function($1) {");
   }
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // rebuild;
+  // rebuild
+
+  M = L = 0;
+
+  for(;__.match(__cmm__);) { // put multi-line comments back
+    __ = __.replace(__cmm__, cmm_[M]);
+    M++;
+  }
+
+  for(;__.match(__cms__);) { // put single line comments back
+    __ = __.replace(__cms__, cms_[L]);
+    L++;
+  }
 
   x = y = z = a = 0;
   for(;__.match(__sq__);) { // put single quotes back
@@ -796,26 +808,14 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
     .replace(/\$[\b]/g, "$")
     .replace(/function\s+([^\(\)]+?)\s?\{/g, "function($1) {")
     .replace(/([\{\[\(])\n+/g, "$1\n")
-    .replace(/[\b]#([@#\$%\^\&\*\\\+\-\/\.<>\:;\(\)\[\]\{\}\|])[\b]/g, "$1");
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // handle other features
-
-  M = L = 0;
-
-  for(;__.match(__cmm__);) { // put multi-line comments back
-    __ = __.replace(__cmm__, cmm_[M]);
-    M++;
-  }
-
-  for(;__.match(__cms__);) { // put single line comments back
-    __ = __.replace(__cms__, cms_[L]);
-    L++;
-  } __ = __
+    .replace(/[\b]#([@#\$%\^\&\*\\\+\-\/\.<>\:;\(\)\[\]\{\}\|])[\b]/g, "$1")
     .replace(/(.+)\/\/(.+)([;,])/g, "$1$3 //$2")
     .replace(/\/\/(.+)\n+;/g, "//$1")
     .replace(/;\s*,/g, ";")
     .replace(/,\s*;/g, ",")
     .replace(/[\b]/g, ''); // remove trailing \b, fix \char
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // handle other features
 
   N = 0;
   for(;__.match(__nch__);) { // put no.t.ch back
