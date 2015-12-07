@@ -13,8 +13,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   __nch__ = /<\$n>([\w\W]+?)<\/\$n>/m; // no.t.ch
   __sch__ = /<\$s>([\w\W]+?)<\/\$s>/m; // so.t.ch
   __tch__ = /<\$t>([\w\W]+?)<\/\$t>/m; // to.t.ch [no reason so far, proposed]
-  __cms__ = /(\/\/.+\n)/m; // single-line comments, only replace them so parsing wont generate errors
-  __cmm__ = /(\/\*[\w\W]+?\*\/)/m; // multi-line comments
+  __cms__ = /(\/\/[^\*].+\n)/m; // single-line comments, only replace them so parsing wont generate errors
+  __cmm__ = /(\/\*[\w\W]+?\*\/|#\*[\w\W]+?##)/m; // multi-line comments
 
   dq_ = []; // holder for double-quotes
   sq_ = []; // holder for single-quotes
@@ -75,7 +75,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   } __sch__ = /([\b]sch\[\d+\][\b])/;
   for(;__.match(__cmm__);) { // remove multi-line comments
     __.replace(__cmm__, '$1');
-    cmm_.push(RegExp.$1);
+    cmm_.push(RegExp.$1.replace(/#\*#?/g, "/* ").replace(/##|\/$/g, "**/"));
     __ = __.replace(__cmm__, '\bcmm[' + M + ']\b');
     M++;
   } __cmm__ = /([\b]cmm\[\d+\][\b])/m;
@@ -667,7 +667,7 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
   M = L = 0;
 
   for(;__.match(__cmm__);) { // put multi-line comments back
-    __ = __.replace(__cmm__, cmm_[M].replace(/\/$/, "*/"));
+    __ = __.replace(__cmm__, cmm_[M]);
     M++;
   }
 
@@ -679,12 +679,12 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
 
   // @embroideries
   __ = __
-    .replace(/(@|this\.)aut\:(.+)/g, "author: $2")
-    .replace(/(@|this\.)lie\:(.+)/g, "license: $2")
-    .replace(/(@|this\.)dat\:(.+)/g, "date: $2")
-    .replace(/(@|this\.)tie\:(.+)/g, "time: $2")
-    .replace(/(@|this\.)url\:(.+)/g, "URL: $2")
-    .replace(/(@|this\.)ver\:(.+)/g, "Version: $2");
+    .replace(/(@|this\.)aut\:(.+[^,])/g, "author: $2")
+    .replace(/(@|this\.)lie\:(.+[^,])/g, "license: $2")
+    .replace(/(@|this\.)dat\:(.+[^,])/g, "date: $2")
+    .replace(/(@|this\.)tie\:(.+[^,])/g, "time: $2")
+    .replace(/(@|this\.)url\:(.+[^,])/g, "URL: $2")
+    .replace(/(@|this\.)ver\:(.+[^,])/g, "Version: $2");
 
   x = y = z = a = 0;
   for(;__.match(__sq__);) { // put single quotes back
