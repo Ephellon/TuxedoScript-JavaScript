@@ -294,8 +294,8 @@ function Tuxedo(__ts__, __os__) { // main function, executes the code as [input-
       .replace(/([a-z\$_][\w\d\$]*)\x20+([\b].+?[\b])/gi, "$1($2)") // experimental [apply without ()] // whitespace godets
       .replace(/([a-z\$_][\w\d\$]*)\x20+([\w\d\$@][\w\d\$\.]*)/gi, "$1($2)") // experimental [apply without ()] // all godets
       .replace(/\(([\b]cms\[\d+\][\b])\)/g, "\n$1") // comments
-      .replace(/(\W)(var|const|return|i[fn]|for|while|else|true|false)\((.+?)\)/g, "$1$2 $3") // remove () before these reserved words
-      .replace(/(\W)(var|const|return|i[fn]|for|while|else|true|false)\(/g, "$1($2") // must run twice to re-enter code
+      .replace(/(\W)(var|const|return|i[fn]|for|while|else|true|false|new)\((.+?)\)/g, "$1$2 $3") // remove () before these reserved words
+      .replace(/(\W)(var|const|return|i[fn]|for|while|else|true|false|new)\(/g, "$1($2") // must run twice to re-enter code
       .replace(/function\((.+)\)\s*\((.*)\)/g, "function $1($2)") // fix function($1)($2)
       .replace(/([^\w\d\$]+)(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)\s?\:/g, '$1"$2":') // quote reserved words, expelled: "default"
       .replace(/\.(abstract|arguments|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|with|yield)([^\w\d\$]+)/gi, "[\"$1\"]$2") // bracket reserved words
